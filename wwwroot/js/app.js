@@ -347,25 +347,40 @@ class PersonalFinanceApp {
             info: 'fa-info-circle'
         };
 
-        const colors = {
-            success: 'toast-success',
-            error: 'toast-error',
-            warning: 'toast-warning',
-            info: 'toast-info'
+        const bgColors = {
+            success: 'bg-green-50 border-green-200',
+            error: 'bg-red-50 border-red-200',
+            warning: 'bg-yellow-50 border-yellow-200',
+            info: 'bg-blue-50 border-blue-200'
         };
 
-        toast.className = `${colors[type]} fade-in transform transition-all duration-300 translate-x-full`;
+        const textColors = {
+            success: 'text-green-800',
+            error: 'text-red-800',
+            warning: 'text-yellow-800',
+            info: 'text-blue-800'
+        };
+
+        const iconColors = {
+            success: 'text-green-400',
+            error: 'text-red-400',
+            warning: 'text-yellow-400',
+            info: 'text-blue-400'
+        };
+
+        toast.className = `max-w-sm w-full ${bgColors[type]} border rounded-lg shadow-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden transform transition-all duration-300 translate-x-full`;
+        
         toast.innerHTML = `
             <div class="p-4">
                 <div class="flex items-start">
                     <div class="flex-shrink-0">
-                        <i class="fas ${icons[type]} text-lg"></i>
+                        <i class="fas ${icons[type]} ${iconColors[type]} text-lg"></i>
                     </div>
                     <div class="ml-3 w-0 flex-1">
-                        <p class="text-sm font-medium text-gray-900">${message}</p>
+                        <p class="text-sm font-medium ${textColors[type]}">${message}</p>
                     </div>
                     <div class="ml-4 flex-shrink-0 flex">
-                        <button onclick="this.closest('.toast').remove()" class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <button onclick="this.closest('div').remove()" class="rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>

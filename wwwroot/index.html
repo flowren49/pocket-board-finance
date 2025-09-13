@@ -79,6 +79,22 @@
         <div class="mb-8">
             <h2 class="text-3xl font-bold text-gray-900 mb-4">Bienvenue dans votre Gestionnaire Financier</h2>
             <p class="text-lg text-gray-600">Gérez vos comptes, suivez vos dépenses et analysez vos finances en toute simplicité.</p>
+            
+            <!-- Demo Buttons -->
+            <div class="mt-4 flex flex-wrap gap-2">
+                <button onclick="window.app.showToast('Connexion réussie !', 'success')" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-check mr-2"></i>Toast Succès
+                </button>
+                <button onclick="window.app.showToast('Erreur de connexion', 'error')" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                    <i class="fas fa-times mr-2"></i>Toast Erreur
+                </button>
+                <button onclick="window.app.showToast('Attention !', 'warning')" class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors">
+                    <i class="fas fa-exclamation mr-2"></i>Toast Warning
+                </button>
+                <button onclick="window.app.showToast('Information importante', 'info')" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-info mr-2"></i>Toast Info
+                </button>
+            </div>
         </div>
 
         <!-- Dashboard Cards -->
@@ -198,6 +214,74 @@
                         <i class="fas fa-receipt text-4xl mb-2"></i>
                         <p>Aucune transaction récente</p>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Pages Section -->
+        <div class="mt-8 bg-white shadow rounded-lg">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">
+                    <i class="fas fa-sitemap mr-2 text-blue-500"></i>Pages Disponibles
+                </h3>
+            </div>
+            <div class="px-6 py-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-tachometer-alt text-blue-500 mr-2"></i>
+                            <h4 class="font-medium">Dashboard</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">Vue d'ensemble de vos finances</p>
+                    </div>
+                    
+                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-credit-card text-green-500 mr-2"></i>
+                            <h4 class="font-medium">Comptes</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">Gestion de vos comptes bancaires</p>
+                    </div>
+                    
+                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-exchange-alt text-purple-500 mr-2"></i>
+                            <h4 class="font-medium">Transactions</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">Historique des mouvements</p>
+                    </div>
+                    
+                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-chart-pie text-orange-500 mr-2"></i>
+                            <h4 class="font-medium">Statistiques</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">Graphiques et analyses</p>
+                    </div>
+                    
+                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-download text-red-500 mr-2"></i>
+                            <h4 class="font-medium">Export</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">Export Excel/CSV</p>
+                    </div>
+                    
+                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-cog text-gray-500 mr-2"></i>
+                            <h4 class="font-medium">Paramètres</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">Configuration utilisateur</p>
+                    </div>
+                </div>
+                
+                <div class="mt-4 p-4 bg-blue-50 rounded-lg">
+                    <p class="text-sm text-blue-800">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <strong>Note :</strong> Cette version statique combine toutes les fonctionnalités en une seule page. 
+                        La version complète avec Blazor Server inclut des pages séparées pour chaque fonctionnalité.
+                    </p>
                 </div>
             </div>
         </div>
