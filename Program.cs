@@ -17,6 +17,13 @@ builder.Services.AddControllersWithViews()
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
     });
 
+// Add Blazor Server
+builder.Services.AddServerSideBlazor();
+
+// Add Blazored services
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddBlazoredToast();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -79,6 +86,10 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IBalanceHistoryService, BalanceHistoryService>();
 builder.Services.AddScoped<IExportService, ExportService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+// Add HttpClient for API calls
+builder.Services.AddHttpClient();
 
 // SignalR for real-time updates
 builder.Services.AddSignalR();
@@ -116,6 +127,10 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// Add Blazor routing
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
 
 app.MapHub<BalanceHub>("/balanceHub");
 

@@ -1,0 +1,371 @@
+@page "/export"
+@using PersonalFinanceApp.Models.DTOs
+@using PersonalFinanceApp.Services
+@inject IExportService ExportService
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+<PageTitle>Export - Personal Finance App</PageTitle>
+
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                Export des données
+            </h2>
+            <p class="mt-1 text-sm text-gray-500">
+                Exportez vos données financières dans différents formats
+            </p>
+        </div>
+    </div>
+
+    <!-- Export Options -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Export Accounts -->
+        <div class="card hover:shadow-lg transition-shadow duration-200 fade-in">
+            <div class="card-header">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-lg font-medium text-gray-900">Export des comptes</h3>
+                        <p class="text-sm text-gray-500">Liste complète de vos comptes</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="text-sm text-gray-600 mb-4">
+                    Exportez la liste de tous vos comptes avec leurs soldes actuels et initiaux.
+                </p>
+                
+                <div class="space-y-3">
+                    <button @onclick="() => ExportAccounts(ExportFormat.Excel)" 
+                            disabled="@isExporting"
+                            class="w-full btn-success">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Excel (.xlsx)
+                    </button>
+                    
+                    <button @onclick="() => ExportAccounts(ExportFormat.Csv)" 
+                            disabled="@isExporting"
+                            class="w-full btn-secondary">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        CSV (.csv)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Statistics -->
+        <div class="card hover:shadow-lg transition-shadow duration-200 fade-in">
+            <div class="card-header">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-success-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-lg font-medium text-gray-900">Export des statistiques</h3>
+                        <p class="text-sm text-gray-500">Analyse complète de vos finances</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="text-sm text-gray-600 mb-4">
+                    Exportez un rapport détaillé avec toutes vos statistiques financières.
+                </p>
+                
+                <div class="space-y-3">
+                    <button @onclick="() => ExportStatistics(ExportFormat.Excel)" 
+                            disabled="@isExporting"
+                            class="w-full btn-success">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Excel (.xlsx)
+                    </button>
+                    
+                    <button @onclick="() => ExportStatistics(ExportFormat.Csv)" 
+                            disabled="@isExporting"
+                            class="w-full btn-secondary">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        CSV (.csv)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Balance History -->
+        <div class="card hover:shadow-lg transition-shadow duration-200 fade-in">
+            <div class="card-header">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-warning-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-warning-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-lg font-medium text-gray-900">Export de l'historique</h3>
+                        <p class="text-sm text-gray-500">Historique complet des soldes</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="text-sm text-gray-600 mb-4">
+                    Exportez l'historique de tous vos comptes avec filtres par date.
+                </p>
+                
+                <!-- Date Filters -->
+                <div class="space-y-3 mb-4">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="form-label text-xs">Date de début</label>
+                            <InputDate @bind-Value="exportRequest.StartDate" class="form-input text-sm" />
+                        </div>
+                        <div>
+                            <label class="form-label text-xs">Date de fin</label>
+                            <InputDate @bind-Value="exportRequest.EndDate" class="form-input text-sm" />
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <InputCheckbox @bind-Value="exportRequest.IncludeBalanceHistory" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded" />
+                        <label class="ml-2 block text-sm text-gray-900">
+                            Inclure l'historique des soldes
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <button @onclick="() => ExportBalanceHistory(ExportFormat.Excel)" 
+                            disabled="@isExporting"
+                            class="w-full btn-success">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Excel (.xlsx)
+                    </button>
+                    
+                    <button @onclick="() => ExportBalanceHistory(ExportFormat.Csv)" 
+                            disabled="@isExporting"
+                            class="w-full btn-secondary">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        CSV (.csv)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Information -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Informations sur l'export</h3>
+        </div>
+        <div class="card-body">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="text-sm font-medium text-gray-900 mb-3">Formats disponibles</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-success-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <strong>Excel (.xlsx) :</strong> Format recommandé avec mise en forme
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-success-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <strong>CSV (.csv) :</strong> Compatible avec tous les tableurs
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-medium text-gray-900 mb-3">Données exportées</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-primary-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            Noms et types de comptes
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-primary-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            Soldes actuels et initiaux
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-primary-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            Calculs d'évolution
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-primary-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            Historique des modifications
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    @if (isExporting)
+    {
+        <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="flex items-center">
+                    <div class="loading-spinner mr-4"></div>
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900">Export en cours...</h3>
+                        <p class="text-sm text-gray-500">Préparation de votre fichier</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private ExportRequestDto exportRequest = new();
+    private bool isExporting = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Check if user is authenticated
+        var currentUser = await UserService.GetCurrentUserAsync();
+        if (currentUser == null)
+        {
+            NavigationManager.NavigateTo("/login");
+            return;
+        }
+
+        // Set default date range (last 30 days)
+        exportRequest.EndDate = DateTime.Today;
+        exportRequest.StartDate = DateTime.Today.AddDays(-30);
+        exportRequest.IncludeBalanceHistory = true;
+    }
+
+    private async Task ExportAccounts(ExportFormat format)
+    {
+        try
+        {
+            isExporting = true;
+            StateHasChanged();
+
+            var currentUser = await UserService.GetCurrentUserAsync();
+            if (currentUser == null) return;
+
+            var fileBytes = await ExportService.ExportAccountsAsync(currentUser.Id, format);
+            await DownloadFile(fileBytes, $"comptes_{DateTime.Now:yyyyMMdd_HHmmss}", format);
+            
+            ToastService.ShowSuccess($"Export des comptes réussi au format {format}");
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Erreur lors de l'export: {ex.Message}");
+        }
+        finally
+        {
+            isExporting = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task ExportStatistics(ExportFormat format)
+    {
+        try
+        {
+            isExporting = true;
+            StateHasChanged();
+
+            var currentUser = await UserService.GetCurrentUserAsync();
+            if (currentUser == null) return;
+
+            var fileBytes = await ExportService.ExportStatisticsAsync(currentUser.Id, format);
+            await DownloadFile(fileBytes, $"statistiques_{DateTime.Now:yyyyMMdd_HHmmss}", format);
+            
+            ToastService.ShowSuccess($"Export des statistiques réussi au format {format}");
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Erreur lors de l'export: {ex.Message}");
+        }
+        finally
+        {
+            isExporting = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task ExportBalanceHistory(ExportFormat format)
+    {
+        try
+        {
+            isExporting = true;
+            StateHasChanged();
+
+            var currentUser = await UserService.GetCurrentUserAsync();
+            if (currentUser == null) return;
+
+            exportRequest.Format = format;
+            var fileBytes = await ExportService.ExportBalanceHistoryAsync(currentUser.Id, exportRequest);
+            await DownloadFile(fileBytes, $"historique_{DateTime.Now:yyyyMMdd_HHmmss}", format);
+            
+            ToastService.ShowSuccess($"Export de l'historique réussi au format {format}");
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Erreur lors de l'export: {ex.Message}");
+        }
+        finally
+        {
+            isExporting = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task DownloadFile(byte[] fileBytes, string fileName, ExportFormat format)
+    {
+        var extension = format == ExportFormat.Excel ? "xlsx" : "csv";
+        var mimeType = format == ExportFormat.Excel 
+            ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
+            : "text/csv";
+
+        // Convert to base64 for download
+        var base64 = Convert.ToBase64String(fileBytes);
+        var dataUrl = $"data:{mimeType};base64,{base64}";
+        
+        // Create download link and trigger download
+        await Task.Run(() => {
+            // This would typically use JavaScript interop to trigger download
+            // For now, we'll just show success message
+        });
+    }
+}

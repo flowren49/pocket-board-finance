@@ -1,0 +1,476 @@
+@page "/transactions"
+@using PersonalFinanceApp.Models.DTOs
+@using PersonalFinanceApp.Services
+@inject IAccountService AccountService
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+<PageTitle>Transactions - Personal Finance App</PageTitle>
+
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                Transactions
+            </h2>
+            <p class="mt-1 text-sm text-gray-500">
+                Historique des modifications de soldes et transactions
+            </p>
+        </div>
+        <div class="mt-4 flex md:mt-0 md:ml-4">
+            <button type="button" @onclick="RefreshData" 
+                    class="btn-secondary">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                Actualiser
+            </button>
+        </div>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="flex justify-center items-center py-12">
+            <div class="loading-spinner"></div>
+            <span class="ml-2 text-gray-600">Chargement des transactions...</span>
+        </div>
+    }
+    else
+    {
+        <!-- Filters -->
+        <div class="card">
+            <div class="card-body">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="form-label">Période</label>
+                        <select @bind="selectedPeriod" @onchange="FilterTransactions" class="form-input">
+                            <option value="all">Toutes les périodes</option>
+                            <option value="today">Aujourd'hui</option>
+                            <option value="week">Cette semaine</option>
+                            <option value="month">Ce mois</option>
+                            <option value="quarter">Ce trimestre</option>
+                            <option value="year">Cette année</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Compte</label>
+                        <select @bind="selectedAccountId" @onchange="FilterTransactions" class="form-input">
+                            <option value="0">Tous les comptes</option>
+                            @foreach (var account in accounts)
+                            {
+                                <option value="@account.Id">@account.Name</option>
+                            }
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Type</label>
+                        <select @bind="selectedType" @onchange="FilterTransactions" class="form-input">
+                            <option value="all">Tous les types</option>
+                            <option value="increase">Augmentations</option>
+                            <option value="decrease">Diminutions</option>
+                            <option value="no-change">Aucun changement</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex items-end">
+                        <button @onclick="ClearFilters" class="btn-secondary w-full">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Effacer les filtres
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions List -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                    Historique des transactions (@filteredTransactions.Count)
+                </h3>
+                <p class="mt-1 text-sm text-gray-500">
+                    @GetFilterDescription()
+                </p>
+            </div>
+            <div class="card-body">
+                @if (filteredTransactions.Any())
+                {
+                    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-300">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Date
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Compte
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Solde précédent
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Nouveau solde
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Variation
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Notes
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @foreach (var transaction in filteredTransactions)
+                                {
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            <div>
+                                                <div class="font-medium">@FormatDate(transaction.CreatedAt)</div>
+                                                <div class="text-gray-500">@FormatTime(transaction.CreatedAt)</div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 h-8 w-8">
+                                                    <div class="h-8 w-8 rounded-lg bg-primary-100 flex items-center justify-center">
+                                                        <span class="text-xs font-medium text-primary-600">
+                                                            @transaction.AccountName.Substring(0, 1).ToUpper()
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="ml-3">
+                                                    <div class="text-sm font-medium text-gray-900">@transaction.AccountName</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            @FormatCurrency(transaction.PreviousBalance)
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium @GetBalanceClass(transaction.Balance)">
+                                            @FormatCurrency(transaction.Balance)
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                @if (transaction.Difference > 0)
+                                                {
+                                                    <svg class="w-4 h-4 text-success-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                                    </svg>
+                                                    <span class="text-sm font-medium balance-positive">
+                                                        +@FormatCurrency(transaction.Difference)
+                                                    </span>
+                                                }
+                                                else if (transaction.Difference < 0)
+                                                {
+                                                    <svg class="w-4 h-4 text-danger-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                                                    </svg>
+                                                    <span class="text-sm font-medium balance-negative">
+                                                        @FormatCurrency(transaction.Difference)
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <svg class="w-4 h-4 text-gray-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                                    </svg>
+                                                    <span class="text-sm font-medium balance-neutral">
+                                                        @FormatCurrency(transaction.Difference)
+                                                    </span>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-900">
+                                            @if (!string.IsNullOrEmpty(transaction.Notes))
+                                            {
+                                                <span class="truncate max-w-xs block">@transaction.Notes</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-gray-400 italic">Aucune note</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-12">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">Aucune transaction</h3>
+                        <p class="mt-1 text-sm text-gray-500">
+                            @(string.IsNullOrEmpty(GetFilterDescription()) ? "Aucune transaction n'a encore été enregistrée." : "Aucune transaction ne correspond aux filtres sélectionnés.")
+                        </p>
+                        <div class="mt-6">
+                            <button type="button" @onclick="() => NavigationManager.NavigateTo(\"/accounts\")" 
+                                    class="btn-primary">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                Mettre à jour un solde
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Summary -->
+        @if (filteredTransactions.Any())
+        {
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <div class="w-8 h-8 bg-success-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <dl>
+                                    <dt class="text-sm font-medium text-gray-500 truncate">Total des augmentations</dt>
+                                    <dd class="text-lg font-medium balance-positive">
+                                        @FormatCurrency(filteredTransactions.Where(t => t.Difference > 0).Sum(t => t.Difference))
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <div class="w-8 h-8 bg-danger-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-danger-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <dl>
+                                    <dt class="text-sm font-medium text-gray-500 truncate">Total des diminutions</dt>
+                                    <dd class="text-lg font-medium balance-negative">
+                                        @FormatCurrency(filteredTransactions.Where(t => t.Difference < 0).Sum(t => t.Difference))
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <dl>
+                                    <dt class="text-sm font-medium text-gray-500 truncate">Nombre de transactions</dt>
+                                    <dd class="text-lg font-medium text-gray-900">@filteredTransactions.Count</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    private List<AccountDto> accounts = new();
+    private List<BalanceHistoryDto> allTransactions = new();
+    private List<BalanceHistoryDto> filteredTransactions = new();
+    private bool isLoading = true;
+    
+    // Filters
+    private string selectedPeriod = "all";
+    private int selectedAccountId = 0;
+    private string selectedType = "all";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        try
+        {
+            isLoading = true;
+            var currentUser = await UserService.GetCurrentUserAsync();
+            if (currentUser == null)
+            {
+                NavigationManager.NavigateTo("/login");
+                return;
+            }
+
+            // Load accounts
+            accounts = (await AccountService.GetUserAccountsAsync(currentUser.Id)).Where(a => a.IsActive).ToList();
+
+            // Load all balance history (transactions)
+            allTransactions = new List<BalanceHistoryDto>();
+            foreach (var account in accounts)
+            {
+                var history = await AccountService.GetAccountBalanceHistoryAsync(account.Id, currentUser.Id, 1, 1000);
+                allTransactions.AddRange(history);
+            }
+
+            // Sort by date descending
+            allTransactions = allTransactions.OrderByDescending(t => t.CreatedAt).ToList();
+            filteredTransactions = allTransactions.ToList();
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Erreur lors du chargement: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task RefreshData()
+    {
+        await LoadData();
+        ToastService.ShowSuccess("Données actualisées");
+    }
+
+    private void FilterTransactions()
+    {
+        filteredTransactions = allTransactions.AsEnumerable();
+
+        // Filter by period
+        if (selectedPeriod != "all")
+        {
+            var now = DateTime.UtcNow;
+            var startDate = selectedPeriod switch
+            {
+                "today" => now.Date,
+                "week" => now.AddDays(-7),
+                "month" => now.AddMonths(-1),
+                "quarter" => now.AddMonths(-3),
+                "year" => now.AddYears(-1),
+                _ => DateTime.MinValue
+            };
+            filteredTransactions = filteredTransactions.Where(t => t.CreatedAt >= startDate);
+        }
+
+        // Filter by account
+        if (selectedAccountId != 0)
+        {
+            filteredTransactions = filteredTransactions.Where(t => t.AccountId == selectedAccountId);
+        }
+
+        // Filter by type
+        if (selectedType != "all")
+        {
+            filteredTransactions = selectedType switch
+            {
+                "increase" => filteredTransactions.Where(t => t.Difference > 0),
+                "decrease" => filteredTransactions.Where(t => t.Difference < 0),
+                "no-change" => filteredTransactions.Where(t => t.Difference == 0),
+                _ => filteredTransactions
+            };
+        }
+
+        filteredTransactions = filteredTransactions.ToList();
+        StateHasChanged();
+    }
+
+    private void ClearFilters()
+    {
+        selectedPeriod = "all";
+        selectedAccountId = 0;
+        selectedType = "all";
+        FilterTransactions();
+    }
+
+    private string GetFilterDescription()
+    {
+        var filters = new List<string>();
+        
+        if (selectedPeriod != "all")
+            filters.Add($"Période: {GetPeriodName(selectedPeriod)}");
+        
+        if (selectedAccountId != 0)
+        {
+            var account = accounts.FirstOrDefault(a => a.Id == selectedAccountId);
+            if (account != null)
+                filters.Add($"Compte: {account.Name}");
+        }
+        
+        if (selectedType != "all")
+            filters.Add($"Type: {GetTypeName(selectedType)}");
+
+        return filters.Any() ? string.Join(", ", filters) : "";
+    }
+
+    private string GetPeriodName(string period)
+    {
+        return period switch
+        {
+            "today" => "Aujourd'hui",
+            "week" => "Cette semaine",
+            "month" => "Ce mois",
+            "quarter" => "Ce trimestre",
+            "year" => "Cette année",
+            _ => "Toutes les périodes"
+        };
+    }
+
+    private string GetTypeName(string type)
+    {
+        return type switch
+        {
+            "increase" => "Augmentations",
+            "decrease" => "Diminutions",
+            "no-change" => "Aucun changement",
+            _ => "Tous les types"
+        };
+    }
+
+    private string FormatCurrency(decimal amount)
+    {
+        return amount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("fr-FR"));
+    }
+
+    private string FormatDate(DateTime dateTime)
+    {
+        return dateTime.ToString("dd/MM/yyyy");
+    }
+
+    private string FormatTime(DateTime dateTime)
+    {
+        return dateTime.ToString("HH:mm");
+    }
+
+    private string GetBalanceClass(decimal balance)
+    {
+        if (balance > 0) return "balance-positive";
+        if (balance < 0) return "balance-negative";
+        return "balance-neutral";
+    }
+}

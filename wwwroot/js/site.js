@@ -249,5 +249,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Request notification permission
 if ('Notification' in window && Notification.permission === 'default') {
-  Notification.requestPermission();
+    Notification.requestPermission();
+}
+
+// Show browser notification
+window.showNotification = function(title, message) {
+    if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification(title, {
+            body: message,
+            icon: '/images/icon-192x192.png',
+            badge: '/images/icon-72x72.png',
+            tag: 'finance-app-notification',
+            requireInteraction: false,
+            silent: false
+        });
+    }
+};
+
+// Handle notification clicks
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'NOTIFICATION_CLICK') {
+            // Handle notification click
+            console.log('Notification clicked:', event.data);
+        }
+    });
 }

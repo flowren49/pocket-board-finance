@@ -1,0 +1,191 @@
+@using Microsoft.AspNetCore.SignalR.Client
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+@inject IToastService ToastService
+@inject IUserService UserService
+
+@code {
+    private HubConnection? hubConnection;
+    private bool isConnected = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await InitializeSignalR();
+    }
+
+    private async Task InitializeSignalR()
+    {
+        try
+        {
+            var currentUser = await UserService.GetCurrentUserAsync();
+            if (currentUser == null) return;
+
+            hubConnection = new HubConnectionBuilder()
+                .WithUrl("/balanceHub")
+                .Build();
+
+            // Register event handlers
+            hubConnection.On<object>("BalanceUpdated", OnBalanceUpdated);
+            hubConnection.On<object>("AccountCreated", OnAccountCreated);
+            hubConnection.On<object>("AccountDeleted", OnAccountDeleted);
+            hubConnection.On<object>("LowBalanceAlert", OnLowBalanceAlert);
+
+            hubConnection.Closed += async (error) =>
+            {
+                isConnected = false;
+                if (error != null)
+                {
+                    await Task.Delay(new Random().Next(0, 5) * 1000);
+                    await hubConnection.StartAsync();
+                }
+            };
+
+            await hubConnection.StartAsync();
+            isConnected = true;
+
+            // Join user group for targeted notifications
+            await hubConnection.InvokeAsync("JoinUserGroup", currentUser.Id);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"SignalR connection error: {ex.Message}");
+        }
+    }
+
+    private async Task OnBalanceUpdated(object data)
+    {
+        try
+        {
+            // Parse the notification data
+            var json = data.ToString();
+            var notification = System.Text.Json.JsonSerializer.Deserialize<BalanceUpdateNotification>(json);
+            
+            if (notification != null)
+            {
+                var message = notification.IsIncrease 
+                    ? $"💰 {notification.AccountName}: +{FormatCurrency(notification.Difference)}"
+                    : $"💸 {notification.AccountName}: {FormatCurrency(notification.Difference)}";
+                
+                ToastService.ShowInfo(message);
+                
+                // Show browser notification if permission granted
+                await ShowBrowserNotification("Solde mis à jour", message);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error handling balance update: {ex.Message}");
+        }
+    }
+
+    private async Task OnAccountCreated(object data)
+    {
+        try
+        {
+            var json = data.ToString();
+            var notification = System.Text.Json.JsonSerializer.Deserialize<AccountNotification>(json);
+            
+            if (notification != null)
+            {
+                ToastService.ShowSuccess($"✅ Nouveau compte créé: {notification.AccountName}");
+                await ShowBrowserNotification("Nouveau compte", $"Le compte '{notification.AccountName}' a été créé");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error handling account creation: {ex.Message}");
+        }
+    }
+
+    private async Task OnAccountDeleted(object data)
+    {
+        try
+        {
+            var json = data.ToString();
+            var notification = System.Text.Json.JsonSerializer.Deserialize<AccountNotification>(json);
+            
+            if (notification != null)
+            {
+                ToastService.ShowWarning($"🗑️ Compte supprimé: {notification.AccountName}");
+                await ShowBrowserNotification("Compte supprimé", $"Le compte '{notification.AccountName}' a été supprimé");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error handling account deletion: {ex.Message}");
+        }
+    }
+
+    private async Task OnLowBalanceAlert(object data)
+    {
+        try
+        {
+            var json = data.ToString();
+            var notification = System.Text.Json.JsonSerializer.Deserialize<LowBalanceAlert>(json);
+            
+            if (notification != null)
+            {
+                ToastService.ShowError($"⚠️ Alerte solde faible: {notification.AccountName}");
+                await ShowBrowserNotification("Alerte solde faible", 
+                    $"{notification.AccountName}: {FormatCurrency(notification.CurrentBalance)} (seuil: {FormatCurrency(notification.Threshold)})");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error handling low balance alert: {ex.Message}");
+        }
+    }
+
+    private async Task ShowBrowserNotification(string title, string message)
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("showNotification", title, message);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error showing browser notification: {ex.Message}");
+        }
+    }
+
+    private string FormatCurrency(decimal amount)
+    {
+        return amount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("fr-FR"));
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+
+    // Notification data classes
+    private class BalanceUpdateNotification
+    {
+        public string AccountName { get; set; } = string.Empty;
+        public decimal NewBalance { get; set; }
+        public decimal PreviousBalance { get; set; }
+        public decimal Difference { get; set; }
+        public bool IsIncrease { get; set; }
+        public string Message { get; set; } = string.Empty;
+        public DateTime Timestamp { get; set; }
+    }
+
+    private class AccountNotification
+    {
+        public string AccountName { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
+        public DateTime Timestamp { get; set; }
+    }
+
+    private class LowBalanceAlert
+    {
+        public string AccountName { get; set; } = string.Empty;
+        public decimal CurrentBalance { get; set; }
+        public decimal Threshold { get; set; }
+        public string Message { get; set; } = string.Empty;
+        public DateTime Timestamp { get; set; }
+    }
+}

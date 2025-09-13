@@ -1,0 +1,481 @@
+@page "/statistics"
+@using PersonalFinanceApp.Models.DTOs
+@using PersonalFinanceApp.Services
+@inject IAccountService AccountService
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Statistiques - Personal Finance App</PageTitle>
+
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                Statistiques financières
+            </h2>
+            <p class="mt-1 text-sm text-gray-500">
+                Analysez l'évolution de vos finances et visualisez vos tendances
+            </p>
+        </div>
+        <div class="mt-4 flex md:mt-0 md:ml-4 space-x-3">
+            <button type="button" @onclick="RefreshData" 
+                    class="btn-secondary">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                Actualiser
+            </button>
+            <button type="button" @onclick="() => NavigationManager.NavigateTo(\"/export\")" 
+                    class="btn-primary">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                Exporter
+            </button>
+        </div>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="flex justify-center items-center py-12">
+            <div class="loading-spinner"></div>
+            <span class="ml-2 text-gray-600">Chargement des statistiques...</span>
+        </div>
+    }
+    else
+    {
+        <!-- Overview Cards -->
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <!-- Total Balance -->
+            <div class="card fade-in">
+                <div class="card-body">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Solde total</dt>
+                                <dd class="text-lg font-medium @GetBalanceClass(totalBalance)">
+                                    @FormatCurrency(totalBalance)
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Gain/Loss -->
+            <div class="card fade-in">
+                <div class="card-body">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 bg-success-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Gain/Perte total</dt>
+                                <dd class="text-lg font-medium @GetBalanceClass(totalGainLoss)">
+                                    @FormatCurrency(totalGainLoss)
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Percentage Change -->
+            <div class="card fade-in">
+                <div class="card-body">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 bg-warning-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-warning-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Évolution</dt>
+                                <dd class="text-lg font-medium @GetPercentageClass(totalPercentageChange)">
+                                    @(totalPercentageChange.ToString("+0.0;-0.0;0.0"))%
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Accounts -->
+            <div class="card fade-in">
+                <div class="card-body">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Comptes actifs</dt>
+                                <dd class="text-lg font-medium text-gray-900">@activeAccountsCount</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts and Analysis -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Account Distribution -->
+            <div class="card slide-up">
+                <div class="card-header">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Répartition par type de compte</h3>
+                    <p class="mt-1 text-sm text-gray-500">Distribution de vos fonds par catégorie</p>
+                </div>
+                <div class="card-body">
+                    @if (accountDistribution.Any())
+                    {
+                        <div class="space-y-4">
+                            @foreach (var item in accountDistribution)
+                            {
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-4 h-4 rounded-full @GetAccountTypeColor(item.Type) mr-3"></div>
+                                        <span class="text-sm font-medium text-gray-900">@GetAccountTypeName(item.Type)</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-sm font-medium text-gray-900">@FormatCurrency(item.Total)</span>
+                                        <div class="text-xs text-gray-500">@item.Percentage.ToString("0.0")%</div>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="h-2 rounded-full @GetAccountTypeColor(item.Type)" style="width: @(item.Percentage)%"></div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-6">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                            <h3 class="mt-2 text-sm font-medium text-gray-900">Aucune donnée</h3>
+                            <p class="mt-1 text-sm text-gray-500">Créez des comptes pour voir les statistiques.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Top Performing Accounts -->
+            <div class="card slide-up">
+                <div class="card-header">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Comptes les plus performants</h3>
+                    <p class="mt-1 text-sm text-gray-500">Meilleure évolution des soldes</p>
+                </div>
+                <div class="card-body">
+                    @if (topPerformingAccounts.Any())
+                    {
+                        <div class="space-y-4">
+                            @foreach (var account in topPerformingAccounts.Take(5))
+                            {
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0">
+                                            <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
+                                                <span class="text-sm font-medium text-primary-600">
+                                                    @account.Name.Substring(0, 1).ToUpper()
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm font-medium text-gray-900">@account.Name</p>
+                                            <p class="text-sm text-gray-500">@GetAccountTypeName(account.Type)</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-sm font-medium @GetBalanceClass(account.CurrentBalance - account.InitialBalance)">
+                                            @FormatCurrency(account.CurrentBalance - account.InitialBalance)
+                                        </p>
+                                        <p class="text-xs text-gray-500">
+                                            @GetPercentageChange(account.CurrentBalance, account.InitialBalance)
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-6">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                            <h3 class="mt-2 text-sm font-medium text-gray-900">Aucune donnée</h3>
+                            <p class="mt-1 text-sm text-gray-500">Créez des comptes pour voir les performances.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Account Analysis -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Analyse détaillée par compte</h3>
+                <p class="mt-1 text-sm text-gray-500">Comparaison des performances de tous vos comptes</p>
+            </div>
+            <div class="card-body">
+                @if (accounts.Any())
+                {
+                    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-300">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Compte
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Type
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Solde actuel
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Solde initial
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Évolution
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        %
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @foreach (var account in accounts.OrderByDescending(a => a.CurrentBalance - a.InitialBalance))
+                                {
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 h-10 w-10">
+                                                    <div class="h-10 w-10 rounded-lg bg-primary-100 flex items-center justify-center">
+                                                        <span class="text-sm font-medium text-primary-600">
+                                                            @account.Name.Substring(0, 1).ToUpper()
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">@account.Name</div>
+                                                    @if (!string.IsNullOrEmpty(account.Description))
+                                                    {
+                                                        <div class="text-sm text-gray-500">@account.Description</div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="badge-@GetAccountTypeBadgeClass(account.Type)">
+                                                @GetAccountTypeName(account.Type)
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium @GetBalanceClass(account.CurrentBalance)">
+                                            @FormatCurrency(account.CurrentBalance)
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            @FormatCurrency(account.InitialBalance)
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium @GetBalanceClass(account.CurrentBalance - account.InitialBalance)">
+                                            @FormatCurrency(account.CurrentBalance - account.InitialBalance)
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm @GetBalanceClass(account.CurrentBalance - account.InitialBalance)">
+                                            @GetPercentageChange(account.CurrentBalance, account.InitialBalance)
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-12">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">Aucun compte</h3>
+                        <p class="mt-1 text-sm text-gray-500">Commencez par créer des comptes pour voir les statistiques.</p>
+                        <div class="mt-6">
+                            <button type="button" @onclick="() => NavigationManager.NavigateTo(\"/accounts/new\")" 
+                                    class="btn-primary">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                Créer un compte
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private List<AccountDto> accounts = new();
+    private decimal totalBalance = 0;
+    private decimal totalInitialBalance = 0;
+    private decimal totalGainLoss = 0;
+    private decimal totalPercentageChange = 0;
+    private int activeAccountsCount = 0;
+    private bool isLoading = true;
+
+    private List<AccountDistribution> accountDistribution = new();
+    private List<AccountDto> topPerformingAccounts = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadStatistics();
+    }
+
+    private async Task LoadStatistics()
+    {
+        try
+        {
+            isLoading = true;
+            var currentUser = await UserService.GetCurrentUserAsync();
+            if (currentUser == null)
+            {
+                NavigationManager.NavigateTo("/login");
+                return;
+            }
+
+            // Load accounts
+            accounts = (await AccountService.GetUserAccountsAsync(currentUser.Id)).Where(a => a.IsActive).ToList();
+            
+            // Calculate totals
+            totalBalance = accounts.Sum(a => a.CurrentBalance);
+            totalInitialBalance = accounts.Sum(a => a.InitialBalance);
+            totalGainLoss = totalBalance - totalInitialBalance;
+            totalPercentageChange = totalInitialBalance != 0 ? (totalGainLoss / totalInitialBalance) * 100 : 0;
+            activeAccountsCount = accounts.Count;
+
+            // Calculate distribution
+            accountDistribution = accounts
+                .GroupBy(a => a.Type)
+                .Select(g => new AccountDistribution
+                {
+                    Type = g.Key,
+                    Total = g.Sum(a => a.CurrentBalance),
+                    Percentage = totalBalance != 0 ? (g.Sum(a => a.CurrentBalance) / totalBalance) * 100 : 0
+                })
+                .OrderByDescending(d => d.Total)
+                .ToList();
+
+            // Get top performing accounts
+            topPerformingAccounts = accounts
+                .OrderByDescending(a => a.CurrentBalance - a.InitialBalance)
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading statistics: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task RefreshData()
+    {
+        await LoadStatistics();
+    }
+
+    private string FormatCurrency(decimal amount)
+    {
+        return amount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("fr-FR"));
+    }
+
+    private string GetBalanceClass(decimal balance)
+    {
+        if (balance > 0) return "balance-positive";
+        if (balance < 0) return "balance-negative";
+        return "balance-neutral";
+    }
+
+    private string GetPercentageClass(decimal percentage)
+    {
+        if (percentage > 0) return "balance-positive";
+        if (percentage < 0) return "balance-negative";
+        return "balance-neutral";
+    }
+
+    private string GetAccountTypeName(AccountType type)
+    {
+        return type switch
+        {
+            AccountType.Checking => "Compte courant",
+            AccountType.Savings => "Épargne",
+            AccountType.Credit => "Crédit",
+            AccountType.Investment => "Investissement",
+            AccountType.Cash => "Espèces",
+            _ => "Autre"
+        };
+    }
+
+    private string GetAccountTypeBadgeClass(AccountType type)
+    {
+        return type switch
+        {
+            AccountType.Checking => "primary",
+            AccountType.Savings => "success",
+            AccountType.Credit => "danger",
+            AccountType.Investment => "warning",
+            AccountType.Cash => "gray",
+            _ => "gray"
+        };
+    }
+
+    private string GetAccountTypeColor(AccountType type)
+    {
+        return type switch
+        {
+            AccountType.Checking => "bg-primary-500",
+            AccountType.Savings => "bg-success-500",
+            AccountType.Credit => "bg-danger-500",
+            AccountType.Investment => "bg-warning-500",
+            AccountType.Cash => "bg-gray-500",
+            _ => "bg-gray-500"
+        };
+    }
+
+    private string GetPercentageChange(decimal current, decimal initial)
+    {
+        if (initial == 0) return "0%";
+        var percentage = ((current - initial) / initial) * 100;
+        return $"{percentage:+#.##;-#.##;0}%";
+    }
+
+    private class AccountDistribution
+    {
+        public AccountType Type { get; set; }
+        public decimal Total { get; set; }
+        public decimal Percentage { get; set; }
+    }
+}

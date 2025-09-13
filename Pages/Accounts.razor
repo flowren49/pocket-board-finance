@@ -1,0 +1,489 @@
+@page "/accounts"
+@using PersonalFinanceApp.Models.DTOs
+@using PersonalFinanceApp.Services
+@inject IAccountService AccountService
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+<PageTitle>Comptes - Personal Finance App</PageTitle>
+
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                Gestion des comptes
+            </h2>
+            <p class="mt-1 text-sm text-gray-500">
+                Gérez vos comptes financiers et suivez vos soldes
+            </p>
+        </div>
+        <div class="mt-4 flex md:mt-0 md:ml-4">
+            <button type="button" @onclick="() => NavigationManager.NavigateTo(\"/accounts/new\")" 
+                    class="btn-primary">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Nouveau compte
+            </button>
+        </div>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="flex justify-center items-center py-12">
+            <div class="loading-spinner"></div>
+            <span class="ml-2 text-gray-600">Chargement des comptes...</span>
+        </div>
+    }
+    else
+    {
+        <!-- Accounts Grid -->
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            @foreach (var account in accounts.Where(a => a.IsActive))
+            {
+                <div class="card hover:shadow-lg transition-shadow duration-200 fade-in">
+                    <div class="card-body">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-medium text-gray-900">@account.Name</h3>
+                                @if (!string.IsNullOrEmpty(account.Description))
+                                {
+                                    <p class="mt-1 text-sm text-gray-500">@account.Description</p>
+                                }
+                                <div class="mt-2">
+                                    <span class="badge-@GetAccountTypeBadgeClass(account.Type)">
+                                        @GetAccountTypeName(account.Type)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button @onclick="() => EditAccount(account)" 
+                                        class="text-gray-400 hover:text-gray-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </button>
+                                <button @onclick="() => DeleteAccount(account)" 
+                                        class="text-gray-400 hover:text-danger-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-500">Solde actuel</span>
+                                <span class="text-lg font-semibold @GetBalanceClass(account.CurrentBalance)">
+                                    @FormatCurrency(account.CurrentBalance)
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between mt-1">
+                                <span class="text-sm text-gray-500">Solde initial</span>
+                                <span class="text-sm text-gray-900">
+                                    @FormatCurrency(account.InitialBalance)
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between mt-1">
+                                <span class="text-sm text-gray-500">Évolution</span>
+                                <span class="text-sm @GetBalanceClass(account.CurrentBalance - account.InitialBalance)">
+                                    @FormatCurrency(account.CurrentBalance - account.InitialBalance)
+                                    (@GetPercentageChange(account.CurrentBalance, account.InitialBalance))
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <div class="flex space-x-2">
+                                <button @onclick="() => UpdateBalance(account)" 
+                                        class="flex-1 btn-secondary text-xs">
+                                    Mettre à jour
+                                </button>
+                                <button @onclick="() => ViewHistory(account)" 
+                                        class="flex-1 btn-primary text-xs">
+                                    Historique
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (!accounts.Any(a => a.IsActive))
+        {
+            <!-- Empty State -->
+            <div class="text-center py-12">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">Aucun compte</h3>
+                <p class="mt-1 text-sm text-gray-500">Commencez par créer votre premier compte financier.</p>
+                <div class="mt-6">
+                    <button type="button" @onclick="() => NavigationManager.NavigateTo(\"/accounts/new\")" 
+                            class="btn-primary">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Créer un compte
+                    </button>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<!-- Edit Account Modal -->
+@if (showEditModal)
+{
+    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50" @onclick="CloseEditModal">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white" @onclick:stopPropagation="true">
+            <div class="mt-3">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">
+                    @(editingAccount?.Id == 0 ? "Nouveau compte" : "Modifier le compte")
+                </h3>
+                
+                <EditForm Model="editingAccount" OnValidSubmit="SaveAccount">
+                    <DataAnnotationsValidator />
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="form-label">Nom du compte</label>
+                            <InputText @bind-Value="editingAccount.Name" class="form-input" placeholder="Ex: Compte courant principal" />
+                            <ValidationMessage For="@(() => editingAccount.Name)" class="form-error" />
+                        </div>
+                        
+                        <div>
+                            <label class="form-label">Description (optionnel)</label>
+                            <InputTextArea @bind-Value="editingAccount.Description" class="form-input" rows="2" placeholder="Description du compte..." />
+                        </div>
+                        
+                        <div>
+                            <label class="form-label">Type de compte</label>
+                            <InputSelect @bind-Value="editingAccount.Type" class="form-input">
+                                <option value="@AccountType.Checking">Compte courant</option>
+                                <option value="@AccountType.Savings">Épargne</option>
+                                <option value="@AccountType.Credit">Crédit</option>
+                                <option value="@AccountType.Investment">Investissement</option>
+                                <option value="@AccountType.Cash">Espèces</option>
+                                <option value="@AccountType.Other">Autre</option>
+                            </InputSelect>
+                        </div>
+                        
+                        @if (editingAccount?.Id == 0)
+                        {
+                            <div>
+                                <label class="form-label">Solde initial</label>
+                                <InputNumber @bind-Value="editingAccount.InitialBalance" class="form-input" placeholder="0.00" />
+                                <ValidationMessage For="@(() => editingAccount.InitialBalance)" class="form-error" />
+                            </div>
+                        }
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button type="button" @onclick="CloseEditModal" class="btn-secondary">
+                            Annuler
+                        </button>
+                        <button type="submit" disabled="@isSaving" class="btn-primary">
+                            @if (isSaving)
+                            {
+                                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span>Enregistrement...</span>
+                            }
+                            else
+                            {
+                                <span>Enregistrer</span>
+                            }
+                        </button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Update Balance Modal -->
+@if (showBalanceModal)
+{
+    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50" @onclick="CloseBalanceModal">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white" @onclick:stopPropagation="true">
+            <div class="mt-3">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">
+                    Mettre à jour le solde - @selectedAccount?.Name
+                </h3>
+                
+                <EditForm Model="balanceUpdate" OnValidSubmit="SaveBalanceUpdate">
+                    <DataAnnotationsValidator />
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="form-label">Solde actuel</label>
+                            <p class="text-lg font-semibold @GetBalanceClass(selectedAccount?.CurrentBalance ?? 0)">
+                                @FormatCurrency(selectedAccount?.CurrentBalance ?? 0)
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <label class="form-label">Nouveau solde</label>
+                            <InputNumber @bind-Value="balanceUpdate.NewBalance" class="form-input" placeholder="0.00" />
+                            <ValidationMessage For="@(() => balanceUpdate.NewBalance)" class="form-error" />
+                        </div>
+                        
+                        <div>
+                            <label class="form-label">Notes (optionnel)</label>
+                            <InputTextArea @bind-Value="balanceUpdate.Notes" class="form-input" rows="2" placeholder="Raison de la mise à jour..." />
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button type="button" @onclick="CloseBalanceModal" class="btn-secondary">
+                            Annuler
+                        </button>
+                        <button type="submit" disabled="@isSaving" class="btn-primary">
+                            @if (isSaving)
+                            {
+                                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span>Mise à jour...</span>
+                            }
+                            else
+                            {
+                                <span>Mettre à jour</span>
+                            }
+                        </button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<AccountDto> accounts = new();
+    private AccountDto? editingAccount;
+    private AccountDto? selectedAccount;
+    private UpdateBalanceDto balanceUpdate = new();
+    private bool isLoading = true;
+    private bool isSaving = false;
+    private bool showEditModal = false;
+    private bool showBalanceModal = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAccounts();
+    }
+
+    private async Task LoadAccounts()
+    {
+        try
+        {
+            isLoading = true;
+            var currentUser = await UserService.GetCurrentUserAsync();
+            if (currentUser != null)
+            {
+                accounts = (await AccountService.GetUserAccountsAsync(currentUser.Id)).ToList();
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Erreur lors du chargement des comptes: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private void EditAccount(AccountDto account)
+    {
+        editingAccount = new AccountDto
+        {
+            Id = account.Id,
+            Name = account.Name,
+            Description = account.Description,
+            Type = account.Type
+        };
+        showEditModal = true;
+    }
+
+    private void NewAccount()
+    {
+        editingAccount = new AccountDto
+        {
+            Id = 0,
+            Type = AccountType.Checking
+        };
+        showEditModal = true;
+    }
+
+    private void CloseEditModal()
+    {
+        showEditModal = false;
+        editingAccount = null;
+    }
+
+    private async Task SaveAccount()
+    {
+        try
+        {
+            isSaving = true;
+            var currentUser = await UserService.GetCurrentUserAsync();
+            if (currentUser == null) return;
+
+            if (editingAccount?.Id == 0)
+            {
+                // Create new account
+                var createDto = new CreateAccountDto
+                {
+                    Name = editingAccount.Name,
+                    Description = editingAccount.Description,
+                    Type = editingAccount.Type,
+                    InitialBalance = editingAccount.InitialBalance
+                };
+                
+                await AccountService.CreateAccountAsync(createDto, currentUser.Id);
+                ToastService.ShowSuccess("Compte créé avec succès");
+            }
+            else
+            {
+                // Update existing account
+                var updateDto = new UpdateAccountDto
+                {
+                    Name = editingAccount.Name,
+                    Description = editingAccount.Description,
+                    Type = editingAccount.Type
+                };
+                
+                await AccountService.UpdateAccountAsync(editingAccount.Id, updateDto, currentUser.Id);
+                ToastService.ShowSuccess("Compte mis à jour avec succès");
+            }
+
+            CloseEditModal();
+            await LoadAccounts();
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Erreur lors de la sauvegarde: {ex.Message}");
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private async Task DeleteAccount(AccountDto account)
+    {
+        try
+        {
+            var currentUser = await UserService.GetCurrentUserAsync();
+            if (currentUser == null) return;
+
+            await AccountService.DeleteAccountAsync(account.Id, currentUser.Id);
+            ToastService.ShowSuccess("Compte supprimé avec succès");
+            await LoadAccounts();
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Erreur lors de la suppression: {ex.Message}");
+        }
+    }
+
+    private void UpdateBalance(AccountDto account)
+    {
+        selectedAccount = account;
+        balanceUpdate = new UpdateBalanceDto
+        {
+            NewBalance = account.CurrentBalance
+        };
+        showBalanceModal = true;
+    }
+
+    private void CloseBalanceModal()
+    {
+        showBalanceModal = false;
+        selectedAccount = null;
+        balanceUpdate = new();
+    }
+
+    private async Task SaveBalanceUpdate()
+    {
+        try
+        {
+            isSaving = true;
+            var currentUser = await UserService.GetCurrentUserAsync();
+            if (currentUser == null || selectedAccount == null) return;
+
+            await AccountService.UpdateBalanceAsync(selectedAccount.Id, balanceUpdate, currentUser.Id);
+            ToastService.ShowSuccess("Solde mis à jour avec succès");
+            CloseBalanceModal();
+            await LoadAccounts();
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Erreur lors de la mise à jour: {ex.Message}");
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private void ViewHistory(AccountDto account)
+    {
+        NavigationManager.NavigateTo($"/accounts/{account.Id}/history");
+    }
+
+    private string FormatCurrency(decimal amount)
+    {
+        return amount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("fr-FR"));
+    }
+
+    private string GetBalanceClass(decimal balance)
+    {
+        if (balance > 0) return "balance-positive";
+        if (balance < 0) return "balance-negative";
+        return "balance-neutral";
+    }
+
+    private string GetAccountTypeName(AccountType type)
+    {
+        return type switch
+        {
+            AccountType.Checking => "Compte courant",
+            AccountType.Savings => "Épargne",
+            AccountType.Credit => "Crédit",
+            AccountType.Investment => "Investissement",
+            AccountType.Cash => "Espèces",
+            _ => "Autre"
+        };
+    }
+
+    private string GetAccountTypeBadgeClass(AccountType type)
+    {
+        return type switch
+        {
+            AccountType.Checking => "primary",
+            AccountType.Savings => "success",
+            AccountType.Credit => "danger",
+            AccountType.Investment => "warning",
+            AccountType.Cash => "gray",
+            _ => "gray"
+        };
+    }
+
+    private string GetPercentageChange(decimal current, decimal initial)
+    {
+        if (initial == 0) return "0%";
+        var percentage = ((current - initial) / initial) * 100;
+        return $"{percentage:+#.##;-#.##;0}%";
+    }
+}

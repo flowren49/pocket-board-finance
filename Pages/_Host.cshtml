@@ -1,0 +1,17 @@
+@page "/"
+@namespace PersonalFinanceApp.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+
+<component type="typeof(App)" render-mode="ServerPrerendered" />
+
+<script src="_framework/blazor.server.js"></script>
+<script src="~/js/signalr.min.js"></script>
+<script>
+    window.blazorCulture = {
+        get: () => window.localStorage['BlazorCulture'],
+        set: (value) => window.localStorage['BlazorCulture'] = value
+    };
+</script>

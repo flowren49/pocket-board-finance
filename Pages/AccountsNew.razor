@@ -1,0 +1,290 @@
+@page "/accounts/new"
+@using PersonalFinanceApp.Models.DTOs
+@using PersonalFinanceApp.Services
+@inject IAccountService AccountService
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+<PageTitle>Nouveau compte - Personal Finance App</PageTitle>
+
+<div class="max-w-2xl mx-auto space-y-6">
+    <!-- Header -->
+    <div>
+        <nav class="flex" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-4">
+                <li>
+                    <div>
+                        <a href="/accounts" class="text-gray-400 hover:text-gray-500">
+                            <svg class="flex-shrink-0 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                            </svg>
+                            <span class="sr-only">Accueil</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="flex-shrink-0 h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <a href="/accounts" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                            Comptes
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="flex-shrink-0 h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="ml-4 text-sm font-medium text-gray-500">Nouveau compte</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+        
+        <div class="mt-4">
+            <h1 class="text-2xl font-bold text-gray-900">Créer un nouveau compte</h1>
+            <p class="mt-1 text-sm text-gray-500">
+                Ajoutez un nouveau compte pour suivre vos finances
+            </p>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="card">
+        <div class="card-body">
+            <EditForm Model="createAccountDto" OnValidSubmit="CreateAccount">
+                <DataAnnotationsValidator />
+                
+                <div class="space-y-6">
+                    <!-- Account Name -->
+                    <div>
+                        <label class="form-label">Nom du compte *</label>
+                        <InputText @bind-Value="createAccountDto.Name" class="form-input" placeholder="Ex: Compte courant principal" />
+                        <ValidationMessage For="@(() => createAccountDto.Name)" class="form-error" />
+                        <p class="mt-1 text-sm text-gray-500">Choisissez un nom clair pour identifier ce compte</p>
+                    </div>
+
+                    <!-- Account Type -->
+                    <div>
+                        <label class="form-label">Type de compte *</label>
+                        <InputSelect @bind-Value="createAccountDto.Type" class="form-input">
+                            <option value="@AccountType.Checking">Compte courant</option>
+                            <option value="@AccountType.Savings">Épargne</option>
+                            <option value="@AccountType.Credit">Crédit</option>
+                            <option value="@AccountType.Investment">Investissement</option>
+                            <option value="@AccountType.Cash">Espèces</option>
+                            <option value="@AccountType.Other">Autre</option>
+                        </InputSelect>
+                        <p class="mt-1 text-sm text-gray-500">Sélectionnez le type de compte le plus approprié</p>
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <label class="form-label">Description</label>
+                        <InputTextArea @bind-Value="createAccountDto.Description" class="form-input" rows="3" placeholder="Description optionnelle du compte..." />
+                        <p class="mt-1 text-sm text-gray-500">Ajoutez des détails utiles pour identifier ce compte</p>
+                    </div>
+
+                    <!-- Initial Balance -->
+                    <div>
+                        <label class="form-label">Solde initial *</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">€</span>
+                            </div>
+                            <InputNumber @bind-Value="createAccountDto.InitialBalance" 
+                                       class="form-input pl-7" 
+                                       placeholder="0.00" />
+                        </div>
+                        <ValidationMessage For="@(() => createAccountDto.InitialBalance)" class="form-error" />
+                        <p class="mt-1 text-sm text-gray-500">Entrez le solde actuel de ce compte</p>
+                    </div>
+
+                    <!-- Account Type Help -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-blue-800">Types de comptes</h3>
+                                <div class="mt-2 text-sm text-blue-700">
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><strong>Compte courant :</strong> Pour les dépenses quotidiennes</li>
+                                        <li><strong>Épargne :</strong> Pour l'argent mis de côté</li>
+                                        <li><strong>Crédit :</strong> Pour les cartes de crédit (solde négatif)</li>
+                                        <li><strong>Investissement :</strong> Pour les placements financiers</li>
+                                        <li><strong>Espèces :</strong> Pour l'argent liquide</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200">
+                    <button type="button" @onclick="Cancel" class="btn-secondary">
+                        Annuler
+                    </button>
+                    <button type="submit" disabled="@isCreating" class="btn-primary">
+                        @if (isCreating)
+                        {
+                            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span>Création...</span>
+                        }
+                        else
+                        {
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            <span>Créer le compte</span>
+                        }
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+
+    <!-- Quick Templates -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Modèles rapides</h3>
+            <p class="mt-1 text-sm text-gray-500">Utilisez un modèle prédéfini pour créer rapidement votre compte</p>
+        </div>
+        <div class="card-body">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <button @onclick="() => UseTemplate(\"checking\")" 
+                        class="relative p-4 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h4 class="text-sm font-medium text-gray-900">Compte courant</h4>
+                            <p class="text-xs text-gray-500">Dépenses quotidiennes</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button @onclick="() => UseTemplate(\"savings\")" 
+                        class="relative p-4 border border-gray-200 rounded-lg hover:border-success-300 hover:bg-success-50 transition-colors">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-success-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h4 class="text-sm font-medium text-gray-900">Épargne</h4>
+                            <p class="text-xs text-gray-500">Argent mis de côté</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button @onclick="() => UseTemplate(\"credit\")" 
+                        class="relative p-4 border border-gray-200 rounded-lg hover:border-danger-300 hover:bg-danger-50 transition-colors">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-danger-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-danger-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h4 class="text-sm font-medium text-gray-900">Crédit</h4>
+                            <p class="text-xs text-gray-500">Carte de crédit</p>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private CreateAccountDto createAccountDto = new();
+    private bool isCreating = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Check if user is authenticated
+        var currentUser = await UserService.GetCurrentUserAsync();
+        if (currentUser == null)
+        {
+            NavigationManager.NavigateTo("/login");
+            return;
+        }
+
+        // Set default values
+        createAccountDto.Type = AccountType.Checking;
+        createAccountDto.InitialBalance = 0;
+    }
+
+    private async Task CreateAccount()
+    {
+        try
+        {
+            isCreating = true;
+            var currentUser = await UserService.GetCurrentUserAsync();
+            if (currentUser == null) return;
+
+            await AccountService.CreateAccountAsync(createAccountDto, currentUser.Id);
+            ToastService.ShowSuccess("Compte créé avec succès !");
+            NavigationManager.NavigateTo("/accounts");
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Erreur lors de la création du compte: {ex.Message}");
+        }
+        finally
+        {
+            isCreating = false;
+            StateHasChanged();
+        }
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/accounts");
+    }
+
+    private void UseTemplate(string templateType)
+    {
+        createAccountDto = templateType switch
+        {
+            "checking" => new CreateAccountDto
+            {
+                Name = "Compte courant",
+                Type = AccountType.Checking,
+                Description = "Compte principal pour les dépenses quotidiennes",
+                InitialBalance = 0
+            },
+            "savings" => new CreateAccountDto
+            {
+                Name = "Livret A",
+                Type = AccountType.Savings,
+                Description = "Épargne de précaution",
+                InitialBalance = 0
+            },
+            "credit" => new CreateAccountDto
+            {
+                Name = "Carte de crédit",
+                Type = AccountType.Credit,
+                Description = "Carte de crédit principale",
+                InitialBalance = 0
+            },
+            _ => createAccountDto
+        };
+        StateHasChanged();
+    }
+}

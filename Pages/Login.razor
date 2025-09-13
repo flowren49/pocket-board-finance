@@ -1,0 +1,158 @@
+@page "/login"
+@using PersonalFinanceApp.Models.DTOs
+@using PersonalFinanceApp.Services
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+<PageTitle>Connexion - Personal Finance App</PageTitle>
+
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <div class="mx-auto h-12 w-12 flex items-center justify-center bg-primary-600 rounded-lg">
+                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                </svg>
+            </div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Connectez-vous à votre compte
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Ou
+                <a href="/register" class="font-medium text-primary-600 hover:text-primary-500">
+                    créez un nouveau compte
+                </a>
+            </p>
+        </div>
+        
+        <form class="mt-8 space-y-6" @onsubmit="HandleLogin" @onsubmit:preventDefault="true">
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div>
+                    <label for="email" class="sr-only">Adresse e-mail</label>
+                    <input id="email"
+                           name="email"
+                           type="email"
+                           autocomplete="email"
+                           required
+                           @bind="loginDto.Email"
+                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                           placeholder="Adresse e-mail" />
+                    <ValidationMessage For="@(() => loginDto.Email)" class="form-error" />
+                </div>
+                <div>
+                    <label for="password" class="sr-only">Mot de passe</label>
+                    <input id="password"
+                           name="password"
+                           type="password"
+                           autocomplete="current-password"
+                           required
+                           @bind="loginDto.Password"
+                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                           placeholder="Mot de passe" />
+                    <ValidationMessage For="@(() => loginDto.Password)" class="form-error" />
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input id="remember-me"
+                           name="remember-me"
+                           type="checkbox"
+                           @bind="rememberMe"
+                           class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded" />
+                    <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+                        Se souvenir de moi
+                    </label>
+                </div>
+
+                <div class="text-sm">
+                    <a href="/forgot-password" class="font-medium text-primary-600 hover:text-primary-500">
+                        Mot de passe oublié ?
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit"
+                        disabled="@isLoading"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed">
+                    @if (isLoading)
+                    {
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>Connexion en cours...</span>
+                    }
+                    else
+                    {
+                        <span>Se connecter</span>
+                    }
+                </button>
+            </div>
+
+            <div class="mt-6">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300" />
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-gray-50 text-gray-500">Compte de démonstration</span>
+                    </div>
+                </div>
+                
+                <div class="mt-4 text-center">
+                    <button type="button"
+                            @onclick="UseDemoAccount"
+                            class="text-sm text-gray-600 hover:text-gray-900 underline">
+                        Utiliser le compte de démonstration
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@code {
+    private LoginDto loginDto = new();
+    private bool rememberMe = false;
+    private bool isLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Check if user is already authenticated
+        if (await UserService.IsAuthenticatedAsync())
+        {
+            NavigationManager.NavigateTo("/dashboard");
+        }
+    }
+
+    private async Task HandleLogin()
+    {
+        isLoading = true;
+        StateHasChanged();
+
+        try
+        {
+            var success = await UserService.LoginAsync(loginDto);
+            if (success)
+            {
+                NavigationManager.NavigateTo("/dashboard");
+            }
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task UseDemoAccount()
+    {
+        loginDto.Email = "admin@personalfinance.com";
+        loginDto.Password = "Admin123!";
+        
+        await HandleLogin();
+    }
+}

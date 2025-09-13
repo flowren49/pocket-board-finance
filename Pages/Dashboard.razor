@@ -1,0 +1,344 @@
+@page "/dashboard"
+@using PersonalFinanceApp.Models.DTOs
+@using PersonalFinanceApp.Services
+@inject IAccountService AccountService
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Tableau de bord - Personal Finance App</PageTitle>
+
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                Tableau de bord
+            </h2>
+            <p class="mt-1 text-sm text-gray-500">
+                Bienvenue, @(currentUser?.FirstName ?? "Utilisateur") ! Voici un aperçu de vos finances.
+            </p>
+        </div>
+        <div class="mt-4 flex md:mt-0 md:ml-4">
+            <button type="button" @onclick="() => NavigationManager.NavigateTo(\"/accounts/new\")" 
+                    class="btn-primary">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Nouveau compte
+            </button>
+        </div>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="flex justify-center items-center py-12">
+            <div class="loading-spinner"></div>
+            <span class="ml-2 text-gray-600">Chargement...</span>
+        </div>
+    }
+    else
+    {
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <!-- Total Balance -->
+            <div class="card fade-in">
+                <div class="card-body">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Solde total</dt>
+                                <dd class="text-lg font-medium @GetBalanceClass(totalBalance)">
+                                    @FormatCurrency(totalBalance)
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Accounts -->
+            <div class="card fade-in">
+                <div class="card-body">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 bg-success-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Comptes actifs</dt>
+                                <dd class="text-lg font-medium text-gray-900">@accounts.Count(a => a.IsActive)</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gain/Loss -->
+            <div class="card fade-in">
+                <div class="card-body">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 bg-warning-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-warning-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Gain/Perte</dt>
+                                <dd class="text-lg font-medium @GetBalanceClass(totalGainLoss)">
+                                    @FormatCurrency(totalGainLoss)
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Percentage Change -->
+            <div class="card fade-in">
+                <div class="card-body">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Évolution</dt>
+                                <dd class="text-lg font-medium @GetPercentageClass(totalPercentageChange)">
+                                    @(totalPercentageChange.ToString("+0.0;-0.0;0.0"))%
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accounts Overview -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Recent Accounts -->
+            <div class="card slide-up">
+                <div class="card-header">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Comptes récents</h3>
+                    <p class="mt-1 text-sm text-gray-500">Vos comptes les plus récemment modifiés</p>
+                </div>
+                <div class="card-body">
+                    @if (recentAccounts.Any())
+                    {
+                        <div class="space-y-4">
+                            @foreach (var account in recentAccounts.Take(5))
+                            {
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0">
+                                            <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
+                                                <span class="text-sm font-medium text-primary-600">
+                                                    @account.Name.Substring(0, 1).ToUpper()
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm font-medium text-gray-900">@account.Name</p>
+                                            <p class="text-sm text-gray-500">@GetAccountTypeName(account.Type)</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-sm font-medium @GetBalanceClass(account.CurrentBalance)">
+                                            @FormatCurrency(account.CurrentBalance)
+                                        </p>
+                                        <p class="text-xs text-gray-500">
+                                            Mis à jour @FormatRelativeTime(account.UpdatedAt)
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-6">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            <h3 class="mt-2 text-sm font-medium text-gray-900">Aucun compte</h3>
+                            <p class="mt-1 text-sm text-gray-500">Commencez par créer votre premier compte.</p>
+                            <div class="mt-6">
+                                <button type="button" @onclick="() => NavigationManager.NavigateTo(\"/accounts/new\")" 
+                                        class="btn-primary">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                    Créer un compte
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card slide-up">
+                <div class="card-header">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Actions rapides</h3>
+                    <p class="mt-1 text-sm text-gray-500">Accédez rapidement aux fonctions principales</p>
+                </div>
+                <div class="card-body">
+                    <div class="grid grid-cols-2 gap-4">
+                        <button @onclick="() => NavigationManager.NavigateTo(\"/accounts\")" 
+                                class="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                            <svg class="w-8 h-8 text-primary-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            <span class="text-sm font-medium text-gray-900">Gérer les comptes</span>
+                        </button>
+                        
+                        <button @onclick="() => NavigationManager.NavigateTo(\"/statistics\")" 
+                                class="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                            <svg class="w-8 h-8 text-success-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                            <span class="text-sm font-medium text-gray-900">Statistiques</span>
+                        </button>
+                        
+                        <button @onclick="() => NavigationManager.NavigateTo(\"/export\")" 
+                                class="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                            <svg class="w-8 h-8 text-warning-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span class="text-sm font-medium text-gray-900">Exporter</span>
+                        </button>
+                        
+                        <button @onclick="() => NavigationManager.NavigateTo(\"/settings\")" 
+                                class="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                            <svg class="w-8 h-8 text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="text-sm font-medium text-gray-900">Paramètres</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private List<AccountDto> accounts = new();
+    private UserDto? currentUser;
+    private decimal totalBalance = 0;
+    private decimal totalInitialBalance = 0;
+    private decimal totalGainLoss = 0;
+    private decimal totalPercentageChange = 0;
+    private bool isLoading = true;
+
+    private List<AccountDto> recentAccounts => accounts
+        .Where(a => a.IsActive)
+        .OrderByDescending(a => a.UpdatedAt)
+        .ToList();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDashboardData();
+    }
+
+    private async Task LoadDashboardData()
+    {
+        try
+        {
+            isLoading = true;
+            
+            // Get current user
+            currentUser = await UserService.GetCurrentUserAsync();
+            if (currentUser == null)
+            {
+                NavigationManager.NavigateTo("/login");
+                return;
+            }
+
+            // Load accounts
+            accounts = (await AccountService.GetUserAccountsAsync(currentUser.Id)).ToList();
+            
+            // Calculate statistics
+            totalBalance = accounts.Where(a => a.IsActive).Sum(a => a.CurrentBalance);
+            totalInitialBalance = accounts.Where(a => a.IsActive).Sum(a => a.InitialBalance);
+            totalGainLoss = totalBalance - totalInitialBalance;
+            totalPercentageChange = totalInitialBalance != 0 ? (totalGainLoss / totalInitialBalance) * 100 : 0;
+        }
+        catch (Exception ex)
+        {
+            // Handle error
+            Console.WriteLine($"Error loading dashboard: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private string FormatCurrency(decimal amount)
+    {
+        return amount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("fr-FR"));
+    }
+
+    private string GetBalanceClass(decimal balance)
+    {
+        if (balance > 0) return "balance-positive";
+        if (balance < 0) return "balance-negative";
+        return "balance-neutral";
+    }
+
+    private string GetPercentageClass(decimal percentage)
+    {
+        if (percentage > 0) return "balance-positive";
+        if (percentage < 0) return "balance-negative";
+        return "balance-neutral";
+    }
+
+    private string GetAccountTypeName(AccountType type)
+    {
+        return type switch
+        {
+            AccountType.Checking => "Compte courant",
+            AccountType.Savings => "Épargne",
+            AccountType.Credit => "Crédit",
+            AccountType.Investment => "Investissement",
+            AccountType.Cash => "Espèces",
+            _ => "Autre"
+        };
+    }
+
+    private string FormatRelativeTime(DateTime dateTime)
+    {
+        var timeSpan = DateTime.UtcNow - dateTime;
+        
+        if (timeSpan.TotalMinutes < 1)
+            return "à l'instant";
+        if (timeSpan.TotalMinutes < 60)
+            return $"il y a {(int)timeSpan.TotalMinutes} min";
+        if (timeSpan.TotalHours < 24)
+            return $"il y a {(int)timeSpan.TotalHours}h";
+        if (timeSpan.TotalDays < 7)
+            return $"il y a {(int)timeSpan.TotalDays}j";
+        
+        return dateTime.ToString("dd/MM/yyyy");
+    }
+}
