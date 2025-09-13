@@ -1,10 +1,26 @@
 // Export JavaScript
 document.addEventListener('DOMContentLoaded', function() {
+    // Vérifier l'authentification
+    if (!window.authManager || !window.authManager.requireAuth()) {
+        return;
+    }
+
     // Initialize PWA
     if (window.PWAManager) {
         new PWAManager();
     }
+    
+    // Setup logout button
+    setupLogoutButton();
 });
+
+function setupLogoutButton() {
+    const logoutBtn = document.getElementById('loginBtn');
+    if (logoutBtn) {
+        logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt mr-1"></i>Déconnexion';
+        logoutBtn.onclick = () => window.authManager.logout();
+    }
+}
 
 function exportToExcel() {
     showToast('Export Excel en cours de génération...', 'info');

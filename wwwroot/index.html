@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Personal Finance App - Gestion Financière Personnelle</title>
-    <meta name="description" content="Application de gestion financière personnelle avec PWA">
+    <title>Personal Finance App - Gestion Financière Sécurisée</title>
+    <meta name="description" content="Application de gestion financière personnelle sécurisée avec PWA">
     <meta name="theme-color" content="#3B82F6">
     
     <!-- PWA Manifest -->
@@ -37,33 +37,27 @@
         }
     </script>
     
-    <!-- Font Awesome pour les icônes -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    
-    <!-- Chart.js pour les graphiques -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
     <!-- Navigation -->
-    <nav class="bg-gradient-to-r from-blue-600 to-blue-700 shadow-xl">
+    <nav class="bg-white shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <h1 class="text-white text-xl font-bold flex items-center">
-                            <i class="fas fa-wallet mr-2 text-yellow-300"></i>
-                            <span class="bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-                                Personal Finance App
-                            </span>
-                        </h1>
+                        <div class="flex items-center">
+                            <i class="fas fa-wallet text-2xl text-blue-600 mr-2"></i>
+                            <span class="text-xl font-bold text-gray-900">Personal Finance</span>
+                        </div>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button id="installBtn" class="hidden bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition-all duration-200 shadow-md hover:shadow-lg">
+                    <button id="installBtn" class="hidden bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg">
                         <i class="fas fa-download mr-1"></i>Installer
                     </button>
-                    <button id="loginBtn" class="bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition-all duration-200 shadow-md hover:shadow-lg">
+                    <button id="loginBtn" class="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg">
                         <i class="fas fa-sign-in-alt mr-1"></i>Connexion
                     </button>
                 </div>
@@ -71,353 +65,204 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <!-- Welcome Section -->
-        <div class="mb-8 text-center">
-            <h2 class="text-4xl font-bold text-gray-900 mb-4">Bienvenue dans votre Gestionnaire Financier</h2>
-            <p class="text-xl text-gray-600 mb-8">Gérez vos comptes, suivez vos dépenses et analysez vos finances en toute simplicité.</p>
+    <!-- Hero Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                Gérez vos finances en toute
+                <span class="text-blue-600">sécurité</span>
+            </h1>
+            <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                Application de gestion financière personnelle avec authentification sécurisée, 
+                chiffrement des données et fonctionnalités PWA pour une expérience optimale.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button id="loginBtnHero" class="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-medium hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Se connecter
+                </button>
+                <button id="registerBtnHero" class="bg-white text-blue-600 border-2 border-blue-600 px-8 py-4 rounded-lg text-lg font-medium hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl">
+                    <i class="fas fa-user-plus mr-2"></i>Créer un compte
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="bg-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Fonctionnalités Sécurisées</h2>
+                <p class="text-xl text-gray-600">Une application complète pour gérer vos finances en toute confiance</p>
+            </div>
             
-            <!-- Quick Access Buttons -->
-            <div class="flex flex-wrap justify-center gap-4 mb-8">
-                <a href="dashboard.html" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center text-lg">
-                    <i class="fas fa-tachometer-alt mr-2"></i>Accéder au Dashboard
-                </a>
-                <a href="accounts.html" class="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center text-lg">
-                    <i class="fas fa-credit-card mr-2"></i>Gérer les Comptes
-                </a>
-                <a href="statistics.html" class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition-colors flex items-center text-lg">
-                    <i class="fas fa-chart-pie mr-2"></i>Voir les Statistiques
-                </a>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-alt text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Sécurité Avancée</h3>
+                    <p class="text-gray-600">Authentification JWT, chiffrement des données, protection contre les attaques</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-mobile-alt text-2xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">PWA Complète</h3>
+                    <p class="text-gray-600">Installation sur mobile, mode offline, notifications push</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chart-line text-2xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Analyses Détaillées</h3>
+                    <p class="text-gray-600">Graphiques interactifs, statistiques avancées, rapports personnalisés</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-credit-card text-2xl text-orange-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Gestion Multi-Comptes</h3>
+                    <p class="text-gray-600">Suivi de tous vos comptes, cartes, investissements en un seul endroit</p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-download text-2xl text-red-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Export Sécurisé</h3>
+                    <p class="text-gray-600">Export Excel, CSV, PDF avec chiffrement et authentification</p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-sync text-2xl text-indigo-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Synchronisation Temps Réel</h3>
+                    <p class="text-gray-600">Mises à jour instantanées, SignalR, notifications en temps réel</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Section -->
+    <div class="bg-gray-900 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Sécurité Garantie</h2>
+                <p class="text-xl text-gray-300">Vos données sont protégées par les meilleures pratiques de sécurité</p>
             </div>
             
-            <!-- Demo Buttons -->
-            <div class="mt-8 flex flex-wrap justify-center gap-2">
-                <button onclick="window.app.showToast('Connexion réussie !', 'success')" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                    <i class="fas fa-check mr-2"></i>Toast Succès
-                </button>
-                <button onclick="window.app.showToast('Erreur de connexion', 'error')" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-                    <i class="fas fa-times mr-2"></i>Toast Erreur
-                </button>
-                <button onclick="window.app.showToast('Attention !', 'warning')" class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors">
-                    <i class="fas fa-exclamation mr-2"></i>Toast Warning
-                </button>
-                <button onclick="window.app.showToast('Information importante', 'info')" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    <i class="fas fa-info mr-2"></i>Toast Info
-                </button>
-            </div>
-        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-lock text-white"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Chiffrement AES-256</h3>
+                    <p class="text-gray-400">Toutes vos données sont chiffrées</p>
+                </div>
 
-        <!-- Dashboard Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div class="card hover:scale-105 transition-transform duration-200">
-                <div class="p-6">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-wallet text-xl text-blue-600"></i>
-                            </div>
-                        </div>
-                        <div class="ml-5 w-0 flex-1">
-                            <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Solde Total</dt>
-                                <dd class="text-2xl font-bold text-gray-900" id="totalBalance">0,00 €</dd>
-                            </dl>
-                        </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-key text-white"></i>
                     </div>
+                    <h3 class="text-lg font-semibold mb-2">Authentification JWT</h3>
+                    <p class="text-gray-400">Tokens sécurisés et renouvelables</p>
                 </div>
-            </div>
 
-            <div class="card hover:scale-105 transition-transform duration-200">
-                <div class="p-6">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-credit-card text-xl text-green-600"></i>
-                            </div>
-                        </div>
-                        <div class="ml-5 w-0 flex-1">
-                            <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Comptes</dt>
-                                <dd class="text-2xl font-bold text-gray-900" id="accountCount">0</dd>
-                            </dl>
-                        </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-virus text-white"></i>
                     </div>
+                    <h3 class="text-lg font-semibold mb-2">Protection XSS/CSRF</h3>
+                    <p class="text-gray-400">Protection contre les attaques web</p>
                 </div>
-            </div>
 
-            <div class="card hover:scale-105 transition-transform duration-200">
-                <div class="p-6">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-chart-line text-xl text-purple-600"></i>
-                            </div>
-                        </div>
-                        <div class="ml-5 w-0 flex-1">
-                            <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Évolution</dt>
-                                <dd class="text-2xl font-bold text-gray-900" id="monthlyChange">+0,00 €</dd>
-                            </dl>
-                        </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-database text-white"></i>
                     </div>
-                </div>
-            </div>
-
-            <div class="card hover:scale-105 transition-transform duration-200">
-                <div class="p-6">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-download text-xl text-orange-600"></i>
-                            </div>
-                        </div>
-                        <div class="ml-5 w-0 flex-1">
-                            <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Export</dt>
-                                <dd class="text-2xl font-bold text-gray-900">Disponible</dd>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Features Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Accounts Section -->
-            <div class="bg-white shadow rounded-lg p-6">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">
-                    <i class="fas fa-credit-card mr-2 text-blue-500"></i>Mes Comptes
-                </h3>
-                <div id="accountsList" class="space-y-3">
-                    <div class="text-center text-gray-500 py-8">
-                        <i class="fas fa-plus-circle text-4xl mb-2"></i>
-                        <p>Ajoutez votre premier compte</p>
-                    </div>
-                </div>
-                <button onclick="showAddAccountModal()" class="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
-                    <i class="fas fa-plus mr-2"></i>Ajouter un Compte
-                </button>
-            </div>
-
-            <!-- Chart Section -->
-            <div class="bg-white shadow rounded-lg p-6">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">
-                    <i class="fas fa-chart-pie mr-2 text-green-500"></i>Répartition par Compte
-                </h3>
-                <div class="h-64">
-                    <canvas id="balanceChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recent Transactions -->
-        <div class="mt-8 bg-white shadow rounded-lg">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <h3 class="text-lg font-medium text-gray-900">
-                    <i class="fas fa-history mr-2 text-purple-500"></i>Transactions Récentes
-                </h3>
-            </div>
-            <div class="px-6 py-4">
-                <div id="transactionsList" class="space-y-3">
-                    <div class="text-center text-gray-500 py-8">
-                        <i class="fas fa-receipt text-4xl mb-2"></i>
-                        <p>Aucune transaction récente</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Available Pages Section -->
-        <div class="mt-8 bg-white shadow rounded-lg">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <h3 class="text-lg font-medium text-gray-900">
-                    <i class="fas fa-sitemap mr-2 text-blue-500"></i>Pages Disponibles
-                </h3>
-            </div>
-            <div class="px-6 py-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div class="flex items-center mb-2">
-                            <i class="fas fa-tachometer-alt text-blue-500 mr-2"></i>
-                            <h4 class="font-medium">Dashboard</h4>
-                        </div>
-                        <p class="text-sm text-gray-600">Vue d'ensemble de vos finances</p>
-                    </div>
-                    
-                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div class="flex items-center mb-2">
-                            <i class="fas fa-credit-card text-green-500 mr-2"></i>
-                            <h4 class="font-medium">Comptes</h4>
-                        </div>
-                        <p class="text-sm text-gray-600">Gestion de vos comptes bancaires</p>
-                    </div>
-                    
-                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div class="flex items-center mb-2">
-                            <i class="fas fa-exchange-alt text-purple-500 mr-2"></i>
-                            <h4 class="font-medium">Transactions</h4>
-                        </div>
-                        <p class="text-sm text-gray-600">Historique des mouvements</p>
-                    </div>
-                    
-                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div class="flex items-center mb-2">
-                            <i class="fas fa-chart-pie text-orange-500 mr-2"></i>
-                            <h4 class="font-medium">Statistiques</h4>
-                        </div>
-                        <p class="text-sm text-gray-600">Graphiques et analyses</p>
-                    </div>
-                    
-                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div class="flex items-center mb-2">
-                            <i class="fas fa-download text-red-500 mr-2"></i>
-                            <h4 class="font-medium">Export</h4>
-                        </div>
-                        <p class="text-sm text-gray-600">Export Excel/CSV</p>
-                    </div>
-                    
-                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div class="flex items-center mb-2">
-                            <i class="fas fa-cog text-gray-500 mr-2"></i>
-                            <h4 class="font-medium">Paramètres</h4>
-                        </div>
-                        <p class="text-sm text-gray-600">Configuration utilisateur</p>
-                    </div>
-                </div>
-                
-                <div class="mt-4 p-4 bg-blue-50 rounded-lg">
-                    <p class="text-sm text-blue-800">
-                        <i class="fas fa-info-circle mr-2"></i>
-                        <strong>Note :</strong> Cette version statique combine toutes les fonctionnalités en une seule page. 
-                        La version complète avec Blazor Server inclut des pages séparées pour chaque fonctionnalité.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Add Account Modal -->
-    <div id="addAccountModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-lg font-medium text-gray-900">Ajouter un Compte</h3>
-                </div>
-                <form id="addAccountForm" class="px-6 py-4">
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Nom du Compte</label>
-                        <input type="text" id="accountName" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
-                        <select id="accountType" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="BankAccount">Compte Bancaire</option>
-                            <option value="CreditCard">Carte de Crédit</option>
-                            <option value="Cash">Espèces</option>
-                            <option value="Investment">Investissement</option>
-                            <option value="Savings">Épargne</option>
-                        </select>
-                    </div>
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Solde Initial</label>
-                        <input type="number" id="initialBalance" step="0.01" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div class="flex justify-end space-x-3">
-                        <button type="button" onclick="hideAddAccountModal()" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
-                            Annuler
-                        </button>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                            Ajouter
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Login Modal -->
-    <div id="loginModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-lg font-medium text-gray-900">Connexion</h3>
-                </div>
-                <form id="loginForm" class="px-6 py-4">
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                        <input type="email" id="loginEmail" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Mot de passe</label>
-                        <input type="password" id="loginPassword" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div class="flex justify-end space-x-3">
-                        <button type="button" onclick="hideLoginModal()" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
-                            Annuler
-                        </button>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                            Se connecter
-                        </button>
-                    </div>
-                </form>
-                <div class="px-6 py-4 border-t border-gray-200 text-center">
-                    <button onclick="showRegisterModal()" class="text-blue-600 hover:text-blue-700 text-sm">
-                        Pas encore de compte ? Créer un compte
-                    </button>
+                    <h3 class="text-lg font-semibold mb-2">Base de Données Sécurisée</h3>
+                    <p class="text-gray-400">Protection contre l'injection SQL</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Register Modal -->
-    <div id="registerModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-lg font-medium text-gray-900">Créer un Compte</h3>
-                </div>
-                <form id="registerForm" class="px-6 py-4">
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Prénom</label>
-                        <input type="text" id="registerFirstName" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Nom</label>
-                        <input type="text" id="registerLastName" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                        <input type="email" id="registerEmail" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Mot de passe</label>
-                        <input type="password" id="registerPassword" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div class="flex justify-end space-x-3">
-                        <button type="button" onclick="hideRegisterModal()" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
-                            Annuler
-                        </button>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                            Créer le compte
-                        </button>
-                    </div>
-                </form>
-                <div class="px-6 py-4 border-t border-gray-200 text-center">
-                    <button onclick="showLoginModal()" class="text-blue-600 hover:text-blue-700 text-sm">
-                        Déjà un compte ? Se connecter
-                    </button>
-                </div>
+    <!-- CTA Section -->
+    <div class="bg-blue-600 py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-white mb-4">Prêt à sécuriser vos finances ?</h2>
+            <p class="text-xl text-blue-100 mb-8">Rejoignez des milliers d'utilisateurs qui nous font confiance</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button id="loginBtnCTA" class="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-medium hover:bg-gray-100 transition-all duration-200 shadow-lg hover:shadow-xl">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Commencer maintenant
+                </button>
+                <button id="registerBtnCTA" class="bg-blue-700 text-white border-2 border-blue-300 px-8 py-4 rounded-lg text-lg font-medium hover:bg-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl">
+                    <i class="fas fa-user-plus mr-2"></i>Créer un compte gratuit
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Toast Notifications -->
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-wallet text-2xl text-blue-400 mr-2"></i>
+                        <span class="text-xl font-bold">Personal Finance</span>
+                    </div>
+                    <p class="text-gray-400">Gestion financière sécurisée et moderne</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Fonctionnalités</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Dashboard</li>
+                        <li>Gestion des comptes</li>
+                        <li>Statistiques</li>
+                        <li>Export de données</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Sécurité</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Chiffrement AES-256</li>
+                        <li>Authentification JWT</li>
+                        <li>Protection XSS/CSRF</li>
+                        <li>Base sécurisée</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Documentation</li>
+                        <li>Contact</li>
+                        <li>FAQ</li>
+                        <li>Status</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Personal Finance App. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
     <div id="toastContainer" class="fixed top-4 right-4 left-4 sm:left-auto z-50"></div>
 
     <!-- Scripts -->
-    <script src="/js/app.js"></script>
+    <script src="/js/auth.js"></script>
     <script src="/js/pwa.js"></script>
 </body>
 </html>

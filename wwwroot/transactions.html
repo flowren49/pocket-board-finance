@@ -200,6 +200,27 @@
     <div id="toastContainer" class="fixed top-4 right-4 left-4 sm:left-auto z-50"></div>
 
     <!-- Scripts -->
+    <script src="/js/auth.js"></script>
     <script src="/js/pwa.js"></script>
+    <script>
+        // Protection d'authentification
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!window.authManager || !window.authManager.requireAuth()) {
+                return;
+            }
+            
+            // Setup logout button
+            const logoutBtn = document.getElementById('loginBtn');
+            if (logoutBtn) {
+                logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt mr-1"></i>Déconnexion';
+                logoutBtn.onclick = () => window.authManager.logout();
+            }
+            
+            // Initialize PWA
+            if (window.PWAManager) {
+                new PWAManager();
+            }
+        });
+    </script>
 </body>
 </html>

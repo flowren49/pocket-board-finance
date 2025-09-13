@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connexion - Personal Finance App</title>
+    <meta name="description" content="Connexion sécurisée à votre compte financier">
+    <meta name="theme-color" content="#3B82F6">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192x192.png">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full mx-4">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <div class="flex items-center justify-center mb-4">
+                <i class="fas fa-wallet text-4xl text-blue-600 mr-3"></i>
+                <span class="text-2xl font-bold text-gray-900">Personal Finance</span>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">Connexion Sécurisée</h1>
+            <p class="text-gray-600">Accédez à votre tableau de bord financier</p>
+        </div>
+
+        <!-- Login Form -->
+        <div class="bg-white rounded-lg shadow-xl p-8">
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-envelope mr-2 text-gray-400"></i>Adresse email
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                        placeholder="votre@email.com"
+                        autocomplete="email"
+                    >
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-lock mr-2 text-gray-400"></i>Mot de passe
+                    </label>
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            required 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pr-12"
+                            placeholder="••••••••"
+                            autocomplete="current-password"
+                        >
+                        <button 
+                            type="button" 
+                            id="togglePassword" 
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        >
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input 
+                            id="rememberMe" 
+                            name="rememberMe" 
+                            type="checkbox" 
+                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        >
+                        <label for="rememberMe" class="ml-2 block text-sm text-gray-700">
+                            Se souvenir de moi
+                        </label>
+                    </div>
+                    <a href="#" class="text-sm text-blue-600 hover:text-blue-500 transition-colors">
+                        Mot de passe oublié ?
+                    </a>
+                </div>
+
+                <button 
+                    type="submit" 
+                    id="loginSubmitBtn"
+                    class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    <i class="fas fa-sign-in-alt mr-2"></i>
+                    <span id="loginBtnText">Se connecter</span>
+                    <i id="loginSpinner" class="fas fa-spinner fa-spin ml-2 hidden"></i>
+                </button>
+            </form>
+
+            <!-- Demo Credentials -->
+            <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                <h3 class="text-sm font-medium text-blue-800 mb-2">
+                    <i class="fas fa-info-circle mr-1"></i>Comptes de démonstration
+                </h3>
+                <div class="text-xs text-blue-700 space-y-1">
+                    <div><strong>Admin:</strong> admin@demo.com / Admin123!</div>
+                    <div><strong>User:</strong> user@demo.com / User123!</div>
+                </div>
+            </div>
+
+            <!-- Register Link -->
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Pas encore de compte ?
+                    <a href="/register.html" class="text-blue-600 hover:text-blue-500 font-medium transition-colors">
+                        Créer un compte
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Security Info -->
+        <div class="mt-6 text-center">
+            <div class="flex items-center justify-center space-x-6 text-sm text-gray-500">
+                <div class="flex items-center">
+                    <i class="fas fa-shield-alt text-green-500 mr-1"></i>
+                    <span>Connexion sécurisée</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-lock text-green-500 mr-1"></i>
+                    <span>Chiffrement SSL</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Home -->
+        <div class="mt-6 text-center">
+            <a href="/index.html" class="text-sm text-gray-500 hover:text-gray-700 transition-colors">
+                <i class="fas fa-arrow-left mr-1"></i>
+                Retour à l'accueil
+            </a>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed top-4 right-4 left-4 sm:left-auto z-50"></div>
+
+    <!-- Scripts -->
+    <script src="/js/login.js"></script>
+    <script src="/js/auth.js"></script>
+</body>
+</html>

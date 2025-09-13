@@ -1,5 +1,13 @@
 // Dashboard JavaScript
 document.addEventListener('DOMContentLoaded', function() {
+    // Vérifier l'authentification
+    if (!window.authManager || !window.authManager.requireAuth()) {
+        return;
+    }
+
+    // Initialiser l'interface utilisateur
+    initUserInterface();
+    
     // Initialize charts
     initBalanceChart();
     initAccountChart();
@@ -8,7 +16,37 @@ document.addEventListener('DOMContentLoaded', function() {
     if (window.PWAManager) {
         new PWAManager();
     }
+
+    // Setup logout button
+    setupLogoutButton();
 });
+
+function initUserInterface() {
+    const user = window.authManager.getUser();
+    if (user) {
+        // Mettre à jour l'affichage utilisateur
+        const userNameElements = document.querySelectorAll('[data-user-name]');
+        userNameElements.forEach(el => {
+            el.textContent = `${user.firstName} ${user.lastName}`;
+        });
+
+        // Afficher le rôle si admin
+        if (user.role === 'admin') {
+            const adminElements = document.querySelectorAll('[data-admin-only]');
+            adminElements.forEach(el => {
+                el.style.display = 'block';
+            });
+        }
+    }
+}
+
+function setupLogoutButton() {
+    const logoutBtn = document.getElementById('loginBtn');
+    if (logoutBtn) {
+        logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt mr-1"></i>Déconnexion';
+        logoutBtn.onclick = () => window.authManager.logout();
+    }
+}
 
 function initBalanceChart() {
     const ctx = document.getElementById('balanceChart').getContext('2d');

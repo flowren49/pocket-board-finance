@@ -1,5 +1,10 @@
 // Accounts JavaScript
 document.addEventListener('DOMContentLoaded', function() {
+    // Vérifier l'authentification
+    if (!window.authManager || !window.authManager.requireAuth()) {
+        return;
+    }
+
     // Initialize PWA
     if (window.PWAManager) {
         new PWAManager();
@@ -7,7 +12,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Setup form handler
     document.getElementById('addAccountForm').addEventListener('submit', handleAddAccount);
+    
+    // Setup logout button
+    setupLogoutButton();
 });
+
+function setupLogoutButton() {
+    const logoutBtn = document.getElementById('loginBtn');
+    if (logoutBtn) {
+        logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt mr-1"></i>Déconnexion';
+        logoutBtn.onclick = () => window.authManager.logout();
+    }
+}
 
 function showAddAccountModal() {
     document.getElementById('addAccountModal').classList.remove('hidden');
