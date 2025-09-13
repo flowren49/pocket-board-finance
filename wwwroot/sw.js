@@ -1,13 +1,17 @@
-const CACHE_NAME = 'personal-finance-app-v1';
+const CACHE_NAME = 'personal-finance-app-v2';
 const urlsToCache = [
   '/',
-  '/app',
+  '/index.html',
+  '/css/tailwind.css',
   '/css/site.css',
+  '/js/app.js',
+  '/js/pwa.js',
   '/js/site.js',
-  '/lib/bootstrap/dist/css/bootstrap.min.css',
-  '/lib/bootstrap/dist/js/bootstrap.bundle.min.js',
-  '/lib/jquery/dist/jquery.min.js',
-  '/manifest.json'
+  '/manifest.json',
+  '/images/icon-192x192.png',
+  '/images/icon-512x512.png',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+  'https://cdn.jsdelivr.net/npm/chart.js'
 ];
 
 // Installation du service worker

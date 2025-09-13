@@ -1,0 +1,29 @@
+# Ignore .NET specific files
+*.csproj
+*.sln
+*.user
+*.cs
+*.dll
+*.pdb
+*.exe
+
+# Ignore development files
+bin/
+obj/
+.vs/
+.vscode/
+
+# Ignore database files
+*.db
+*.db-shm
+*.db-wal
+
+# Ignore logs
+*.log
+
+# Keep only static files and configuration
+!wwwroot/
+!package.json
+!tailwind.config.js
+!vercel.json
+!.vercelignore
