@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transactions - Personal Finance App</title>
+    <meta name="theme-color" content="#3B82F6">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192x192.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-gradient-to-r from-blue-600 to-blue-700 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-white text-xl font-bold flex items-center">
+                            <i class="fas fa-wallet mr-2 text-yellow-300"></i>
+                            <span class="bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+                                Personal Finance
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="installBtn" class="hidden bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition-all duration-200 shadow-md hover:shadow-lg">
+                        <i class="fas fa-download mr-1"></i>Installer
+                    </button>
+                    <button id="loginBtn" class="bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition-all duration-200 shadow-md hover:shadow-lg">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Déconnexion
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar Navigation -->
+    <div class="flex">
+        <div class="w-64 bg-white shadow-lg min-h-screen">
+            <div class="p-4">
+                <nav class="space-y-2">
+                    <a href="dashboard.html" class="nav-link-inactive">
+                        <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
+                    </a>
+                    <a href="accounts.html" class="nav-link-inactive">
+                        <i class="fas fa-credit-card mr-3"></i>Comptes
+                    </a>
+                    <a href="transactions.html" class="nav-link-active">
+                        <i class="fas fa-exchange-alt mr-3"></i>Transactions
+                    </a>
+                    <a href="statistics.html" class="nav-link-inactive">
+                        <i class="fas fa-chart-pie mr-3"></i>Statistiques
+                    </a>
+                    <a href="export.html" class="nav-link-inactive">
+                        <i class="fas fa-download mr-3"></i>Export
+                    </a>
+                    <a href="settings.html" class="nav-link-inactive">
+                        <i class="fas fa-cog mr-3"></i>Paramètres
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <div class="max-w-7xl mx-auto">
+                <!-- Header -->
+                <div class="mb-8 flex justify-between items-center">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Transactions</h1>
+                        <p class="text-gray-600">Historique de vos mouvements financiers</p>
+                    </div>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                        <i class="fas fa-plus mr-2"></i>Nouvelle Transaction
+                    </button>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-white p-4 rounded-lg shadow mb-6">
+                    <div class="flex flex-wrap gap-4">
+                        <select class="px-3 py-2 border border-gray-300 rounded-md">
+                            <option>Tous les comptes</option>
+                            <option>Compte Principal</option>
+                            <option>Épargne</option>
+                            <option>Investissements</option>
+                        </select>
+                        <select class="px-3 py-2 border border-gray-300 rounded-md">
+                            <option>Tous les types</option>
+                            <option>Crédit</option>
+                            <option>Débit</option>
+                        </select>
+                        <input type="date" class="px-3 py-2 border border-gray-300 rounded-md">
+                        <input type="date" class="px-3 py-2 border border-gray-300 rounded-md">
+                        <button class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700">
+                            <i class="fas fa-search mr-2"></i>Filtrer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Transactions List -->
+                <div class="bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900">Liste des Transactions</h3>
+                    </div>
+                    <div class="divide-y divide-gray-200">
+                        <!-- Transaction 1 -->
+                        <div class="p-6 flex items-center justify-between hover:bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-arrow-down text-green-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Salaire</p>
+                                    <p class="text-sm text-gray-500">Compte Principal • 15 Oct 2024</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-semibold text-green-600">+2,500.00 €</p>
+                                <p class="text-sm text-gray-500">Crédit</p>
+                            </div>
+                        </div>
+
+                        <!-- Transaction 2 -->
+                        <div class="p-6 flex items-center justify-between hover:bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-arrow-up text-red-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Courses Supermarché</p>
+                                    <p class="text-sm text-gray-500">Carte de Crédit • 14 Oct 2024</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-semibold text-red-600">-85.40 €</p>
+                                <p class="text-sm text-gray-500">Débit</p>
+                            </div>
+                        </div>
+
+                        <!-- Transaction 3 -->
+                        <div class="p-6 flex items-center justify-between hover:bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-arrow-up text-red-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Essence</p>
+                                    <p class="text-sm text-gray-500">Compte Principal • 13 Oct 2024</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-semibold text-red-600">-65.20 €</p>
+                                <p class="text-sm text-gray-500">Débit</p>
+                            </div>
+                        </div>
+
+                        <!-- Transaction 4 -->
+                        <div class="p-6 flex items-center justify-between hover:bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-arrow-down text-green-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Dividendes</p>
+                                    <p class="text-sm text-gray-500">Investissements • 12 Oct 2024</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-semibold text-green-600">+150.00 €</p>
+                                <p class="text-sm text-gray-500">Crédit</p>
+                            </div>
+                        </div>
+
+                        <!-- Transaction 5 -->
+                        <div class="p-6 flex items-center justify-between hover:bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-arrow-up text-red-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Loyer</p>
+                                    <p class="text-sm text-gray-500">Compte Principal • 1 Oct 2024</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-semibold text-red-600">-800.00 €</p>
+                                <p class="text-sm text-gray-500">Débit</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed top-4 right-4 left-4 sm:left-auto z-50"></div>
+
+    <!-- Scripts -->
+    <script src="/js/pwa.js"></script>
+</body>
+</html>

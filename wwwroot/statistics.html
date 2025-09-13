@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Statistiques - Personal Finance App</title>
+    <meta name="theme-color" content="#3B82F6">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192x192.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-gradient-to-r from-blue-600 to-blue-700 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-white text-xl font-bold flex items-center">
+                            <i class="fas fa-wallet mr-2 text-yellow-300"></i>
+                            <span class="bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+                                Personal Finance
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="installBtn" class="hidden bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition-all duration-200 shadow-md hover:shadow-lg">
+                        <i class="fas fa-download mr-1"></i>Installer
+                    </button>
+                    <button id="loginBtn" class="bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition-all duration-200 shadow-md hover:shadow-lg">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Déconnexion
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar Navigation -->
+    <div class="flex">
+        <div class="w-64 bg-white shadow-lg min-h-screen">
+            <div class="p-4">
+                <nav class="space-y-2">
+                    <a href="dashboard.html" class="nav-link-inactive">
+                        <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
+                    </a>
+                    <a href="accounts.html" class="nav-link-inactive">
+                        <i class="fas fa-credit-card mr-3"></i>Comptes
+                    </a>
+                    <a href="transactions.html" class="nav-link-inactive">
+                        <i class="fas fa-exchange-alt mr-3"></i>Transactions
+                    </a>
+                    <a href="statistics.html" class="nav-link-active">
+                        <i class="fas fa-chart-pie mr-3"></i>Statistiques
+                    </a>
+                    <a href="export.html" class="nav-link-inactive">
+                        <i class="fas fa-download mr-3"></i>Export
+                    </a>
+                    <a href="settings.html" class="nav-link-inactive">
+                        <i class="fas fa-cog mr-3"></i>Paramètres
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <div class="max-w-7xl mx-auto">
+                <!-- Header -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Statistiques</h1>
+                    <p class="text-gray-600">Analyses détaillées de vos finances</p>
+                </div>
+
+                <!-- Period Selector -->
+                <div class="bg-white p-4 rounded-lg shadow mb-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Période d'analyse</h3>
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded-md">7 jours</button>
+                            <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">30 jours</button>
+                            <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">3 mois</button>
+                            <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">1 an</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                    <!-- Income vs Expenses -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Revenus vs Dépenses</h3>
+                        <div class="h-64">
+                            <canvas id="incomeExpensesChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Spending Categories -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Catégories de Dépenses</h3>
+                        <div class="h-64">
+                            <canvas id="spendingCategoriesChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Trend -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Tendance Mensuelle</h3>
+                        <div class="h-64">
+                            <canvas id="monthlyTrendChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Account Performance -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Performance des Comptes</h3>
+                        <div class="h-64">
+                            <canvas id="accountPerformanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-arrow-up text-green-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Revenus Totaux</p>
+                                <p class="text-2xl font-bold text-green-600">3,250.00 €</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-arrow-down text-red-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Dépenses Totales</p>
+                                <p class="text-2xl font-bold text-red-600">-1,850.40 €</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-chart-line text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Économies</p>
+                                <p class="text-2xl font-bold text-blue-600">1,399.60 €</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed top-4 right-4 left-4 sm:left-auto z-50"></div>
+
+    <!-- Scripts -->
+    <script src="/js/statistics.js"></script>
+    <script src="/js/pwa.js"></script>
+</body>
+</html>

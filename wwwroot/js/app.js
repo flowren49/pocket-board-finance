@@ -368,7 +368,7 @@ class PersonalFinanceApp {
             info: 'text-blue-400'
         };
 
-        toast.className = `max-w-sm w-full ${bgColors[type]} border rounded-lg shadow-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden transform transition-all duration-300 translate-x-full`;
+        toast.className = `max-w-sm w-full sm:w-auto mx-4 sm:mx-0 ${bgColors[type]} border rounded-lg shadow-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden transform transition-all duration-300 translate-x-full`;
         
         toast.innerHTML = `
             <div class="p-4">

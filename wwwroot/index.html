@@ -40,8 +40,6 @@
     <!-- Font Awesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/custom.css">
     
     <!-- Chart.js pour les graphiques -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -76,12 +74,25 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <!-- Welcome Section -->
-        <div class="mb-8">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Bienvenue dans votre Gestionnaire Financier</h2>
-            <p class="text-lg text-gray-600">Gérez vos comptes, suivez vos dépenses et analysez vos finances en toute simplicité.</p>
+        <div class="mb-8 text-center">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Bienvenue dans votre Gestionnaire Financier</h2>
+            <p class="text-xl text-gray-600 mb-8">Gérez vos comptes, suivez vos dépenses et analysez vos finances en toute simplicité.</p>
+            
+            <!-- Quick Access Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <a href="dashboard.html" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center text-lg">
+                    <i class="fas fa-tachometer-alt mr-2"></i>Accéder au Dashboard
+                </a>
+                <a href="accounts.html" class="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center text-lg">
+                    <i class="fas fa-credit-card mr-2"></i>Gérer les Comptes
+                </a>
+                <a href="statistics.html" class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition-colors flex items-center text-lg">
+                    <i class="fas fa-chart-pie mr-2"></i>Voir les Statistiques
+                </a>
+            </div>
             
             <!-- Demo Buttons -->
-            <div class="mt-4 flex flex-wrap gap-2">
+            <div class="mt-8 flex flex-wrap justify-center gap-2">
                 <button onclick="window.app.showToast('Connexion réussie !', 'success')" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
                     <i class="fas fa-check mr-2"></i>Toast Succès
                 </button>
@@ -403,7 +414,7 @@
     </div>
 
     <!-- Toast Notifications -->
-    <div id="toastContainer" class="fixed top-4 right-4 z-50"></div>
+    <div id="toastContainer" class="fixed top-4 right-4 left-4 sm:left-auto z-50"></div>
 
     <!-- Scripts -->
     <script src="/js/app.js"></script>
