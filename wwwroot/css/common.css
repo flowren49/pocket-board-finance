@@ -1,36 +1,53 @@
 /* Common CSS for all pages - Avoid code repetition */
 
-/* Mobile Navigation Fix */
-.mobile-nav {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 9999; /* Higher than any other element */
+/* Mobile Navigation Fix - Force override all other styles */
+div.mobile-nav,
+#mobileNav.mobile-nav {
+    display: none !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    z-index: 999999 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-.mobile-nav.active {
-    display: block;
+div.mobile-nav.active,
+#mobileNav.mobile-nav.active {
+    display: block !important;
 }
 
-.mobile-nav-content {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 280px;
-    background: white;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    z-index: 10000; /* Higher than overlay */
-    overflow-y: auto;
+div.mobile-nav-content,
+.mobile-nav .mobile-nav-content {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 280px !important;
+    height: 100vh !important;
+    background: white !important;
+    transform: translateX(100%) !important;
+    transition: transform 0.3s ease !important;
+    z-index: 1000000 !important;
+    overflow-y: auto !important;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1) !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-.mobile-nav.active .mobile-nav-content {
-    transform: translateX(0);
+div.mobile-nav.active .mobile-nav-content,
+#mobileNav.mobile-nav.active .mobile-nav-content {
+    transform: translateX(0) !important;
+}
+
+/* Prevent body scroll when mobile nav is active */
+body.mobile-nav-open {
+    overflow: hidden !important;
 }
 
 /* Hamburger button */

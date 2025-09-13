@@ -14,8 +14,6 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Common CSS -->
-    <link rel="stylesheet" href="/css/common.css">
     <script>
         tailwind.config = {
             theme: {
@@ -147,6 +145,9 @@
             }
         }
     </style>
+    
+    <!-- Common CSS - Loaded last to override other styles -->
+    <link rel="stylesheet" href="/css/common.css">
 </head>
 <body class="bg-gray-50">
     <!-- Navigation -->

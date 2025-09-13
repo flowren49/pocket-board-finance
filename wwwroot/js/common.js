@@ -3,8 +3,20 @@
 // Mobile navigation toggle
 function toggleMobileNav() {
     const mobileNav = document.getElementById('mobileNav');
+    const body = document.body;
+    
     if (mobileNav) {
-        mobileNav.classList.toggle('active');
+        const isActive = mobileNav.classList.contains('active');
+        
+        if (isActive) {
+            // Close menu
+            mobileNav.classList.remove('active');
+            body.classList.remove('mobile-nav-open');
+        } else {
+            // Open menu
+            mobileNav.classList.add('active');
+            body.classList.add('mobile-nav-open');
+        }
     }
 }
 
@@ -12,12 +24,15 @@ function toggleMobileNav() {
 document.addEventListener('click', function(e) {
     const mobileNav = document.getElementById('mobileNav');
     const hamburger = document.querySelector('.hamburger');
+    const body = document.body;
     
     if (mobileNav && mobileNav.classList.contains('active')) {
         // Check if click is outside the mobile nav content
-        if (!mobileNav.querySelector('.mobile-nav-content').contains(e.target) && 
-            !hamburger.contains(e.target)) {
+        const mobileNavContent = mobileNav.querySelector('.mobile-nav-content');
+        if (mobileNavContent && !mobileNavContent.contains(e.target) && 
+            hamburger && !hamburger.contains(e.target)) {
             mobileNav.classList.remove('active');
+            body.classList.remove('mobile-nav-open');
         }
     }
 });
@@ -26,8 +41,10 @@ document.addEventListener('click', function(e) {
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         const mobileNav = document.getElementById('mobileNav');
+        const body = document.body;
         if (mobileNav && mobileNav.classList.contains('active')) {
             mobileNav.classList.remove('active');
+            body.classList.remove('mobile-nav-open');
         }
     }
 });
