@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>À Propos - Pocket Board Finance</title>
+    <meta name="description" content="Découvrez l'histoire et la mission de Pocket Board Finance, l'application de gestion financière qui révolutionne votre rapport à l'argent.">
+    <meta name="theme-color" content="#3B82F6">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192x192.png">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease-out',
+                        'fade-in-down': 'fadeInDown 0.6s ease-out',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .hero-pattern {
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-2xl font-bold gradient-text flex items-center">
+                            <i class="fas fa-wallet mr-3 text-blue-600"></i>
+                            Pocket Board Finance
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600 transition-colors">Accueil</a>
+                    <a href="index.html#features" class="text-gray-700 hover:text-blue-600 transition-colors">Fonctionnalités</a>
+                    <a href="index.html#pricing" class="text-gray-700 hover:text-blue-600 transition-colors">Tarifs</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-blue-600 transition-colors">Contact</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="login.html" class="text-gray-700 hover:text-blue-600 transition-colors">Connexion</a>
+                    <a href="register.html" class="bg-blue-600 text-white px-6 py-2 rounded-full font-medium hover:bg-blue-700 transition-colors">
+                        Commencer Gratuitement
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-pattern pt-24 pb-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="animate-fade-in-up">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                    Notre
+                    <span class="gradient-text">Mission</span>
+                </h1>
+                <p class="text-xl text-gray-600 mb-8 leading-relaxed">
+                    Révolutionner la gestion financière personnelle en la rendant accessible, 
+                    simple et sécurisée pour tous.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="animate-fade-in-up">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                        Notre Histoire
+                    </h2>
+                    <div class="space-y-4 text-gray-600 leading-relaxed">
+                        <p>
+                            Pocket Board Finance est né d'un constat simple : la gestion financière personnelle 
+                            est trop complexe pour la plupart des gens. Nous avons créé cette application 
+                            pour démocratiser l'accès à une gestion financière intelligente.
+                        </p>
+                        <p>
+                            Fondée en 2023 par une équipe de développeurs passionnés et d'experts financiers, 
+                            notre mission est de rendre la gestion de l'argent accessible à tous, 
+                            sans jargon technique ni complexité inutile.
+                        </p>
+                        <p>
+                            Nous croyons que chacun mérite de comprendre et de maîtriser ses finances 
+                            pour atteindre ses objectifs personnels et vivre plus sereinement.
+                        </p>
+                    </div>
+                </div>
+                <div class="animate-fade-in-up animation-delay-200">
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 rounded-3xl">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-blue-600 mb-2">10K+</div>
+                                <div class="text-gray-600">Utilisateurs Actifs</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-green-600 mb-2">€2.5M</div>
+                                <div class="text-gray-600">Économies</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-purple-600 mb-2">4.9/5</div>
+                                <div class="text-gray-600">Satisfaction</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-orange-600 mb-2">50+</div>
+                                <div class="text-gray-600">Pays</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in-down">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                    Nos Valeurs
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Les principes qui guident notre mission et nos actions
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Value 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up">
+                    <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Sécurité</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Vos données financières sont notre priorité. Nous utilisons les dernières 
+                        technologies de chiffrement et de sécurité pour protéger vos informations.
+                    </p>
+                </div>
+                
+                <!-- Value 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up animation-delay-200">
+                    <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-heart text-2xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Simplicité</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Nous croyons que la gestion financière doit être simple et intuitive. 
+                        Notre interface est conçue pour être accessible à tous, sans jargon technique.
+                    </p>
+                </div>
+                
+                <!-- Value 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up animation-delay-400">
+                    <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-users text-2xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Transparence</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Nous sommes transparents sur nos tarifs, nos pratiques et notre utilisation 
+                        de vos données. Aucune surprise, aucune fraude cachée.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in-down">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                    Notre Équipe
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Des experts passionnés qui travaillent chaque jour pour améliorer votre expérience
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Team Member 1 -->
+                <div class="text-center animate-fade-in-up">
+                    <div class="w-32 h-32 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <span class="text-4xl font-bold text-white">AL</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Alexandre Leroy</h3>
+                    <p class="text-blue-600 font-medium mb-3">CEO & Fondateur</p>
+                    <p class="text-gray-600 text-sm">
+                        Expert en fintech avec 10 ans d'expérience dans le secteur bancaire. 
+                        Passionné par la simplification de la gestion financière.
+                    </p>
+                </div>
+                
+                <!-- Team Member 2 -->
+                <div class="text-center animate-fade-in-up animation-delay-200">
+                    <div class="w-32 h-32 bg-gradient-to-br from-green-400 to-blue-500 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <span class="text-4xl font-bold text-white">SM</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Sophie Martin</h3>
+                    <p class="text-blue-600 font-medium mb-3">CTO</p>
+                    <p class="text-gray-600 text-sm">
+                        Développeuse full-stack avec une expertise en sécurité et en architecture 
+                        cloud. Ancienne ingénieure chez Google.
+                    </p>
+                </div>
+                
+                <!-- Team Member 3 -->
+                <div class="text-center animate-fade-in-up animation-delay-400">
+                    <div class="w-32 h-32 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <span class="text-4xl font-bold text-white">PD</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Pierre Dubois</h3>
+                    <p class="text-blue-600 font-medium mb-3">Designer UX/UI</p>
+                    <p class="text-gray-600 text-sm">
+                        Designer spécialisé dans les interfaces financières. 
+                        Créateur d'expériences utilisateur intuitives et accessibles.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="gradient-bg py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="animate-fade-in-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                    Notre Vision pour l'Avenir
+                </h2>
+                <p class="text-xl text-white/90 mb-8 leading-relaxed">
+                    Nous travaillons constamment pour améliorer notre application et ajouter de nouvelles 
+                    fonctionnalités qui vous aideront à mieux gérer vos finances. Notre objectif est de 
+                    devenir l'outil de référence pour la gestion financière personnelle.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="register.html" class="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors">
+                        Rejoindre l'Aventure
+                    </a>
+                    <a href="contact.html" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors">
+                        Nous Contacter
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center mb-6">
+                        <i class="fas fa-wallet text-3xl text-blue-400 mr-3"></i>
+                        <span class="text-2xl font-bold">Pocket Board Finance</span>
+                    </div>
+                    <p class="text-gray-400 mb-6 max-w-md">
+                        L'application de gestion financière personnelle la plus simple et sécurisée. 
+                        Prenez le contrôle de vos finances dès aujourd'hui.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Produit</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html#features" class="text-gray-400 hover:text-white transition-colors">Fonctionnalités</a></li>
+                        <li><a href="index.html#pricing" class="text-gray-400 hover:text-white transition-colors">Tarifs</a></li>
+                        <li><a href="index.html#demo" class="text-gray-400 hover:text-white transition-colors">Démo</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white transition-colors">À Propos</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="help.html" class="text-gray-400 hover:text-white transition-colors">Centre d'Aide</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors">Confidentialité</a></li>
+                        <li><a href="terms.html" class="text-gray-400 hover:text-white transition-colors">Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400">
+                    © 2024 Pocket Board Finance. Tous droits réservés.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/js/auth.js"></script>
+    <script>
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('[class*="animate-"]');
+            animatedElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

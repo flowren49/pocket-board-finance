@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Centre d'Aide - Pocket Board Finance</title>
+    <meta name="description" content="Trouvez des réponses à vos questions dans notre centre d'aide complet. Guides, tutoriels et FAQ pour Pocket Board Finance.">
+    <meta name="theme-color" content="#3B82F6">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192x192.png">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease-out',
+                        'fade-in-down': 'fadeInDown 0.6s ease-out',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .hero-pattern {
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+        }
+        
+        .help-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .faq-question {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background-color: #f8fafc;
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-answer.open {
+            max-height: 500px;
+        }
+        
+        .search-box {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-2xl font-bold gradient-text flex items-center">
+                            <i class="fas fa-wallet mr-3 text-blue-600"></i>
+                            Pocket Board Finance
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600 transition-colors">Accueil</a>
+                    <a href="index.html#features" class="text-gray-700 hover:text-blue-600 transition-colors">Fonctionnalités</a>
+                    <a href="index.html#pricing" class="text-gray-700 hover:text-blue-600 transition-colors">Tarifs</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-blue-600 transition-colors">Contact</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="login.html" class="text-gray-700 hover:text-blue-600 transition-colors">Connexion</a>
+                    <a href="register.html" class="bg-blue-600 text-white px-6 py-2 rounded-full font-medium hover:bg-blue-700 transition-colors">
+                        Commencer Gratuitement
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-pattern pt-24 pb-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="animate-fade-in-up">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                    Centre d'
+                    <span class="gradient-text">Aide</span>
+                </h1>
+                <p class="text-xl text-gray-600 mb-8 leading-relaxed">
+                    Trouvez rapidement des réponses à vos questions et apprenez à utiliser 
+                    toutes les fonctionnalités de Pocket Board Finance.
+                </p>
+                
+                <!-- Search Box -->
+                <div class="max-w-2xl mx-auto">
+                    <div class="relative">
+                        <input type="text" id="searchBox" placeholder="Rechercher dans l'aide..." 
+                               class="search-box w-full px-6 py-4 pr-12 rounded-2xl text-lg">
+                        <i class="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Links -->
+    <section class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 animate-fade-in-down">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                    Guides Rapides
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Commencez par ces guides essentiels pour tirer le meilleur parti de votre application
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Quick Link 1 -->
+                <a href="#getting-started" class="help-card p-6 rounded-2xl hover:shadow-lg transition-shadow animate-fade-in-up">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-rocket text-blue-600"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Premiers Pas</h3>
+                    <p class="text-sm text-gray-600">Guide de démarrage rapide</p>
+                </a>
+                
+                <!-- Quick Link 2 -->
+                <a href="#accounts" class="help-card p-6 rounded-2xl hover:shadow-lg transition-shadow animate-fade-in-up animation-delay-200">
+                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-credit-card text-green-600"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Gestion Comptes</h3>
+                    <p class="text-sm text-gray-600">Ajouter et gérer vos comptes</p>
+                </a>
+                
+                <!-- Quick Link 3 -->
+                <a href="#transactions" class="help-card p-6 rounded-2xl hover:shadow-lg transition-shadow animate-fade-in-up animation-delay-400">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-exchange-alt text-purple-600"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Transactions</h3>
+                    <p class="text-sm text-gray-600">Enregistrer et catégoriser</p>
+                </a>
+                
+                <!-- Quick Link 4 -->
+                <a href="#security" class="help-card p-6 rounded-2xl hover:shadow-lg transition-shadow animate-fade-in-up animation-delay-600">
+                    <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-orange-600"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Sécurité</h3>
+                    <p class="text-sm text-gray-600">Protection de vos données</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in-down">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                    Questions Fréquentes
+                </h2>
+                <p class="text-xl text-gray-600">
+                    Les réponses aux questions les plus courantes
+                </p>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="help-card rounded-2xl overflow-hidden animate-fade-in-up">
+                    <div class="faq-question p-6" onclick="toggleFAQ(this)">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">Comment créer mon premier compte ?</h3>
+                            <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="px-6 pb-6">
+                            <p class="text-gray-600 leading-relaxed">
+                                Créer un compte est très simple ! Cliquez sur "Commencer Gratuitement" en haut de la page, 
+                                remplissez le formulaire d'inscription avec votre nom, email et mot de passe, puis validez 
+                                votre email. C'est tout ! Aucune carte bancaire n'est requise.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="help-card rounded-2xl overflow-hidden animate-fade-in-up animation-delay-200">
+                    <div class="faq-question p-6" onclick="toggleFAQ(this)">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">Mes données sont-elles sécurisées ?</h3>
+                            <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="px-6 pb-6">
+                            <p class="text-gray-600 leading-relaxed">
+                                Absolument ! Nous utilisons un chiffrement de niveau bancaire (AES-256) pour protéger 
+                                toutes vos données. Vos informations sont stockées sur des serveurs sécurisés et nous 
+                                ne partageons jamais vos données avec des tiers sans votre consentement explicite.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="help-card rounded-2xl overflow-hidden animate-fade-in-up animation-delay-400">
+                    <div class="faq-question p-6" onclick="toggleFAQ(this)">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">Comment ajouter mes comptes bancaires ?</h3>
+                            <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="px-6 pb-6">
+                            <p class="text-gray-600 leading-relaxed">
+                                Vous pouvez ajouter vos comptes de deux façons : manuellement en saisissant le nom et 
+                                le solde de chaque compte, ou en important vos relevés bancaires au format CSV. 
+                                Pour l'instant, nous ne proposons pas de connexion directe aux banques pour garantir 
+                                la sécurité maximale de vos données.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="help-card rounded-2xl overflow-hidden animate-fade-in-up animation-delay-600">
+                    <div class="faq-question p-6" onclick="toggleFAQ(this)">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">Puis-je utiliser l'application hors ligne ?</h3>
+                            <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="px-6 pb-6">
+                            <p class="text-gray-600 leading-relaxed">
+                                Oui ! Pocket Board Finance est une Progressive Web App (PWA), ce qui signifie que 
+                                vous pouvez l'installer sur votre téléphone et l'utiliser même sans connexion internet. 
+                                Vos données seront synchronisées dès que vous retrouvez une connexion.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div class="help-card rounded-2xl overflow-hidden animate-fade-in-up animation-delay-800">
+                    <div class="faq-question p-6" onclick="toggleFAQ(this)">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">Comment fonctionnent les tarifs ?</h3>
+                            <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="px-6 pb-6">
+                            <p class="text-gray-600 leading-relaxed">
+                                Nous proposons un plan gratuit avec les fonctionnalités essentielles, et deux plans 
+                                payants (Pro à 9.99€/mois et Premium à 19.99€/mois) avec des fonctionnalités avancées. 
+                                Vous pouvez changer de plan ou annuler à tout moment sans frais cachés.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 6 -->
+                <div class="help-card rounded-2xl overflow-hidden animate-fade-in-up animation-delay-1000">
+                    <div class="faq-question p-6" onclick="toggleFAQ(this)">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">Comment exporter mes données ?</h3>
+                            <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="px-6 pb-6">
+                            <p class="text-gray-600 leading-relaxed">
+                                Vous pouvez exporter toutes vos données depuis la page "Export" dans votre tableau de bord. 
+                                Nous proposons l'export en Excel, CSV et PDF. Vos données vous appartiennent et vous 
+                                pouvez les récupérer à tout moment.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Support -->
+    <section class="gradient-bg py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="animate-fade-in-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                    Vous Ne Trouvez Pas Votre Réponse ?
+                </h2>
+                <p class="text-xl text-white/90 mb-8 leading-relaxed">
+                    Notre équipe de support est là pour vous aider. Contactez-nous et nous vous 
+                    répondrons dans les plus brefs délais.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="contact.html" class="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-envelope mr-2"></i>
+                        Nous Contacter
+                    </a>
+                    <a href="register.html" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors">
+                        <i class="fas fa-rocket mr-2"></i>
+                        Commencer Maintenant
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center mb-6">
+                        <i class="fas fa-wallet text-3xl text-blue-400 mr-3"></i>
+                        <span class="text-2xl font-bold">Pocket Board Finance</span>
+                    </div>
+                    <p class="text-gray-400 mb-6 max-w-md">
+                        L'application de gestion financière personnelle la plus simple et sécurisée. 
+                        Prenez le contrôle de vos finances dès aujourd'hui.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Produit</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html#features" class="text-gray-400 hover:text-white transition-colors">Fonctionnalités</a></li>
+                        <li><a href="index.html#pricing" class="text-gray-400 hover:text-white transition-colors">Tarifs</a></li>
+                        <li><a href="index.html#demo" class="text-gray-400 hover:text-white transition-colors">Démo</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white transition-colors">À Propos</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="help.html" class="text-gray-400 hover:text-white transition-colors">Centre d'Aide</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors">Confidentialité</a></li>
+                        <li><a href="terms.html" class="text-gray-400 hover:text-white transition-colors">Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400">
+                    © 2024 Pocket Board Finance. Tous droits réservés.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/js/auth.js"></script>
+    <script>
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // FAQ toggle function
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('i');
+            
+            if (answer.classList.contains('open')) {
+                answer.classList.remove('open');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                // Close all other FAQs
+                document.querySelectorAll('.faq-answer.open').forEach(openAnswer => {
+                    openAnswer.classList.remove('open');
+                    openAnswer.previousElementSibling.querySelector('i').style.transform = 'rotate(0deg)';
+                });
+                
+                // Open current FAQ
+                answer.classList.add('open');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // Search functionality
+        function searchFAQ(query) {
+            const faqItems = document.querySelectorAll('.faq-question');
+            const searchTerm = query.toLowerCase();
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('h3').textContent.toLowerCase();
+                const answer = item.nextElementSibling.querySelector('p').textContent.toLowerCase();
+                
+                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                    item.parentElement.style.display = 'block';
+                } else {
+                    item.parentElement.style.display = 'none';
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('[class*="animate-"]');
+            animatedElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+
+            // Search box functionality
+            const searchBox = document.getElementById('searchBox');
+            if (searchBox) {
+                searchBox.addEventListener('input', function() {
+                    searchFAQ(this.value);
+                });
+            }
+
+            // Smooth scrolling for quick links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
