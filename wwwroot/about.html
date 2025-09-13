@@ -13,6 +13,9 @@
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Common CSS -->
+    <link rel="stylesheet" href="/css/common.css">
     <script>
         tailwind.config = {
             theme: {
@@ -275,7 +278,7 @@
                             </div>
                             <div class="text-center">
                                 <div class="text-3xl font-bold text-green-600 mb-2">100%</div>
-                                <div class="text-gray-600">Open Source</div>
+                                <div class="text-gray-600">Gratuit</div>
                             </div>
                             <div class="text-center">
                                 <div class="text-3xl font-bold text-purple-600 mb-2">Gratuit</div>
@@ -368,9 +371,6 @@
                         Spécialisé dans les technologies modernes et les interfaces utilisateur intuitives.
                     </p>
                     <div class="flex justify-center space-x-4">
-                        <a href="https://github.com/flowren49" class="text-gray-600 hover:text-blue-600 transition-colors">
-                            <i class="fab fa-github text-xl"></i>
-                        </a>
                         <a href="https://linkedin.com/in/florian-anthony" class="text-gray-600 hover:text-blue-600 transition-colors">
                             <i class="fab fa-linkedin text-xl"></i>
                         </a>
@@ -450,49 +450,6 @@
 
     <!-- Scripts -->
     <script src="/js/auth.js"></script>
-    <script>
-        // Mobile navigation toggle
-        function toggleMobileNav() {
-            const mobileNav = document.getElementById('mobileNav');
-            mobileNav.classList.toggle('active');
-        }
-
-        // Close mobile nav when clicking outside
-        document.addEventListener('click', function(e) {
-            const mobileNav = document.getElementById('mobileNav');
-            const hamburger = document.querySelector('.hamburger');
-            
-            if (mobileNav.classList.contains('active') && 
-                !mobileNav.contains(e.target) && 
-                !hamburger.contains(e.target)) {
-                mobileNav.classList.remove('active');
-            }
-        });
-
-        // Animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const animatedElements = document.querySelectorAll('[class*="animate-"]');
-            animatedElements.forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(30px)';
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(el);
-            });
-        });
-    </script>
+    <script src="/js/common.js"></script>
 </body>
 </html>

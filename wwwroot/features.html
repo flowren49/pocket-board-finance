@@ -13,6 +13,9 @@
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Common CSS -->
+    <link rel="stylesheet" href="/css/common.css">
     <script>
         tailwind.config = {
             theme: {
@@ -533,49 +536,6 @@
 
     <!-- Scripts -->
     <script src="/js/auth.js"></script>
-    <script>
-        // Mobile navigation toggle
-        function toggleMobileNav() {
-            const mobileNav = document.getElementById('mobileNav');
-            mobileNav.classList.toggle('active');
-        }
-
-        // Close mobile nav when clicking outside
-        document.addEventListener('click', function(e) {
-            const mobileNav = document.getElementById('mobileNav');
-            const hamburger = document.querySelector('.hamburger');
-            
-            if (mobileNav.classList.contains('active') && 
-                !mobileNav.contains(e.target) && 
-                !hamburger.contains(e.target)) {
-                mobileNav.classList.remove('active');
-            }
-        });
-
-        // Animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const animatedElements = document.querySelectorAll('[class*="animate-"]');
-            animatedElements.forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(30px)';
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(el);
-            });
-        });
-    </script>
+    <script src="/js/common.js"></script>
 </body>
 </html>

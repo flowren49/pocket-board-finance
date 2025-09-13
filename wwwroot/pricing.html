@@ -13,6 +13,9 @@
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Common CSS -->
+    <link rel="stylesheet" href="/css/common.css">
     <script>
         tailwind.config = {
             theme: {
@@ -276,17 +279,13 @@
                     <span class="gradient-text">Transparents</span>
                 </h1>
                 <p class="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto">
-                    Une application 100% gratuite et open source. 
+                    Une application 100% gratuite. 
                     Développée avec passion pour vous aider à gérer vos finances simplement.
                 </p>
                 <div class="flex flex-wrap justify-center items-center gap-4 sm:gap-6 text-sm text-gray-500">
                     <div class="flex items-center">
                         <i class="fas fa-check-circle text-green-500 mr-2"></i>
                         100% Gratuit
-                    </div>
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                        Open Source
                     </div>
                     <div class="flex items-center">
                         <i class="fas fa-check-circle text-green-500 mr-2"></i>
@@ -331,7 +330,7 @@
                         </li>
                         <li class="flex items-start">
                             <i class="fas fa-check text-green-500 mr-3 mt-1 text-sm"></i>
-                            <span class="text-sm sm:text-base text-gray-600">Code source ouvert</span>
+                            <span class="text-sm sm:text-base text-gray-600">Développé par Florian Anthony</span>
                         </li>
                     </ul>
                     <a href="register.html" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 sm:py-4 rounded-full font-semibold hover:from-blue-700 hover:to-purple-700 transition-colors block text-center text-sm sm:text-base">
@@ -361,7 +360,7 @@
                         L'application est-elle vraiment gratuite ?
                     </h3>
                     <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
-                        Oui, Pocket Board Finance est 100% gratuit et le restera toujours. C'est un projet open source 
+                        Oui, Pocket Board Finance est 100% gratuit et le restera toujours. C'est un projet 
                         développé par passion pour aider les gens à mieux gérer leurs finances.
                     </p>
                 </div>
@@ -369,22 +368,22 @@
                 <!-- FAQ Item 2 -->
                 <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up animation-delay-200">
                     <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
-                        Puis-je contribuer au projet ?
+                        Comment puis-je soutenir le projet ?
                     </h3>
                     <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
-                        Absolument ! Le code source est disponible sur GitHub. Vous pouvez contribuer en signalant des bugs, 
-                        proposant des fonctionnalités, ou en participant au développement.
+                        Vous pouvez soutenir le projet en signalant des bugs, proposant des fonctionnalités, 
+                        ou en donnant votre avis pour l'améliorer.
                     </p>
                 </div>
                 
                 <!-- FAQ Item 3 -->
                 <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up animation-delay-400">
                     <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
-                        Comment puis-je soutenir le projet ?
+                        Y a-t-il des frais cachés ?
                     </h3>
                     <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
-                        Vous pouvez soutenir le projet en contribuant au code source, en signalant des bugs, 
-                        en partageant l'application, ou en donnant votre avis pour l'améliorer.
+                        Non, l'application est 100% gratuite pour toujours. Aucun frais caché, 
+                        aucun abonnement, aucune limitation.
                     </p>
                 </div>
                 
@@ -471,49 +470,6 @@
 
     <!-- Scripts -->
     <script src="/js/auth.js"></script>
-    <script>
-        // Mobile navigation toggle
-        function toggleMobileNav() {
-            const mobileNav = document.getElementById('mobileNav');
-            mobileNav.classList.toggle('active');
-        }
-
-        // Close mobile nav when clicking outside
-        document.addEventListener('click', function(e) {
-            const mobileNav = document.getElementById('mobileNav');
-            const hamburger = document.querySelector('.hamburger');
-            
-            if (mobileNav.classList.contains('active') && 
-                !mobileNav.contains(e.target) && 
-                !hamburger.contains(e.target)) {
-                mobileNav.classList.remove('active');
-            }
-        });
-
-        // Animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const animatedElements = document.querySelectorAll('[class*="animate-"]');
-            animatedElements.forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(30px)';
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(el);
-            });
-        });
-    </script>
+    <script src="/js/common.js"></script>
 </body>
 </html>

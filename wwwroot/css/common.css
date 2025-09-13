@@ -1,0 +1,107 @@
+/* Common CSS for all pages - Avoid code repetition */
+
+/* Mobile Navigation Fix */
+.mobile-nav {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999; /* Higher than any other element */
+}
+
+.mobile-nav.active {
+    display: block;
+}
+
+.mobile-nav-content {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 280px;
+    background: white;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 10000; /* Higher than overlay */
+    overflow-y: auto;
+}
+
+.mobile-nav.active .mobile-nav-content {
+    transform: translateX(0);
+}
+
+/* Hamburger button */
+.hamburger {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+}
+
+/* Common animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Common button styles */
+.btn-primary {
+    background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+    transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    transition: background 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+/* Gradient text */
+.gradient-text {
+    background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Container padding */
+.container-padding {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+    .container-padding {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container-padding {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+/* Gradient background */
+.gradient-bg {
+    background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+}
