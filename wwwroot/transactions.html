@@ -3,195 +3,334 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Transactions - Personal Finance App</title>
+    <title>Transactions - Personal Finance</title>
     <meta name="theme-color" content="#3B82F6">
+    
+    <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192x192.png">
+    
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 min-h-screen">
     <!-- Navigation -->
-    <nav class="bg-gradient-to-r from-blue-600 to-blue-700 shadow-xl">
+    <nav class="bg-white shadow-sm border-b">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <a href="index.html" class="text-white text-xl font-bold flex items-center">
-                            <i class="fas fa-wallet mr-2 text-yellow-300"></i>
-                            <span class="bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-                                Personal Finance
-                            </span>
-                        </a>
-                    </div>
+                    <a href="/dashboard.html" class="flex items-center">
+                        <i class="fas fa-arrow-left text-gray-600 mr-2"></i>
+                        <span class="text-lg font-semibold text-gray-900">Transactions</span>
+                    </a>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button id="installBtn" class="hidden bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition-all duration-200 shadow-md hover:shadow-lg">
-                        <i class="fas fa-download mr-1"></i>Installer
+                    <button id="addTransactionBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-plus mr-1"></i>Ajouter
                     </button>
-                    <button id="loginBtn" class="bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition-all duration-200 shadow-md hover:shadow-lg">
-                        <i class="fas fa-sign-out-alt mr-1"></i>Déconnexion
+                    <button id="loginBtn" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-sign-out-alt"></i>
                     </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Sidebar Navigation -->
-    <div class="flex">
-        <div class="w-64 bg-white shadow-lg min-h-screen">
-            <div class="p-4">
-                <nav class="space-y-2">
-                    <a href="dashboard.html" class="nav-link-inactive">
-                        <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
-                    </a>
-                    <a href="accounts.html" class="nav-link-inactive">
-                        <i class="fas fa-credit-card mr-3"></i>Comptes
-                    </a>
-                    <a href="transactions.html" class="nav-link-active">
-                        <i class="fas fa-exchange-alt mr-3"></i>Transactions
-                    </a>
-                    <a href="statistics.html" class="nav-link-inactive">
-                        <i class="fas fa-chart-pie mr-3"></i>Statistiques
-                    </a>
-                    <a href="export.html" class="nav-link-inactive">
-                        <i class="fas fa-download mr-3"></i>Export
-                    </a>
-                    <a href="settings.html" class="nav-link-inactive">
-                        <i class="fas fa-cog mr-3"></i>Paramètres
-                    </a>
-                </nav>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white rounded-lg p-4 shadow-sm">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-arrow-up text-green-600"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-gray-500">Revenus</p>
+                        <p id="totalIncome" class="text-lg font-semibold text-green-600">0€</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg p-4 shadow-sm">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-arrow-down text-red-600"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-gray-500">Dépenses</p>
+                        <p id="totalExpense" class="text-lg font-semibold text-red-600">0€</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg p-4 shadow-sm">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-balance-scale text-blue-600"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-gray-500">Solde</p>
+                        <p id="balance" class="text-lg font-semibold text-blue-600">0€</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-8">
-            <div class="max-w-7xl mx-auto">
-                <!-- Header -->
-                <div class="mb-8 flex justify-between items-center">
-                    <div>
-                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Transactions</h1>
-                        <p class="text-gray-600">Historique de vos mouvements financiers</p>
+        <!-- Filters -->
+        <div class="bg-white rounded-lg p-4 shadow-sm mb-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                    <select id="filterType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="all">Tous</option>
+                        <option value="income">Revenus</option>
+                        <option value="expense">Dépenses</option>
+                        <option value="transfer">Transferts</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
+                    <select id="filterCategory" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="all">Toutes</option>
+                        <option value="salary">Salaire</option>
+                        <option value="groceries">Courses</option>
+                        <option value="transport">Transport</option>
+                        <option value="entertainment">Loisirs</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Compte</label>
+                    <select id="filterAccount" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="all">Tous</option>
+                        <option value="compte-courant">Compte Courant</option>
+                        <option value="livret-a">Livret A</option>
+                        <option value="carte-credit">Carte Crédit</option>
+                    </select>
+                </div>
+                
+                <div class="lg:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Recherche</label>
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="Description, tags..." 
+                               class="w-full px-3 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                     </div>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
-                        <i class="fas fa-plus mr-2"></i>Nouvelle Transaction
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions List -->
+        <div id="transactionsList" class="space-y-4">
+            <!-- Les transactions seront chargées ici -->
+        </div>
+    </div>
+
+    <!-- Add Transaction Modal -->
+    <div id="addTransactionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold">Nouvelle Transaction</h2>
+                    <button onclick="transactionManager.hideAddModal()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
-
-                <!-- Filters -->
-                <div class="bg-white p-4 rounded-lg shadow mb-6">
-                    <div class="flex flex-wrap gap-4">
-                        <select class="px-3 py-2 border border-gray-300 rounded-md">
-                            <option>Tous les comptes</option>
-                            <option>Compte Principal</option>
-                            <option>Épargne</option>
-                            <option>Investissements</option>
+                
+                <form id="addTransactionForm" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                            <input type="date" name="date" required 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   value="${new Date().toISOString().split('T')[0]}">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                            <select name="type" required 
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="income">Revenu</option>
+                                <option value="expense">Dépense</option>
+                                <option value="transfer">Transfert</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <input type="text" name="description" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="Ex: Courses Carrefour">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Montant (€)</label>
+                            <input type="number" name="amount" step="0.01" required 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   placeholder="85.50">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Compte</label>
+                            <select name="account" required 
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="compte-courant">Compte Courant</option>
+                                <option value="livret-a">Livret A</option>
+                                <option value="carte-credit">Carte Crédit</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
+                        <select name="category" required 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="groceries">Courses</option>
+                            <option value="transport">Transport</option>
+                            <option value="entertainment">Loisirs</option>
+                            <option value="bills">Factures</option>
+                            <option value="health">Santé</option>
+                            <option value="salary">Salaire</option>
+                            <option value="other">Autre</option>
                         </select>
-                        <select class="px-3 py-2 border border-gray-300 rounded-md">
-                            <option>Tous les types</option>
-                            <option>Crédit</option>
-                            <option>Débit</option>
-                        </select>
-                        <input type="date" class="px-3 py-2 border border-gray-300 rounded-md">
-                        <input type="date" class="px-3 py-2 border border-gray-300 rounded-md">
-                        <button class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700">
-                            <i class="fas fa-search mr-2"></i>Filtrer
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tags (séparés par des virgules)</label>
+                        <input type="text" name="tags" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="alimentation, supermarché">
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <button type="button" onclick="transactionManager.hideAddModal()" 
+                                class="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            Annuler
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            Ajouter
                         </button>
                     </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Transaction Modal -->
+    <div id="editTransactionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold">Modifier Transaction</h2>
+                    <button onclick="document.getElementById('editTransactionModal').classList.add('hidden')" 
+                            class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-
-                <!-- Transactions List -->
-                <div class="bg-white rounded-lg shadow">
-                    <div class="px-6 py-4 border-b border-gray-200">
-                        <h3 class="text-lg font-semibold text-gray-900">Liste des Transactions</h3>
-                    </div>
-                    <div class="divide-y divide-gray-200">
-                        <!-- Transaction 1 -->
-                        <div class="p-6 flex items-center justify-between hover:bg-gray-50">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-4">
-                                    <i class="fas fa-arrow-down text-green-600"></i>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-gray-900">Salaire</p>
-                                    <p class="text-sm text-gray-500">Compte Principal • 15 Oct 2024</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-semibold text-green-600">+2,500.00 €</p>
-                                <p class="text-sm text-gray-500">Crédit</p>
-                            </div>
+                
+                <form id="editTransactionForm" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                            <input type="date" id="editDate" required 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
-
-                        <!-- Transaction 2 -->
-                        <div class="p-6 flex items-center justify-between hover:bg-gray-50">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-4">
-                                    <i class="fas fa-arrow-up text-red-600"></i>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-gray-900">Courses Supermarché</p>
-                                    <p class="text-sm text-gray-500">Carte de Crédit • 14 Oct 2024</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-semibold text-red-600">-85.40 €</p>
-                                <p class="text-sm text-gray-500">Débit</p>
-                            </div>
-                        </div>
-
-                        <!-- Transaction 3 -->
-                        <div class="p-6 flex items-center justify-between hover:bg-gray-50">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-4">
-                                    <i class="fas fa-arrow-up text-red-600"></i>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-gray-900">Essence</p>
-                                    <p class="text-sm text-gray-500">Compte Principal • 13 Oct 2024</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-semibold text-red-600">-65.20 €</p>
-                                <p class="text-sm text-gray-500">Débit</p>
-                            </div>
-                        </div>
-
-                        <!-- Transaction 4 -->
-                        <div class="p-6 flex items-center justify-between hover:bg-gray-50">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-4">
-                                    <i class="fas fa-arrow-down text-green-600"></i>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-gray-900">Dividendes</p>
-                                    <p class="text-sm text-gray-500">Investissements • 12 Oct 2024</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-semibold text-green-600">+150.00 €</p>
-                                <p class="text-sm text-gray-500">Crédit</p>
-                            </div>
-                        </div>
-
-                        <!-- Transaction 5 -->
-                        <div class="p-6 flex items-center justify-between hover:bg-gray-50">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-4">
-                                    <i class="fas fa-arrow-up text-red-600"></i>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-gray-900">Loyer</p>
-                                    <p class="text-sm text-gray-500">Compte Principal • 1 Oct 2024</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-semibold text-red-600">-800.00 €</p>
-                                <p class="text-sm text-gray-500">Débit</p>
-                            </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                            <select id="editType" required 
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="income">Revenu</option>
+                                <option value="expense">Dépense</option>
+                                <option value="transfer">Transfert</option>
+                            </select>
                         </div>
                     </div>
-                </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <input type="text" id="editDescription" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Montant (€)</label>
+                            <input type="number" id="editAmount" step="0.01" required 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Compte</label>
+                            <select id="editAccount" required 
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="compte-courant">Compte Courant</option>
+                                <option value="livret-a">Livret A</option>
+                                <option value="carte-credit">Carte Crédit</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
+                        <select id="editCategory" required 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="groceries">Courses</option>
+                            <option value="transport">Transport</option>
+                            <option value="entertainment">Loisirs</option>
+                            <option value="bills">Factures</option>
+                            <option value="health">Santé</option>
+                            <option value="salary">Salaire</option>
+                            <option value="other">Autre</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+                        <input type="text" id="editTags" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <button type="button" onclick="document.getElementById('editTransactionModal').classList.add('hidden')" 
+                                class="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            Annuler
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            Modifier
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -201,26 +340,7 @@
 
     <!-- Scripts -->
     <script src="/js/auth.js"></script>
+    <script src="/js/transactions.js"></script>
     <script src="/js/pwa.js"></script>
-    <script>
-        // Protection d'authentification
-        document.addEventListener('DOMContentLoaded', function() {
-            if (!window.authManager || !window.authManager.requireAuth()) {
-                return;
-            }
-            
-            // Setup logout button
-            const logoutBtn = document.getElementById('loginBtn');
-            if (logoutBtn) {
-                logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt mr-1"></i>Déconnexion';
-                logoutBtn.onclick = () => window.authManager.logout();
-            }
-            
-            // Initialize PWA
-            if (window.PWAManager) {
-                new PWAManager();
-            }
-        });
-    </script>
 </body>
 </html>
