@@ -39,10 +39,58 @@
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Animations -->
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .animation-delay-200 {
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+        
+        .animation-delay-400 {
+            animation-delay: 0.4s;
+            opacity: 0;
+        }
+        
+        .animation-delay-600 {
+            animation-delay: 0.6s;
+            opacity: 0;
+        }
+        
+        .hover-lift {
+            transition: transform 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
     <!-- Navigation -->
-    <nav class="bg-white shadow-lg">
+    <nav class="bg-white shadow-lg sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
@@ -53,11 +101,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <button id="installBtn" class="hidden bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg">
-                        <i class="fas fa-download mr-1"></i>Installer
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <button id="installBtn" class="hidden bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg">
+                        <i class="fas fa-download mr-1"></i><span class="hidden sm:inline">Installer</span>
                     </button>
-                    <button id="loginBtn" class="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg">
+                    <button id="loginBtn" class="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg">
                         <i class="fas fa-sign-in-alt mr-1"></i>Connexion
                     </button>
                 </div>
@@ -68,18 +116,20 @@
     <!-- Hero Section -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
         <div class="text-center">
-            <h1 class="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
-                Vos finances
-                <span class="text-blue-600">sécurisées</span>
-            </h1>
-            <p class="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
-                PWA moderne avec authentification et chiffrement
-            </p>
-            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
-                <button id="loginBtnHero" class="bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-medium hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+            <div class="animate-fade-in-up">
+                <h1 class="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
+                    Vos finances
+                    <span class="text-blue-600 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">sécurisées</span>
+                </h1>
+                <p class="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
+                    PWA moderne avec authentification et chiffrement
+                </p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 animate-fade-in-up animation-delay-200">
+                <button id="loginBtnHero" class="bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-medium hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
                     <i class="fas fa-sign-in-alt mr-2"></i>Connexion
                 </button>
-                <button id="registerBtnHero" class="bg-white text-blue-600 border-2 border-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-medium hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl">
+                <button id="registerBtnHero" class="bg-white text-blue-600 border-2 border-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-medium hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
                     <i class="fas fa-user-plus mr-2"></i>S'inscrire
                 </button>
             </div>
@@ -96,7 +146,7 @@
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
                 <!-- Feature 1 -->
-                <div class="text-center p-4 sm:p-6">
+                <div class="text-center p-4 sm:p-6 bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 hover-lift animate-fade-in-up animation-delay-200">
                     <div class="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                         <i class="fas fa-shield-alt text-lg sm:text-2xl text-blue-600"></i>
                     </div>
@@ -105,7 +155,7 @@
                 </div>
 
                 <!-- Feature 2 -->
-                <div class="text-center p-4 sm:p-6">
+                <div class="text-center p-4 sm:p-6 bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 hover-lift animate-fade-in-up animation-delay-400">
                     <div class="w-12 h-12 sm:w-16 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                         <i class="fas fa-mobile-alt text-lg sm:text-2xl text-green-600"></i>
                     </div>
@@ -114,7 +164,7 @@
                 </div>
 
                 <!-- Feature 3 -->
-                <div class="text-center p-4 sm:p-6">
+                <div class="text-center p-4 sm:p-6 bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 hover-lift animate-fade-in-up animation-delay-600">
                     <div class="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                         <i class="fas fa-chart-line text-lg sm:text-2xl text-purple-600"></i>
                     </div>
@@ -123,7 +173,7 @@
                 </div>
 
                 <!-- Feature 4 -->
-                <div class="text-center p-4 sm:p-6">
+                <div class="text-center p-4 sm:p-6 bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 hover-lift animate-fade-in-up animation-delay-200">
                     <div class="w-12 h-12 sm:w-16 sm:h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                         <i class="fas fa-credit-card text-lg sm:text-2xl text-orange-600"></i>
                     </div>
@@ -132,7 +182,7 @@
                 </div>
 
                 <!-- Feature 5 -->
-                <div class="text-center p-4 sm:p-6">
+                <div class="text-center p-4 sm:p-6 bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 hover-lift animate-fade-in-up animation-delay-400">
                     <div class="w-12 h-12 sm:w-16 sm:h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                         <i class="fas fa-download text-lg sm:text-2xl text-red-600"></i>
                     </div>
@@ -141,7 +191,7 @@
                 </div>
 
                 <!-- Feature 6 -->
-                <div class="text-center p-4 sm:p-6">
+                <div class="text-center p-4 sm:p-6 bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 hover-lift animate-fade-in-up animation-delay-600">
                     <div class="w-12 h-12 sm:w-16 sm:h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                         <i class="fas fa-sync text-lg sm:text-2xl text-indigo-600"></i>
                     </div>

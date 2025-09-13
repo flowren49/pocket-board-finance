@@ -59,14 +59,18 @@ class AuthManager {
         // Mettre à jour les boutons de navigation
         const loginBtns = document.querySelectorAll('#loginBtn, #loginBtnHero, #loginBtnCTA');
         loginBtns.forEach(btn => {
-            btn.innerHTML = '<i class="fas fa-sign-out-alt mr-1"></i>Déconnexion';
-            btn.onclick = () => this.logout();
+            if (btn) {
+                btn.innerHTML = '<i class="fas fa-sign-out-alt mr-1"></i>Déconnexion';
+                btn.onclick = () => this.logout();
+            }
         });
 
-        // Rediriger vers le dashboard
-        setTimeout(() => {
-            window.location.href = '/dashboard.html';
-        }, 1000);
+        // Ne rediriger que depuis la page vitrine
+        if (window.location.pathname === '/index.html' || window.location.pathname === '/') {
+            setTimeout(() => {
+                window.location.href = '/dashboard.html';
+            }, 1000);
+        }
     }
 
     showPublicUI() {

@@ -49,8 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Redirect to dashboard
             setTimeout(() => {
-                window.location.href = '/dashboard.html';
-            }, 1000);
+                if (window.location.pathname.includes('login.html')) {
+                    window.location.href = '/dashboard.html';
+                }
+            }, 1500);
 
         } catch (error) {
             showToast('Erreur de connexion: ' + error.message, 'error');
@@ -129,8 +131,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (token && isTokenValid(token)) {
         showToast('Vous êtes déjà connecté', 'info');
         setTimeout(() => {
-            window.location.href = '/dashboard.html';
-        }, 1000);
+            if (window.location.pathname.includes('login.html')) {
+                window.location.href = '/dashboard.html';
+            }
+        }, 1500);
     }
 });
 

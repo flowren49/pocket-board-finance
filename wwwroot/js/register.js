@@ -63,7 +63,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Redirect to dashboard
             setTimeout(() => {
-                window.location.href = '/dashboard.html';
+                if (window.location.pathname.includes('register.html')) {
+                    window.location.href = '/dashboard.html';
+                }
             }, 1500);
 
         } catch (error) {
@@ -229,8 +231,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (token && isTokenValid(token)) {
         showToast('Vous êtes déjà connecté', 'info');
         setTimeout(() => {
-            window.location.href = '/dashboard.html';
-        }, 1000);
+            if (window.location.pathname.includes('register.html')) {
+                window.location.href = '/dashboard.html';
+            }
+        }, 1500);
     }
 });
 

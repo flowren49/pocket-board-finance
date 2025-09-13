@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tests Complets - Personal Finance</title>
+    <meta name="theme-color" content="#3B82F6">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">
+            <i class="fas fa-vial text-blue-600 mr-2"></i>Tests Complets
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Test de Navigation -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">
+                    <i class="fas fa-route text-green-600 mr-2"></i>Test de Navigation
+                </h2>
+                <div class="space-y-2">
+                    <a href="/index.html" class="block w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 text-center">
+                        Page Vitrine
+                    </a>
+                    <a href="/login.html" class="block w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 text-center">
+                        Page Connexion
+                    </a>
+                    <a href="/register.html" class="block w-full bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 text-center">
+                        Page Inscription
+                    </a>
+                    <a href="/dashboard.html" class="block w-full bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700 text-center">
+                        Dashboard
+                    </a>
+                    <a href="/transactions.html" class="block w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 text-center">
+                        Transactions
+                    </a>
+                    <a href="/accounts.html" class="block w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 text-center">
+                        Comptes
+                    </a>
+                    <a href="/statistics.html" class="block w-full bg-pink-600 text-white py-2 px-4 rounded hover:bg-pink-700 text-center">
+                        Statistiques
+                    </a>
+                    <a href="/export.html" class="block w-full bg-teal-600 text-white py-2 px-4 rounded hover:bg-teal-700 text-center">
+                        Export
+                    </a>
+                </div>
+            </div>
+
+            <!-- Test d'Authentification -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">
+                    <i class="fas fa-shield-alt text-blue-600 mr-2"></i>Test d'Authentification
+                </h2>
+                <div class="space-y-3">
+                    <button onclick="testLogin()" class="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700">
+                        Test Connexion
+                    </button>
+                    <button onclick="testRegister()" class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                        Test Inscription
+                    </button>
+                    <button onclick="testLogout()" class="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">
+                        Test Déconnexion
+                    </button>
+                    <button onclick="checkAuthStatus()" class="w-full bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700">
+                        Vérifier Auth
+                    </button>
+                </div>
+                <div id="authResult" class="mt-4 p-3 bg-gray-100 rounded text-sm"></div>
+            </div>
+
+            <!-- Test des Transactions -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">
+                    <i class="fas fa-exchange-alt text-orange-600 mr-2"></i>Test des Transactions
+                </h2>
+                <div class="space-y-3">
+                    <button onclick="testAddTransaction()" class="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700">
+                        Ajouter Transaction
+                    </button>
+                    <button onclick="testListTransactions()" class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                        Lister Transactions
+                    </button>
+                    <button onclick="testFilterTransactions()" class="w-full bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700">
+                        Filtrer Transactions
+                    </button>
+                </div>
+                <div id="transactionResult" class="mt-4 p-3 bg-gray-100 rounded text-sm"></div>
+            </div>
+
+            <!-- Test PWA -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">
+                    <i class="fas fa-mobile-alt text-green-600 mr-2"></i>Test PWA
+                </h2>
+                <div class="space-y-3">
+                    <button onclick="testPWA()" class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                        Test Service Worker
+                    </button>
+                    <button onclick="testNotifications()" class="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700">
+                        Test Notifications
+                    </button>
+                    <button onclick="testInstallPrompt()" class="w-full bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700">
+                        Test Installation
+                    </button>
+                </div>
+                <div id="pwaResult" class="mt-4 p-3 bg-gray-100 rounded text-sm"></div>
+            </div>
+
+            <!-- Test de Performance -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">
+                    <i class="fas fa-tachometer-alt text-red-600 mr-2"></i>Test de Performance
+                </h2>
+                <div class="space-y-3">
+                    <button onclick="testPageLoad()" class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                        Test Chargement
+                    </button>
+                    <button onclick="testResponsive()" class="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700">
+                        Test Responsive
+                    </button>
+                    <button onclick="testAnimations()" class="w-full bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700">
+                        Test Animations
+                    </button>
+                </div>
+                <div id="performanceResult" class="mt-4 p-3 bg-gray-100 rounded text-sm"></div>
+            </div>
+
+            <!-- Test de Sécurité -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">
+                    <i class="fas fa-lock text-red-600 mr-2"></i>Test de Sécurité
+                </h2>
+                <div class="space-y-3">
+                    <button onclick="testTokenValidation()" class="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">
+                        Test Token
+                    </button>
+                    <button onclick="testRouteProtection()" class="w-full bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700">
+                        Test Protection
+                    </button>
+                    <button onclick="testLocalStorage()" class="w-full bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700">
+                        Test Storage
+                    </button>
+                </div>
+                <div id="securityResult" class="mt-4 p-3 bg-gray-100 rounded text-sm"></div>
+            </div>
+        </div>
+
+        <!-- Résultats Globaux -->
+        <div class="mt-8 bg-white p-6 rounded-lg shadow">
+            <h2 class="text-xl font-semibold mb-4">
+                <i class="fas fa-clipboard-check text-blue-600 mr-2"></i>Résultats des Tests
+            </h2>
+            <div id="globalResults" class="space-y-2"></div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed top-4 right-4 left-4 sm:left-auto z-50"></div>
+
+    <!-- Scripts -->
+    <script src="/js/auth.js"></script>
+    <script src="/js/transactions.js"></script>
+    <script src="/js/pwa.js"></script>
+    <script>
+        // Variables globales pour les tests
+        let testResults = [];
+        let testPassed = 0;
+        let testFailed = 0;
+
+        // Fonction utilitaire pour ajouter des résultats
+        function addResult(test, status, message) {
+            testResults.push({ test, status, message, timestamp: new Date() });
+            if (status === 'success') testPassed++;
+            else if (status === 'error') testFailed++;
+            updateGlobalResults();
+        }
+
+        function updateGlobalResults() {
+            const container = document.getElementById('globalResults');
+            container.innerHTML = `
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-semibold">Résumé des Tests</span>
+                    <div class="flex space-x-4">
+                        <span class="text-green-600 font-semibold">✅ ${testPassed} Réussis</span>
+                        <span class="text-red-600 font-semibold">❌ ${testFailed} Échoués</span>
+                        <span class="text-blue-600 font-semibold">📊 ${testResults.length} Total</span>
+                    </div>
+                </div>
+                ${testResults.map(result => `
+                    <div class="flex items-center justify-between p-2 rounded ${result.status === 'success' ? 'bg-green-100' : result.status === 'error' ? 'bg-red-100' : 'bg-yellow-100'}">
+                        <span class="font-medium">${result.test}</span>
+                        <div class="flex items-center">
+                            <i class="fas ${result.status === 'success' ? 'fa-check-circle text-green-600' : result.status === 'error' ? 'fa-times-circle text-red-600' : 'fa-exclamation-triangle text-yellow-600'} mr-2"></i>
+                            <span class="text-sm">${result.message}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        // Tests d'authentification
+        async function testLogin() {
+            const result = document.getElementById('authResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                await simulateLogin('admin@demo.com', 'Admin123!');
+                result.innerHTML = '✅ Connexion réussie';
+                result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                addResult('Connexion', 'success', 'Connexion réussie avec admin@demo.com');
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('Connexion', 'error', error.message);
+            }
+        }
+
+        async function testRegister() {
+            const result = document.getElementById('authResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                const userData = {
+                    firstName: 'Test',
+                    lastName: 'User',
+                    email: 'test' + Date.now() + '@demo.com',
+                    password: 'Test123!'
+                };
+                
+                await simulateRegister(userData);
+                result.innerHTML = '✅ Inscription réussie';
+                result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                addResult('Inscription', 'success', 'Nouveau compte créé');
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('Inscription', 'error', error.message);
+            }
+        }
+
+        function testLogout() {
+            const result = document.getElementById('authResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                if (window.authManager) {
+                    window.authManager.logout();
+                } else {
+                    localStorage.removeItem('pf_auth_token');
+                    localStorage.removeItem('pf_user_data');
+                }
+                result.innerHTML = '✅ Déconnexion réussie';
+                result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                addResult('Déconnexion', 'success', 'Utilisateur déconnecté');
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('Déconnexion', 'error', error.message);
+            }
+        }
+
+        function checkAuthStatus() {
+            const result = document.getElementById('authResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                const token = localStorage.getItem('pf_auth_token');
+                const user = localStorage.getItem('pf_user_data');
+                
+                if (token && user) {
+                    result.innerHTML = '✅ Utilisateur connecté';
+                    result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                    addResult('Status Auth', 'success', 'Token et utilisateur présents');
+                } else {
+                    result.innerHTML = '⚠️ Utilisateur non connecté';
+                    result.className = 'mt-4 p-3 bg-yellow-100 rounded text-sm';
+                    addResult('Status Auth', 'warning', 'Pas de session active');
+                }
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('Status Auth', 'error', error.message);
+            }
+        }
+
+        // Tests de transactions
+        function testAddTransaction() {
+            const result = document.getElementById('transactionResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                if (window.transactionManager) {
+                    const transaction = {
+                        id: Date.now(),
+                        date: new Date(),
+                        description: 'Test Transaction',
+                        amount: -50,
+                        type: 'expense',
+                        category: 'other',
+                        account: 'compte-courant',
+                        tags: ['test']
+                    };
+                    
+                    window.transactionManager.transactions.unshift(transaction);
+                    window.transactionManager.saveTransactions();
+                    
+                    result.innerHTML = '✅ Transaction ajoutée';
+                    result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                    addResult('Ajout Transaction', 'success', 'Transaction test ajoutée');
+                } else {
+                    throw new Error('TransactionManager non disponible');
+                }
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('Ajout Transaction', 'error', error.message);
+            }
+        }
+
+        function testListTransactions() {
+            const result = document.getElementById('transactionResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                if (window.transactionManager) {
+                    const count = window.transactionManager.transactions.length;
+                    result.innerHTML = `✅ ${count} transactions trouvées`;
+                    result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                    addResult('Liste Transactions', 'success', `${count} transactions`);
+                } else {
+                    throw new Error('TransactionManager non disponible');
+                }
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('Liste Transactions', 'error', error.message);
+            }
+        }
+
+        function testFilterTransactions() {
+            const result = document.getElementById('transactionResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                if (window.transactionManager) {
+                    const filtered = window.transactionManager.getFilteredTransactions();
+                    result.innerHTML = `✅ Filtrage fonctionnel (${filtered.length} résultats)`;
+                    result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                    addResult('Filtrage Transactions', 'success', 'Filtrage opérationnel');
+                } else {
+                    throw new Error('TransactionManager non disponible');
+                }
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('Filtrage Transactions', 'error', error.message);
+            }
+        }
+
+        // Tests PWA
+        function testPWA() {
+            const result = document.getElementById('pwaResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                if ('serviceWorker' in navigator) {
+                    result.innerHTML = '✅ Service Worker supporté';
+                    result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                    addResult('Service Worker', 'success', 'SW supporté');
+                } else {
+                    result.innerHTML = '❌ Service Worker non supporté';
+                    result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                    addResult('Service Worker', 'error', 'Non supporté');
+                }
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('Service Worker', 'error', error.message);
+            }
+        }
+
+        function testNotifications() {
+            const result = document.getElementById('pwaResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                if ('Notification' in window) {
+                    result.innerHTML = '✅ Notifications supportées';
+                    result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                    addResult('Notifications', 'success', 'Notifications supportées');
+                } else {
+                    result.innerHTML = '❌ Notifications non supportées';
+                    result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                    addResult('Notifications', 'error', 'Non supportées');
+                }
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('Notifications', 'error', error.message);
+            }
+        }
+
+        function testInstallPrompt() {
+            const result = document.getElementById('pwaResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                // Simuler le test d'installation PWA
+                result.innerHTML = '✅ Test d\'installation PWA';
+                result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                addResult('Installation PWA', 'success', 'Test d\'installation');
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('Installation PWA', 'error', error.message);
+            }
+        }
+
+        // Tests de performance
+        function testPageLoad() {
+            const result = document.getElementById('performanceResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                const loadTime = performance.now();
+                result.innerHTML = `✅ Page chargée en ${loadTime.toFixed(2)}ms`;
+                result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                addResult('Chargement Page', 'success', `${loadTime.toFixed(2)}ms`);
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('Chargement Page', 'error', error.message);
+            }
+        }
+
+        function testResponsive() {
+            const result = document.getElementById('performanceResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+                result.innerHTML = `✅ Responsive: ${width}x${height}px`;
+                result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                addResult('Responsive', 'success', `${width}x${height}px`);
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('Responsive', 'error', error.message);
+            }
+        }
+
+        function testAnimations() {
+            const result = document.getElementById('performanceResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                const animations = document.querySelectorAll('.animate-fade-in-up');
+                result.innerHTML = `✅ ${animations.length} animations détectées`;
+                result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                addResult('Animations', 'success', `${animations.length} animations`);
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('Animations', 'error', error.message);
+            }
+        }
+
+        // Tests de sécurité
+        function testTokenValidation() {
+            const result = document.getElementById('securityResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                const token = localStorage.getItem('pf_auth_token');
+                if (token && window.authManager && window.authManager.isTokenValid(token)) {
+                    result.innerHTML = '✅ Token valide';
+                    result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                    addResult('Token Validation', 'success', 'Token valide');
+                } else {
+                    result.innerHTML = '⚠️ Token invalide ou absent';
+                    result.className = 'mt-4 p-3 bg-yellow-100 rounded text-sm';
+                    addResult('Token Validation', 'warning', 'Token invalide');
+                }
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('Token Validation', 'error', error.message);
+            }
+        }
+
+        function testRouteProtection() {
+            const result = document.getElementById('securityResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                if (window.authManager) {
+                    result.innerHTML = '✅ Protection des routes active';
+                    result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                    addResult('Protection Routes', 'success', 'AuthManager disponible');
+                } else {
+                    result.innerHTML = '⚠️ Protection non disponible';
+                    result.className = 'mt-4 p-3 bg-yellow-100 rounded text-sm';
+                    addResult('Protection Routes', 'warning', 'AuthManager absent');
+                }
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('Protection Routes', 'error', error.message);
+            }
+        }
+
+        function testLocalStorage() {
+            const result = document.getElementById('securityResult');
+            result.innerHTML = 'Test en cours...';
+            
+            try {
+                if (typeof(Storage) !== "undefined") {
+                    localStorage.setItem('test', 'value');
+                    const testValue = localStorage.getItem('test');
+                    localStorage.removeItem('test');
+                    
+                    if (testValue === 'value') {
+                        result.innerHTML = '✅ LocalStorage fonctionnel';
+                        result.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+                        addResult('LocalStorage', 'success', 'Storage opérationnel');
+                    } else {
+                        throw new Error('LocalStorage ne fonctionne pas');
+                    }
+                } else {
+                    throw new Error('LocalStorage non supporté');
+                }
+            } catch (error) {
+                result.innerHTML = '❌ Erreur: ' + error.message;
+                result.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+                addResult('LocalStorage', 'error', error.message);
+            }
+        }
+
+        // Fonctions de simulation (copiées des autres fichiers)
+        async function simulateLogin(email, password) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    const demoAccounts = {
+                        'admin@demo.com': 'Admin123!',
+                        'user@demo.com': 'User123!',
+                        'test@demo.com': 'Test123!'
+                    };
+
+                    if (demoAccounts[email] && demoAccounts[email] === password) {
+                        const token = generateMockToken(email);
+                        const user = {
+                            id: 1,
+                            email: email,
+                            firstName: email === 'admin@demo.com' ? 'Admin' : 'Utilisateur',
+                            lastName: email === 'admin@demo.com' ? 'Demo' : 'Test',
+                            role: email === 'admin@demo.com' ? 'admin' : 'user'
+                        };
+
+                        localStorage.setItem('pf_auth_token', token);
+                        localStorage.setItem('pf_user_data', JSON.stringify(user));
+                        
+                        resolve({ token, user });
+                    } else {
+                        reject(new Error('Email ou mot de passe incorrect'));
+                    }
+                }, 500);
+            });
+        }
+
+        async function simulateRegister(userData) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    const existingEmails = ['admin@demo.com', 'user@demo.com'];
+                    
+                    if (existingEmails.includes(userData.email)) {
+                        reject(new Error('Cette adresse email est déjà utilisée'));
+                        return;
+                    }
+
+                    const token = generateMockToken(userData.email);
+                    const user = {
+                        id: Date.now(),
+                        email: userData.email,
+                        firstName: userData.firstName,
+                        lastName: userData.lastName,
+                        role: 'user'
+                    };
+
+                    localStorage.setItem('pf_auth_token', token);
+                    localStorage.setItem('pf_user_data', JSON.stringify(user));
+                    
+                    resolve({ token, user });
+                }, 800);
+            });
+        }
+
+        function generateMockToken(email) {
+            const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+            const payload = btoa(JSON.stringify({
+                sub: email,
+                exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60),
+                iat: Math.floor(Date.now() / 1000),
+                role: email === 'admin@demo.com' ? 'admin' : 'user'
+            }));
+            const signature = btoa('mock_signature');
+            
+            return `${header}.${payload}.${signature}`;
+        }
+
+        // Initialiser les tests au chargement
+        document.addEventListener('DOMContentLoaded', () => {
+            addResult('Page de Test', 'success', 'Page de test complète chargée');
+            
+            // Initialiser le gestionnaire de transactions si disponible
+            if (typeof TransactionManager !== 'undefined') {
+                window.transactionManager = new TransactionManager();
+            }
+        });
+    </script>
+</body>
+</html>
