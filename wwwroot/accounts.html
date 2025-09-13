@@ -68,8 +68,19 @@
 
     <!-- Sidebar Navigation -->
     <div class="flex">
-        <div class="w-64 bg-white shadow-lg min-h-screen">
+        <!-- Mobile Menu Button -->
+        <button id="mobileMenuBtn" class="lg:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-lg shadow-lg">
+            <i class="fas fa-bars text-gray-600"></i>
+        </button>
+        
+        <!-- Sidebar -->
+        <div id="sidebar" class="w-64 bg-white shadow-lg min-h-screen fixed lg:relative lg:translate-x-0 -translate-x-full transition-transform duration-300 z-40">
             <div class="p-4">
+                <div class="lg:hidden mb-4">
+                    <button id="closeSidebar" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
                 <nav class="space-y-2">
                     <a href="dashboard.html" class="nav-link-inactive">
                         <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
@@ -92,23 +103,26 @@
                 </nav>
             </div>
         </div>
+        
+        <!-- Overlay for mobile -->
+        <div id="sidebarOverlay" class="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30 hidden"></div>
 
         <!-- Main Content -->
-        <div class="flex-1 p-8">
+        <div class="flex-1 p-4 sm:p-8 lg:ml-0">
             <div class="max-w-7xl mx-auto">
                 <!-- Header -->
-                <div class="mb-8 flex justify-between items-center">
+                <div class="mb-4 sm:mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                     <div>
-                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Comptes</h1>
-                        <p class="text-gray-600">Gérez vos comptes financiers</p>
+                        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">Comptes</h1>
+                        <p class="text-sm sm:text-base text-gray-600">Gestion des comptes</p>
                     </div>
-                    <button onclick="showAddAccountModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
-                        <i class="fas fa-plus mr-2"></i>Ajouter un Compte
+                    <button onclick="showAddAccountModal()" class="bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base">
+                        <i class="fas fa-plus mr-2"></i>Ajouter
                     </button>
                 </div>
 
                 <!-- Accounts Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     <!-- Account Card 1 -->
                     <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
                         <div class="flex items-center justify-between mb-4">

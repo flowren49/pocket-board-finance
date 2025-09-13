@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Setup logout button
     setupLogoutButton();
+    
+    // Setup mobile navigation
+    setupMobileNavigation();
 });
 
 function setupLogoutButton() {
@@ -19,6 +22,37 @@ function setupLogoutButton() {
     if (logoutBtn) {
         logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt mr-1"></i>Déconnexion';
         logoutBtn.onclick = () => window.authManager.logout();
+    }
+}
+
+function setupMobileNavigation() {
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const closeSidebar = document.getElementById('closeSidebar');
+
+    if (mobileMenuBtn && sidebar && sidebarOverlay) {
+        // Open sidebar
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.remove('-translate-x-full');
+            sidebarOverlay.classList.remove('hidden');
+        });
+
+        // Close sidebar
+        const closeSidebarFn = () => {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        };
+
+        closeSidebar?.addEventListener('click', closeSidebarFn);
+        sidebarOverlay.addEventListener('click', closeSidebarFn);
+
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeSidebarFn();
+            }
+        });
     }
 }
 

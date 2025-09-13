@@ -39,8 +39,19 @@
 
     <!-- Sidebar Navigation -->
     <div class="flex">
-        <div class="w-64 bg-white shadow-lg min-h-screen">
+        <!-- Mobile Menu Button -->
+        <button id="mobileMenuBtn" class="lg:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-lg shadow-lg">
+            <i class="fas fa-bars text-gray-600"></i>
+        </button>
+        
+        <!-- Sidebar -->
+        <div id="sidebar" class="w-64 bg-white shadow-lg min-h-screen fixed lg:relative lg:translate-x-0 -translate-x-full transition-transform duration-300 z-40">
             <div class="p-4">
+                <div class="lg:hidden mb-4">
+                    <button id="closeSidebar" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
                 <nav class="space-y-2">
                     <a href="dashboard.html" class="nav-link-inactive">
                         <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
@@ -63,18 +74,21 @@
                 </nav>
             </div>
         </div>
+        
+        <!-- Overlay for mobile -->
+        <div id="sidebarOverlay" class="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30 hidden"></div>
 
         <!-- Main Content -->
-        <div class="flex-1 p-8">
+        <div class="flex-1 p-4 sm:p-8 lg:ml-0">
             <div class="max-w-7xl mx-auto">
                 <!-- Header -->
-                <div class="mb-8">
-                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Export des Données</h1>
-                    <p class="text-gray-600">Exportez vos données financières dans différents formats</p>
+                <div class="mb-4 sm:mb-8">
+                    <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">Export</h1>
+                    <p class="text-sm sm:text-base text-gray-600">Export de données</p>
                 </div>
 
                 <!-- Export Options -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
                     <!-- Excel Export -->
                     <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
                         <div class="flex items-center mb-4">
