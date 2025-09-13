@@ -422,52 +422,88 @@ class AccountManager {
 }
 
 // Navigation mobile
-function setupMobileNavigation() {
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const sidebar = document.getElementById('sidebar');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const closeSidebar = document.getElementById('closeSidebar');
+function     setupMobileNavigation() {
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeSidebar = document.getElementById('closeSidebar');
 
-    if (mobileMenuBtn && sidebar && sidebarOverlay) {
-        let isOpen = false;
+        if (mobileMenuBtn && sidebar && sidebarOverlay) {
+            let isOpen = false;
 
-        // Open sidebar
-        mobileMenuBtn.addEventListener('click', () => {
-            if (!isOpen) {
+            // Fonction pour fermer la sidebar
+            const closeSidebarFn = () => {
+                sidebar.classList.add('-translate-x-full');
+                sidebarOverlay.classList.add('hidden');
+                mobileMenuBtn.classList.remove('hamburger-open');
+                isOpen = false;
+                document.body.style.overflow = ''; // Restaurer le scroll
+            };
+
+            // Fonction pour ouvrir la sidebar
+            const openSidebarFn = () => {
                 sidebar.classList.remove('-translate-x-full');
                 sidebarOverlay.classList.remove('hidden');
                 mobileMenuBtn.classList.add('hamburger-open');
                 isOpen = true;
-            } else {
-                closeSidebarFn();
-            }
-        });
+                document.body.style.overflow = 'hidden'; // Empêcher le scroll
+            };
 
-        // Close sidebar
-        const closeSidebarFn = () => {
-            sidebar.classList.add('-translate-x-full');
-            sidebarOverlay.classList.add('hidden');
-            mobileMenuBtn.classList.remove('hamburger-open');
-            isOpen = false;
-        };
+            // Toggle sidebar
+            mobileMenuBtn.addEventListener('click', () => {
+                if (!isOpen) {
+                    openSidebarFn();
+                } else {
+                    closeSidebarFn();
+                }
+            });
 
-        closeSidebar?.addEventListener('click', closeSidebarFn);
-        sidebarOverlay.addEventListener('click', closeSidebarFn);
+            // Close sidebar events
+            closeSidebar?.addEventListener('click', closeSidebarFn);
+            sidebarOverlay.addEventListener('click', closeSidebarFn);
 
-        // Close on escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && isOpen) {
-                closeSidebarFn();
-            }
-        });
+            // Close sidebar when clicking on nav links (mobile only)
+            const navLinks = sidebar.querySelectorAll('a, button');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024 && isOpen) {
+                        closeSidebarFn();
+                    }
+                });
+            });
+
+            // Close on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && isOpen) {
+                    closeSidebarFn();
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if (window.innerWidth >= 1024 && isOpen) {
+                    closeSidebarFn();
+                }
+            });
+        }
     }
-}
 
 // Fonction pour afficher le modal d'ajout (compatibilité)
 function showAddAccountModal() {
     if (window.accountManager) {
         window.accountManager.showAddModal();
     }
+}
+
+// Fonctions pour les actions rapides
+function showQuickAdd() {
+    if (window.accountManager) {
+        window.accountManager.showAddModal();
+    }
+}
+
+function showSettings() {
+    console.log('Ouverture des paramètres');
 }
 
 // Initialisation

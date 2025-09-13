@@ -24,6 +24,17 @@ document.addEventListener('DOMContentLoaded', function() {
     setupMobileNavigation();
 });
 
+// Fonctions pour les actions rapides
+function showQuickAdd() {
+    // Afficher un modal d'ajout rapide ou rediriger
+    window.location.href = 'transactions.html?action=add';
+}
+
+function showSettings() {
+    // Afficher les paramètres ou rediriger
+    console.log('Ouverture des paramètres');
+}
+
 function initUserInterface() {
     const user = window.authManager.getUser();
     if (user) {
@@ -60,32 +71,57 @@ function setupMobileNavigation() {
     if (mobileMenuBtn && sidebar && sidebarOverlay) {
         let isOpen = false;
 
-        // Open sidebar
-        mobileMenuBtn.addEventListener('click', () => {
-            if (!isOpen) {
-                sidebar.classList.remove('-translate-x-full');
-                sidebarOverlay.classList.remove('hidden');
-                mobileMenuBtn.classList.add('hamburger-open');
-                isOpen = true;
-            } else {
-                closeSidebarFn();
-            }
-        });
-
-        // Close sidebar
+        // Fonction pour fermer la sidebar
         const closeSidebarFn = () => {
             sidebar.classList.add('-translate-x-full');
             sidebarOverlay.classList.add('hidden');
             mobileMenuBtn.classList.remove('hamburger-open');
             isOpen = false;
+            document.body.style.overflow = ''; // Restaurer le scroll
         };
 
+        // Fonction pour ouvrir la sidebar
+        const openSidebarFn = () => {
+            sidebar.classList.remove('-translate-x-full');
+            sidebarOverlay.classList.remove('hidden');
+            mobileMenuBtn.classList.add('hamburger-open');
+            isOpen = true;
+            document.body.style.overflow = 'hidden'; // Empêcher le scroll
+        };
+
+        // Toggle sidebar
+        mobileMenuBtn.addEventListener('click', () => {
+            if (!isOpen) {
+                openSidebarFn();
+            } else {
+                closeSidebarFn();
+            }
+        });
+
+        // Close sidebar events
         closeSidebar?.addEventListener('click', closeSidebarFn);
         sidebarOverlay.addEventListener('click', closeSidebarFn);
+
+        // Close sidebar when clicking on nav links (mobile only)
+        const navLinks = sidebar.querySelectorAll('a, button');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 1024 && isOpen) {
+                    closeSidebarFn();
+                }
+            });
+        });
 
         // Close on escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && isOpen) {
+                closeSidebarFn();
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024 && isOpen) {
                 closeSidebarFn();
             }
         });

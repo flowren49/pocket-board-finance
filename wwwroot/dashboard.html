@@ -57,13 +57,87 @@
         }
         
         .mobile-sidebar {
-            backdrop-filter: blur(10px);
-            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .nav-link:hover::before {
+            left: 100%;
+        }
+        
+        .nav-link-active {
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .nav-link-inactive {
+            color: #4B5563;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .nav-link-inactive:hover {
+            background: linear-gradient(135deg, #F3F4F6, #E5E7EB);
+            color: #1F2937;
+            transform: translateX(4px);
+        }
+        
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
         }
         
         @media (max-width: 1024px) {
             .mobile-sidebar {
                 background-color: rgba(255, 255, 255, 0.98);
+                border-right: 1px solid rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-link {
+                padding: 14px 16px;
+                font-size: 16px;
+            }
+            
+            .nav-link i {
+                font-size: 18px;
+                margin-right: 12px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .nav-link {
+                padding: 16px 20px;
+                font-size: 17px;
+            }
+            
+            .nav-link i {
+                font-size: 20px;
+                margin-right: 16px;
             }
         }
     </style>
@@ -98,42 +172,81 @@
     <!-- Sidebar Navigation -->
     <div class="flex">
         <!-- Mobile Menu Button -->
-        <button id="mobileMenuBtn" class="lg:hidden fixed top-4 left-4 z-50 bg-white p-3 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+        <button id="mobileMenuBtn" class="lg:hidden fixed top-4 left-4 z-50 bg-white p-3 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-200">
             <div class="w-6 h-6 flex flex-col justify-center items-center">
-                <span class="hamburger-line block w-5 h-0.5 bg-gray-600 transition-all duration-300"></span>
-                <span class="hamburger-line block w-5 h-0.5 bg-gray-600 transition-all duration-300 mt-1"></span>
-                <span class="hamburger-line block w-5 h-0.5 bg-gray-600 transition-all duration-300 mt-1"></span>
+                <span class="hamburger-line block w-5 h-0.5 bg-gray-700 transition-all duration-300"></span>
+                <span class="hamburger-line block w-5 h-0.5 bg-gray-700 transition-all duration-300 mt-1"></span>
+                <span class="hamburger-line block w-5 h-0.5 bg-gray-700 transition-all duration-300 mt-1"></span>
             </div>
         </button>
         
         <!-- Sidebar -->
-        <div id="sidebar" class="w-64 mobile-sidebar shadow-lg min-h-screen fixed lg:relative lg:translate-x-0 -translate-x-full transition-transform duration-300 z-40">
-            <div class="p-4">
-                <div class="lg:hidden mb-4">
-                    <button id="closeSidebar" class="text-gray-600 hover:text-gray-900">
-                        <i class="fas fa-times"></i>
+        <div id="sidebar" class="w-72 mobile-sidebar shadow-2xl min-h-screen fixed lg:relative lg:translate-x-0 -translate-x-full transition-all duration-300 z-40">
+            <div class="p-6">
+                <!-- Header avec logo et bouton fermer -->
+                <div class="lg:hidden flex items-center justify-between mb-8 pb-4 border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-wallet text-blue-600 text-2xl mr-3"></i>
+                        <span class="text-xl font-bold text-gray-800">Finance</span>
+                    </div>
+                    <button id="closeSidebar" class="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-times text-xl"></i>
                     </button>
                 </div>
-                <nav class="space-y-2">
-                    <a href="dashboard.html" class="nav-link-active">
-                        <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
+                
+                <!-- Navigation -->
+                <nav class="space-y-1">
+                    <a href="dashboard.html" class="nav-link nav-link-active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
                     </a>
-                    <a href="accounts.html" class="nav-link-inactive">
-                        <i class="fas fa-credit-card mr-3"></i>Comptes
+                    <a href="accounts.html" class="nav-link nav-link-inactive">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Comptes</span>
                     </a>
-                    <a href="transactions.html" class="nav-link-inactive">
-                        <i class="fas fa-exchange-alt mr-3"></i>Transactions
+                    <a href="transactions.html" class="nav-link nav-link-inactive">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Transactions</span>
                     </a>
-                    <a href="statistics.html" class="nav-link-inactive">
-                        <i class="fas fa-chart-pie mr-3"></i>Statistiques
+                    <a href="statistics.html" class="nav-link nav-link-inactive">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Statistiques</span>
                     </a>
-                    <a href="export.html" class="nav-link-inactive">
-                        <i class="fas fa-download mr-3"></i>Export
+                    <a href="export.html" class="nav-link nav-link-inactive">
+                        <i class="fas fa-download"></i>
+                        <span>Export</span>
                     </a>
-                    <a href="settings.html" class="nav-link-inactive">
-                        <i class="fas fa-cog mr-3"></i>Paramètres
-                    </a>
+                    
+                    <!-- Séparateur -->
+                    <div class="my-6 border-t border-gray-200"></div>
+                    
+                    <!-- Actions rapides -->
+                    <div class="space-y-1">
+                        <button class="nav-link nav-link-inactive w-full text-left" onclick="showQuickAdd()">
+                            <i class="fas fa-plus"></i>
+                            <span>Ajout rapide</span>
+                        </button>
+                        <a href="#" class="nav-link nav-link-inactive" onclick="showSettings()">
+                            <i class="fas fa-cog"></i>
+                            <span>Paramètres</span>
+                        </a>
+                    </div>
                 </nav>
+                
+                <!-- Footer avec info utilisateur -->
+                <div class="absolute bottom-6 left-6 right-6">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-100">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-user text-white text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-gray-800">Utilisateur</p>
+                                <p class="text-xs text-gray-600">Connecté</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -141,7 +254,7 @@
         <div id="sidebarOverlay" class="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30 hidden"></div>
 
         <!-- Main Content -->
-        <div class="flex-1 p-4 sm:p-8 lg:ml-0">
+        <div class="flex-1 p-4 sm:p-6 lg:p-8 lg:ml-0 min-h-screen">
             <div class="max-w-7xl mx-auto">
                 <!-- Header -->
                 <div class="mb-4 sm:mb-8">
@@ -291,5 +404,6 @@
     <script src="/js/dashboard.js"></script>
     <script src="/js/backend-integration.js"></script>
     <script src="/js/pwa.js"></script>
+    <script src="/js/improve-mobile-content.js"></script>
 </body>
 </html>
