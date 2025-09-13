@@ -33,9 +33,7 @@
                         }
                     },
                     animation: {
-                        'fade-in-up': 'fadeInUp 0.6s ease-out',
-                        'fade-in-down': 'fadeInDown 0.6s ease-out',
-                        'float': 'float 3s ease-in-out infinite',
+                        'fade-in': 'fadeIn 0.3s ease-out',
                     }
                 }
             }
@@ -56,31 +54,13 @@
             font-family: 'Inter', sans-serif;
         }
         
-        @keyframes fadeInUp {
+        @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(30px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
             }
-        }
-        
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
         }
         
         .gradient-text {
@@ -102,24 +82,20 @@
         
         .btn-primary {
             background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            transition: all 0.3s ease;
+            transition: background 0.2s ease;
         }
         
         .btn-primary:hover {
             background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
         }
         
         .btn-secondary {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            transition: all 0.3s ease;
+            transition: background 0.2s ease;
         }
         
         .btn-secondary:hover {
             background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
         }
         
         .mobile-nav {
@@ -130,7 +106,7 @@
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 9999;
+            z-index: 50;
         }
         
         .mobile-nav.active {
@@ -145,8 +121,8 @@
             width: 280px;
             background: white;
             transform: translateX(100%);
-            transition: transform 0.3s ease;
-            z-index: 10000;
+            transition: transform 0.2s ease;
+            z-index: 51;
             overflow-y: auto;
         }
         
@@ -206,7 +182,7 @@
 </head>
 <body class="bg-gray-50">
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-40 bg-white/95 backdrop-blur-md border-b border-gray-200">
+    <nav class="fixed top-0 w-full z-30 bg-white/95 backdrop-blur-md border-b border-gray-200">
         <div class="max-w-7xl mx-auto container-padding">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
@@ -290,7 +266,7 @@
     <section class="hero-pattern pt-20 sm:pt-24 pb-12 sm:pb-16">
         <div class="max-w-7xl mx-auto container-padding">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-                <div class="animate-fade-in-up text-center lg:text-left">
+                <div class="text-center lg:text-left">
                     <h1 class="hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
                         Maîtrisez Vos Finances
                         <span class="gradient-text block">Facilement</span>
@@ -325,7 +301,7 @@
                     </div>
                 </div>
                 
-                <div class="animate-fade-in-up animation-delay-200 mt-8 lg:mt-0">
+                <div class="mt-8 lg:mt-0">
                     <div class="relative max-w-md mx-auto">
                         <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-3xl transform rotate-6"></div>
                         <div class="relative bg-white rounded-3xl p-6 sm:p-8 shadow-2xl">
@@ -366,15 +342,15 @@
     <section class="py-12 sm:py-16 bg-white">
         <div class="max-w-7xl mx-auto container-padding">
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-                <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg transition-shadow animate-fade-in-up">
+                <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg transition-shadow">
                     <div class="text-3xl sm:text-4xl font-bold mb-2">10K+</div>
                     <div class="text-base sm:text-lg opacity-90">Utilisateurs Actifs</div>
                 </div>
-                <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg transition-shadow animate-fade-in-up animation-delay-200">
+                <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg transition-shadow">
                     <div class="text-3xl sm:text-4xl font-bold mb-2">€2.5M</div>
                     <div class="text-base sm:text-lg opacity-90">Économies Générées</div>
                 </div>
-                <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg transition-shadow animate-fade-in-up animation-delay-400">
+                <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg transition-shadow">
                     <div class="text-3xl sm:text-4xl font-bold mb-2">4.9/5</div>
                     <div class="text-base sm:text-lg opacity-90">Note Utilisateurs</div>
                 </div>
@@ -625,30 +601,7 @@
             }
         });
 
-        // Animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
         document.addEventListener('DOMContentLoaded', () => {
-            const animatedElements = document.querySelectorAll('[class*="animate-"]');
-            animatedElements.forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(30px)';
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(el);
-            });
-
             // Smooth scrolling for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
