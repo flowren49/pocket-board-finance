@@ -35,10 +35,6 @@
                     animation: {
                         'fade-in-up': 'fadeInUp 0.6s ease-out',
                         'fade-in-down': 'fadeInDown 0.6s ease-out',
-                        'slide-in-left': 'slideInLeft 0.6s ease-out',
-                        'slide-in-right': 'slideInRight 0.6s ease-out',
-                        'bounce-slow': 'bounce 2s infinite',
-                        'pulse-slow': 'pulse 3s infinite',
                         'float': 'float 3s ease-in-out infinite',
                     }
                 }
@@ -82,28 +78,6 @@
             }
         }
         
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
@@ -120,32 +94,10 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         
-        .glass-effect {
-            backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .hover-lift {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .hover-lift:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-        
-        .feature-card {
-            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        
-        .stats-card {
-            background: linear-gradient(145deg, #3b82f6 0%, #1d4ed8 100%);
-        }
-        
-        .testimonial-card {
-            background: linear-gradient(145deg, #f8fafc 0%, #e2e8f0 100%);
+        .hero-pattern {
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
         }
         
         .btn-primary {
@@ -170,19 +122,51 @@
             box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
         }
         
-        .hero-pattern {
-            background-image: 
-                radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+        .mobile-nav {
+            display: none;
         }
         
-        .section-pattern {
-            background-image: 
-                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+        .mobile-nav.active {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+        }
+        
+        .mobile-nav-content {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 280px;
+            background: white;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 51;
+            overflow-y: auto;
+        }
+        
+        .mobile-nav.active .mobile-nav-content {
+            transform: translateX(0);
+        }
+        
+        .hamburger {
+            display: none;
         }
         
         @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
             .hero-title {
                 font-size: 2.5rem;
                 line-height: 1.2;
@@ -191,62 +175,141 @@
             .hero-subtitle {
                 font-size: 1.1rem;
             }
+            
+            .hero-cta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .hero-cta a {
+                width: 100%;
+                text-align: center;
+                padding: 1rem 2rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .container-padding {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
         }
     </style>
 </head>
 <body class="bg-gray-50">
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav class="fixed top-0 w-full z-40 bg-white/95 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto container-padding">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <a href="index.html" class="text-2xl font-bold gradient-text flex items-center">
-                            <i class="fas fa-wallet mr-3 text-blue-600"></i>
-                            Pocket Board Finance
+                        <a href="index.html" class="text-xl sm:text-2xl font-bold gradient-text flex items-center">
+                            <i class="fas fa-wallet mr-2 sm:mr-3 text-blue-600"></i>
+                            <span class="hidden sm:inline">Pocket Board Finance</span>
+                            <span class="sm:hidden">PBF</span>
                         </a>
                     </div>
                 </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#features" class="text-gray-700 hover:text-blue-600 transition-colors">Fonctionnalités</a>
-                    <a href="#pricing" class="text-gray-700 hover:text-blue-600 transition-colors">Tarifs</a>
-                    <a href="#testimonials" class="text-gray-700 hover:text-blue-600 transition-colors">Témoignages</a>
-                    <a href="#contact" class="text-gray-700 hover:text-blue-600 transition-colors">Contact</a>
+                
+                <!-- Desktop Navigation -->
+                <div class="desktop-nav hidden md:flex items-center space-x-8">
+                    <a href="features.html" class="text-gray-700 hover:text-blue-600 transition-colors">Fonctionnalités</a>
+                    <a href="pricing.html" class="text-gray-700 hover:text-blue-600 transition-colors">Tarifs</a>
+                    <a href="about.html" class="text-gray-700 hover:text-blue-600 transition-colors">À Propos</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-blue-600 transition-colors">Contact</a>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <a href="login.html" class="text-gray-700 hover:text-blue-600 transition-colors">Connexion</a>
-                    <a href="register.html" class="btn-primary text-white px-6 py-2 rounded-full font-medium">
-                        Commencer Gratuitement
+                
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <a href="login.html" class="text-gray-700 hover:text-blue-600 transition-colors text-sm sm:text-base">Connexion</a>
+                    <a href="register.html" class="btn-primary text-white px-4 sm:px-6 py-2 rounded-full font-medium text-sm sm:text-base">
+                        Commencer
                     </a>
+                    
+                    <!-- Mobile Menu Button -->
+                    <button class="hamburger md:hidden p-2" onclick="toggleMobileNav()">
+                        <i class="fas fa-bars text-gray-700 text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-content">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-wallet text-blue-600 text-2xl mr-3"></i>
+                            <span class="text-xl font-bold text-gray-800">Pocket Board Finance</span>
+                        </div>
+                        <button onclick="toggleMobileNav()" class="p-2">
+                            <i class="fas fa-times text-gray-600 text-xl"></i>
+                        </button>
+                    </div>
+                    
+                    <nav class="space-y-4">
+                        <a href="features.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            <i class="fas fa-star mr-3"></i>Fonctionnalités
+                        </a>
+                        <a href="pricing.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            <i class="fas fa-euro-sign mr-3"></i>Tarifs
+                        </a>
+                        <a href="about.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            <i class="fas fa-info-circle mr-3"></i>À Propos
+                        </a>
+                        <a href="contact.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            <i class="fas fa-envelope mr-3"></i>Contact
+                        </a>
+                        <a href="help.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            <i class="fas fa-question-circle mr-3"></i>Aide
+                        </a>
+                        
+                        <div class="border-t border-gray-200 my-4"></div>
+                        
+                        <a href="login.html" class="block py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
+                            <i class="fas fa-sign-in-alt mr-3"></i>Connexion
+                        </a>
+                        <a href="register.html" class="block py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-rocket mr-3"></i>Commencer Gratuitement
+                        </a>
+                    </nav>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-pattern pt-20 pb-16 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="animate-fade-in-up">
-                    <h1 class="hero-title text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+    <section class="hero-pattern pt-20 sm:pt-24 pb-12 sm:pb-16">
+        <div class="max-w-7xl mx-auto container-padding">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                <div class="animate-fade-in-up text-center lg:text-left">
+                    <h1 class="hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
                         Maîtrisez Vos Finances
-                        <span class="gradient-text">Facilement</span>
+                        <span class="gradient-text block">Facilement</span>
                     </h1>
-                    <p class="hero-subtitle text-xl text-gray-600 mb-8 leading-relaxed">
+                    <p class="hero-subtitle text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed">
                         L'application de gestion financière la plus simple et sécurisée. 
                         Suivez vos comptes, dépenses et économies en toute simplicité.
                     </p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="register.html" class="btn-primary text-white px-8 py-4 rounded-full font-semibold text-lg text-center">
+                    <div class="hero-cta flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="register.html" class="btn-primary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg text-center">
                             <i class="fas fa-rocket mr-2"></i>
                             Commencer Maintenant
                         </a>
-                        <a href="#demo" class="btn-secondary text-white px-8 py-4 rounded-full font-semibold text-lg text-center">
+                        <a href="features.html" class="btn-secondary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg text-center">
                             <i class="fas fa-play mr-2"></i>
-                            Voir la Démo
+                            Voir les Fonctionnalités
                         </a>
                     </div>
-                    <div class="mt-8 flex items-center space-x-6 text-sm text-gray-500">
+                    <div class="mt-6 sm:mt-8 flex flex-wrap justify-center lg:justify-start items-center gap-4 sm:gap-6 text-sm text-gray-500">
                         <div class="flex items-center">
                             <i class="fas fa-check-circle text-green-500 mr-2"></i>
                             Gratuit
@@ -261,33 +324,34 @@
                         </div>
                     </div>
                 </div>
-                <div class="animate-fade-in-up animation-delay-200">
-                    <div class="relative">
+                
+                <div class="animate-fade-in-up animation-delay-200 mt-8 lg:mt-0">
+                    <div class="relative max-w-md mx-auto">
                         <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-3xl transform rotate-6"></div>
-                        <div class="relative bg-white rounded-3xl p-8 shadow-2xl">
-                            <div class="space-y-6">
+                        <div class="relative bg-white rounded-3xl p-6 sm:p-8 shadow-2xl">
+                            <div class="space-y-4 sm:space-y-6">
                                 <div class="flex items-center justify-between">
-                                    <h3 class="text-xl font-semibold text-gray-900">Tableau de Bord</h3>
+                                    <h3 class="text-lg sm:text-xl font-semibold text-gray-900">Tableau de Bord</h3>
                                     <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                                 </div>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="bg-blue-50 p-4 rounded-xl">
-                                        <div class="text-2xl font-bold text-blue-600">€2,847</div>
-                                        <div class="text-sm text-gray-600">Solde Total</div>
+                                <div class="grid grid-cols-2 gap-3 sm:gap-4">
+                                    <div class="bg-blue-50 p-3 sm:p-4 rounded-xl">
+                                        <div class="text-xl sm:text-2xl font-bold text-blue-600">€2,847</div>
+                                        <div class="text-xs sm:text-sm text-gray-600">Solde Total</div>
                                     </div>
-                                    <div class="bg-green-50 p-4 rounded-xl">
-                                        <div class="text-2xl font-bold text-green-600">+€324</div>
-                                        <div class="text-sm text-gray-600">Ce mois</div>
+                                    <div class="bg-green-50 p-3 sm:p-4 rounded-xl">
+                                        <div class="text-xl sm:text-2xl font-bold text-green-600">+€324</div>
+                                        <div class="text-xs sm:text-sm text-gray-600">Ce mois</div>
                                     </div>
                                 </div>
-                                <div class="space-y-3">
+                                <div class="space-y-2 sm:space-y-3">
                                     <div class="flex items-center justify-between">
-                                        <span class="text-gray-600">Compte Principal</span>
-                                        <span class="font-semibold">€1,847</span>
+                                        <span class="text-gray-600 text-sm sm:text-base">Compte Principal</span>
+                                        <span class="font-semibold text-sm sm:text-base">€1,847</span>
                                     </div>
                                     <div class="flex items-center justify-between">
-                                        <span class="text-gray-600">Épargne</span>
-                                        <span class="font-semibold">€1,000</span>
+                                        <span class="text-gray-600 text-sm sm:text-base">Épargne</span>
+                                        <span class="font-semibold text-sm sm:text-base">€1,000</span>
                                     </div>
                                 </div>
                             </div>
@@ -299,184 +363,105 @@
     </section>
 
     <!-- Stats Section -->
-    <section class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="stats-card text-white p-8 rounded-2xl text-center hover-lift animate-fade-in-up">
-                    <div class="text-4xl font-bold mb-2">10K+</div>
-                    <div class="text-lg opacity-90">Utilisateurs Actifs</div>
+    <section class="py-12 sm:py-16 bg-white">
+        <div class="max-w-7xl mx-auto container-padding">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+                <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg transition-shadow animate-fade-in-up">
+                    <div class="text-3xl sm:text-4xl font-bold mb-2">10K+</div>
+                    <div class="text-base sm:text-lg opacity-90">Utilisateurs Actifs</div>
                 </div>
-                <div class="stats-card text-white p-8 rounded-2xl text-center hover-lift animate-fade-in-up animation-delay-200">
-                    <div class="text-4xl font-bold mb-2">€2.5M</div>
-                    <div class="text-lg opacity-90">Économies Générées</div>
+                <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg transition-shadow animate-fade-in-up animation-delay-200">
+                    <div class="text-3xl sm:text-4xl font-bold mb-2">€2.5M</div>
+                    <div class="text-base sm:text-lg opacity-90">Économies Générées</div>
                 </div>
-                <div class="stats-card text-white p-8 rounded-2xl text-center hover-lift animate-fade-in-up animation-delay-400">
-                    <div class="text-4xl font-bold mb-2">4.9/5</div>
-                    <div class="text-lg opacity-90">Note Utilisateurs</div>
+                <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg transition-shadow animate-fade-in-up animation-delay-400">
+                    <div class="text-3xl sm:text-4xl font-bold mb-2">4.9/5</div>
+                    <div class="text-base sm:text-lg opacity-90">Note Utilisateurs</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section id="features" class="section-pattern py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 animate-fade-in-down">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+    <!-- Features Preview -->
+    <section class="py-12 sm:py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto container-padding">
+            <div class="text-center mb-12 animate-fade-in-down">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
                     Pourquoi Choisir
                     <span class="gradient-text">Pocket Board Finance</span> ?
                 </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                <p class="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
                     Une solution complète pour gérer vos finances personnelles avec simplicité et sécurité
                 </p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 <!-- Feature 1 -->
-                <div class="feature-card p-8 rounded-2xl hover-lift animate-fade-in-up">
-                    <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-shield-alt text-2xl text-blue-600"></i>
+                <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up">
+                    <div class="w-12 sm:w-16 h-12 sm:h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-4 sm:mb-6">
+                        <i class="fas fa-shield-alt text-xl sm:text-2xl text-blue-600"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Sécurité Maximale</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Sécurité Maximale</h3>
+                    <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
                         Vos données sont chiffrées et protégées avec les dernières technologies de sécurité bancaire.
                     </p>
                 </div>
                 
                 <!-- Feature 2 -->
-                <div class="feature-card p-8 rounded-2xl hover-lift animate-fade-in-up animation-delay-200">
-                    <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-mobile-alt text-2xl text-green-600"></i>
+                <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up animation-delay-200">
+                    <div class="w-12 sm:w-16 h-12 sm:h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-4 sm:mb-6">
+                        <i class="fas fa-mobile-alt text-xl sm:text-2xl text-green-600"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Multi-Plateforme</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Multi-Plateforme</h3>
+                    <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
                         Accédez à vos finances depuis votre téléphone, tablette ou ordinateur, partout et à tout moment.
                     </p>
                 </div>
                 
                 <!-- Feature 3 -->
-                <div class="feature-card p-8 rounded-2xl hover-lift animate-fade-in-up animation-delay-400">
-                    <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-chart-line text-2xl text-purple-600"></i>
+                <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up animation-delay-400">
+                    <div class="w-12 sm:w-16 h-12 sm:h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-4 sm:mb-6">
+                        <i class="fas fa-chart-line text-xl sm:text-2xl text-purple-600"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Analyses Détaillées</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Analyses Détaillées</h3>
+                    <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
                         Visualisez vos dépenses avec des graphiques clairs et des rapports personnalisés.
                     </p>
                 </div>
-                
-                <!-- Feature 4 -->
-                <div class="feature-card p-8 rounded-2xl hover-lift animate-fade-in-up animation-delay-600">
-                    <div class="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-piggy-bank text-2xl text-orange-600"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Objectifs d'Épargne</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Définissez et suivez vos objectifs d'épargne avec des outils de planification intelligents.
-                    </p>
-                </div>
-                
-                <!-- Feature 5 -->
-                <div class="feature-card p-8 rounded-2xl hover-lift animate-fade-in-up animation-delay-800">
-                    <div class="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-bell text-2xl text-red-600"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Alertes Intelligentes</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Recevez des notifications personnalisées pour rester informé de vos finances.
-                    </p>
-                </div>
-                
-                <!-- Feature 6 -->
-                <div class="feature-card p-8 rounded-2xl hover-lift animate-fade-in-up animation-delay-1000">
-                    <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-download text-2xl text-indigo-600"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Export Facile</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Exportez vos données en Excel, CSV ou PDF pour vos déclarations fiscales.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo Section -->
-    <section id="demo" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 animate-fade-in-down">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                    Découvrez Comment
-                    <span class="gradient-text">Ça Marche</span>
-                </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    En quelques minutes, vous maîtrisez vos finances comme un pro
-                </p>
             </div>
             
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
-                <div class="animate-slide-in-left">
-                    <div class="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 rounded-3xl">
-                        <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-6">
-                            <span class="text-2xl font-bold text-white">1</span>
-                        </div>
-                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Créez Votre Compte</h3>
-                        <p class="text-gray-600 leading-relaxed">
-                            Inscrivez-vous gratuitement en moins de 2 minutes. Aucune carte bancaire requise.
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="animate-fade-in-up animation-delay-200">
-                    <div class="bg-gradient-to-br from-green-50 to-emerald-100 p-8 rounded-3xl">
-                        <div class="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mb-6">
-                            <span class="text-2xl font-bold text-white">2</span>
-                        </div>
-                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Ajoutez Vos Comptes</h3>
-                        <p class="text-gray-600 leading-relaxed">
-                            Connectez vos comptes bancaires ou ajoutez-les manuellement en toute sécurité.
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="animate-slide-in-right animation-delay-400">
-                    <div class="bg-gradient-to-br from-purple-50 to-violet-100 p-8 rounded-3xl">
-                        <div class="w-16 h-16 bg-purple-600 rounded-2xl flex items-center justify-center mb-6">
-                            <span class="text-2xl font-bold text-white">3</span>
-                        </div>
-                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Suivez Vos Progrès</h3>
-                        <p class="text-gray-600 leading-relaxed">
-                            Visualisez vos dépenses, économies et atteignez vos objectifs financiers.
-                        </p>
-                    </div>
-                </div>
+            <div class="text-center mt-8 sm:mt-12">
+                <a href="features.html" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold text-base sm:text-lg">
+                    Voir toutes les fonctionnalités
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="section-pattern py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 animate-fade-in-down">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+    <!-- Testimonials Preview -->
+    <section class="py-12 sm:py-16 bg-white">
+        <div class="max-w-7xl mx-auto container-padding">
+            <div class="text-center mb-12 animate-fade-in-down">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
                     Ce Que Disent Nos
                     <span class="gradient-text">Utilisateurs</span>
                 </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                <p class="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
                     Plus de 10 000 utilisateurs nous font confiance pour gérer leurs finances
                 </p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 <!-- Testimonial 1 -->
-                <div class="testimonial-card p-8 rounded-2xl hover-lift animate-fade-in-up">
-                    <div class="flex items-center mb-6">
-                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-                            <span class="text-white font-semibold">M</span>
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 sm:p-8 rounded-2xl hover:shadow-lg transition-shadow animate-fade-in-up">
+                    <div class="flex items-center mb-4 sm:mb-6">
+                        <div class="w-10 sm:w-12 h-10 sm:h-12 bg-blue-600 rounded-full flex items-center justify-center">
+                            <span class="text-white font-semibold text-sm sm:text-base">M</span>
                         </div>
-                        <div class="ml-4">
-                            <h4 class="font-semibold text-gray-900">Marie L.</h4>
-                            <div class="flex text-yellow-400">
+                        <div class="ml-3 sm:ml-4">
+                            <h4 class="font-semibold text-gray-900 text-sm sm:text-base">Marie L.</h4>
+                            <div class="flex text-yellow-400 text-xs sm:text-sm">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -485,20 +470,20 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-gray-600 leading-relaxed">
+                    <p class="text-gray-600 leading-relaxed text-sm sm:text-base">
                         "Enfin une app simple et efficace ! J'ai pu organiser mes finances en quelques jours et économiser 300€ par mois."
                     </p>
                 </div>
                 
                 <!-- Testimonial 2 -->
-                <div class="testimonial-card p-8 rounded-2xl hover-lift animate-fade-in-up animation-delay-200">
-                    <div class="flex items-center mb-6">
-                        <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
-                            <span class="text-white font-semibold">P</span>
+                <div class="bg-gradient-to-br from-green-50 to-emerald-100 p-6 sm:p-8 rounded-2xl hover:shadow-lg transition-shadow animate-fade-in-up animation-delay-200">
+                    <div class="flex items-center mb-4 sm:mb-6">
+                        <div class="w-10 sm:w-12 h-10 sm:h-12 bg-green-600 rounded-full flex items-center justify-center">
+                            <span class="text-white font-semibold text-sm sm:text-base">P</span>
                         </div>
-                        <div class="ml-4">
-                            <h4 class="font-semibold text-gray-900">Pierre D.</h4>
-                            <div class="flex text-yellow-400">
+                        <div class="ml-3 sm:ml-4">
+                            <h4 class="font-semibold text-gray-900 text-sm sm:text-base">Pierre D.</h4>
+                            <div class="flex text-yellow-400 text-xs sm:text-sm">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -507,20 +492,20 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-gray-600 leading-relaxed">
+                    <p class="text-gray-600 leading-relaxed text-sm sm:text-base">
                         "Les graphiques sont super clairs ! Je vois enfin où part mon argent et j'ai pu réduire mes dépenses de 25%."
                     </p>
                 </div>
                 
                 <!-- Testimonial 3 -->
-                <div class="testimonial-card p-8 rounded-2xl hover-lift animate-fade-in-up animation-delay-400">
-                    <div class="flex items-center mb-6">
-                        <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
-                            <span class="text-white font-semibold">S</span>
+                <div class="bg-gradient-to-br from-purple-50 to-violet-100 p-6 sm:p-8 rounded-2xl hover:shadow-lg transition-shadow animate-fade-in-up animation-delay-400">
+                    <div class="flex items-center mb-4 sm:mb-6">
+                        <div class="w-10 sm:w-12 h-10 sm:h-12 bg-purple-600 rounded-full flex items-center justify-center">
+                            <span class="text-white font-semibold text-sm sm:text-base">S</span>
                         </div>
-                        <div class="ml-4">
-                            <h4 class="font-semibold text-gray-900">Sophie M.</h4>
-                            <div class="flex text-yellow-400">
+                        <div class="ml-3 sm:ml-4">
+                            <h4 class="font-semibold text-gray-900 text-sm sm:text-base">Sophie M.</h4>
+                            <div class="flex text-yellow-400 text-xs sm:text-sm">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -529,7 +514,7 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-gray-600 leading-relaxed">
+                    <p class="text-gray-600 leading-relaxed text-sm sm:text-base">
                         "Parfait pour suivre mes économies ! L'interface est intuitive et les alertes m'aident beaucoup."
                     </p>
                 </div>
@@ -537,143 +522,25 @@
         </div>
     </section>
 
-    <!-- Pricing Section -->
-    <section id="pricing" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 animate-fade-in-down">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                    Des Tarifs
-                    <span class="gradient-text">Transparents</span>
-                </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Commencez gratuitement, évoluez quand vous le souhaitez
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <!-- Free Plan -->
-                <div class="bg-white border-2 border-gray-200 rounded-3xl p-8 hover-lift animate-fade-in-up">
-                    <div class="text-center">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Gratuit</h3>
-                        <div class="text-4xl font-bold text-gray-900 mb-2">€0</div>
-                        <div class="text-gray-600 mb-8">Pour toujours</div>
-                        <ul class="space-y-4 text-left">
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-3"></i>
-                                <span>Jusqu'à 3 comptes</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-3"></i>
-                                <span>Suivi des dépenses</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-3"></i>
-                                <span>Graphiques basiques</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-3"></i>
-                                <span>Support email</span>
-                            </li>
-                        </ul>
-                        <a href="register.html" class="w-full mt-8 bg-gray-900 text-white py-3 rounded-full font-semibold hover:bg-gray-800 transition-colors block text-center">
-                            Commencer Gratuitement
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Pro Plan -->
-                <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-3xl p-8 hover-lift animate-fade-in-up animation-delay-200 relative">
-                    <div class="absolute top-0 right-0 bg-yellow-400 text-black px-4 py-1 rounded-bl-2xl rounded-tr-3xl text-sm font-semibold">
-                        Populaire
-                    </div>
-                    <div class="text-center">
-                        <h3 class="text-2xl font-bold mb-4">Pro</h3>
-                        <div class="text-4xl font-bold mb-2">€9.99</div>
-                        <div class="opacity-90 mb-8">Par mois</div>
-                        <ul class="space-y-4 text-left">
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-300 mr-3"></i>
-                                <span>Comptes illimités</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-300 mr-3"></i>
-                                <span>Analyses avancées</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-300 mr-3"></i>
-                                <span>Objectifs d'épargne</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-300 mr-3"></i>
-                                <span>Alertes personnalisées</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-300 mr-3"></i>
-                                <span>Support prioritaire</span>
-                            </li>
-                        </ul>
-                        <a href="register.html" class="w-full mt-8 bg-white text-blue-600 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors block text-center">
-                            Essayer Pro
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Premium Plan -->
-                <div class="bg-white border-2 border-gray-200 rounded-3xl p-8 hover-lift animate-fade-in-up animation-delay-400">
-                    <div class="text-center">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Premium</h3>
-                        <div class="text-4xl font-bold text-gray-900 mb-2">€19.99</div>
-                        <div class="text-gray-600 mb-8">Par mois</div>
-                        <ul class="space-y-4 text-left">
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-3"></i>
-                                <span>Tout Pro +</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-3"></i>
-                                <span>Conseiller financier</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-3"></i>
-                                <span>Intégrations bancaires</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-3"></i>
-                                <span>Rapports fiscaux</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-3"></i>
-                                <span>Support 24/7</span>
-                            </li>
-                        </ul>
-                        <a href="register.html" class="w-full mt-8 bg-gray-900 text-white py-3 rounded-full font-semibold hover:bg-gray-800 transition-colors block text-center">
-                            Choisir Premium
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- CTA Section -->
-    <section class="gradient-bg py-20">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <section class="gradient-bg py-12 sm:py-16">
+        <div class="max-w-4xl mx-auto container-padding text-center">
             <div class="animate-fade-in-up">
-                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-6">
                     Prêt à Prendre le Contrôle
-                    <span class="text-yellow-300">de Vos Finances</span> ?
+                    <span class="text-yellow-300 block">de Vos Finances</span> ?
                 </h2>
-                <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                <p class="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto">
                     Rejoignez plus de 10 000 utilisateurs qui ont déjà transformé leur gestion financière
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="register.html" class="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors">
+                    <a href="register.html" class="bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-gray-100 transition-colors">
                         <i class="fas fa-rocket mr-2"></i>
                         Commencer Maintenant
                     </a>
-                    <a href="about.html" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors">
-                        <i class="fas fa-info-circle mr-2"></i>
-                        En Savoir Plus
+                    <a href="pricing.html" class="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-white hover:text-blue-600 transition-colors">
+                        <i class="fas fa-euro-sign mr-2"></i>
+                        Voir les Tarifs
                     </a>
                 </div>
             </div>
@@ -681,57 +548,56 @@
     </section>
 
     <!-- Footer -->
-    <footer id="contact" class="bg-gray-900 text-white py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center mb-6">
-                        <i class="fas fa-wallet text-3xl text-blue-400 mr-3"></i>
-                        <span class="text-2xl font-bold">Pocket Board Finance</span>
+    <footer class="bg-gray-900 text-white py-12 sm:py-16">
+        <div class="max-w-7xl mx-auto container-padding">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="col-span-1 sm:col-span-2">
+                    <div class="flex items-center mb-4 sm:mb-6">
+                        <i class="fas fa-wallet text-2xl sm:text-3xl text-blue-400 mr-3"></i>
+                        <span class="text-xl sm:text-2xl font-bold">Pocket Board Finance</span>
                     </div>
-                    <p class="text-gray-400 mb-6 max-w-md">
+                    <p class="text-gray-400 mb-4 sm:mb-6 max-w-md text-sm sm:text-base">
                         L'application de gestion financière personnelle la plus simple et sécurisée. 
                         Prenez le contrôle de vos finances dès aujourd'hui.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
-                            <i class="fab fa-twitter"></i>
+                        <a href="#" class="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <i class="fab fa-twitter text-sm sm:text-base"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
-                            <i class="fab fa-facebook"></i>
+                        <a href="#" class="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <i class="fab fa-facebook text-sm sm:text-base"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
-                            <i class="fab fa-linkedin"></i>
+                        <a href="#" class="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <i class="fab fa-linkedin text-sm sm:text-base"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
-                            <i class="fab fa-instagram"></i>
+                        <a href="#" class="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <i class="fab fa-instagram text-sm sm:text-base"></i>
                         </a>
                     </div>
                 </div>
                 
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Produit</h3>
+                    <h3 class="text-base sm:text-lg font-semibold mb-4">Produit</h3>
                     <ul class="space-y-2">
-                        <li><a href="#features" class="text-gray-400 hover:text-white transition-colors">Fonctionnalités</a></li>
-                        <li><a href="#pricing" class="text-gray-400 hover:text-white transition-colors">Tarifs</a></li>
-                        <li><a href="#demo" class="text-gray-400 hover:text-white transition-colors">Démo</a></li>
-                        <li><a href="about.html" class="text-gray-400 hover:text-white transition-colors">À Propos</a></li>
+                        <li><a href="features.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Fonctionnalités</a></li>
+                        <li><a href="pricing.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Tarifs</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">À Propos</a></li>
                     </ul>
                 </div>
                 
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <h3 class="text-base sm:text-lg font-semibold mb-4">Support</h3>
                     <ul class="space-y-2">
-                        <li><a href="help.html" class="text-gray-400 hover:text-white transition-colors">Centre d'Aide</a></li>
-                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
-                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors">Confidentialité</a></li>
-                        <li><a href="terms.html" class="text-gray-400 hover:text-white transition-colors">Conditions</a></li>
+                        <li><a href="help.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Centre d'Aide</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Contact</a></li>
+                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Confidentialité</a></li>
+                        <li><a href="terms.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Conditions</a></li>
                     </ul>
                 </div>
             </div>
             
-            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
-                <p class="text-gray-400">
+            <div class="border-t border-gray-800 mt-8 sm:mt-12 pt-6 sm:pt-8 text-center">
+                <p class="text-gray-400 text-sm sm:text-base">
                     © 2024 Pocket Board Finance. Tous droits réservés.
                 </p>
             </div>
@@ -741,6 +607,24 @@
     <!-- Scripts -->
     <script src="/js/auth.js"></script>
     <script>
+        // Mobile navigation toggle
+        function toggleMobileNav() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.classList.toggle('active');
+        }
+
+        // Close mobile nav when clicking outside
+        document.addEventListener('click', function(e) {
+            const mobileNav = document.getElementById('mobileNav');
+            const hamburger = document.querySelector('.hamburger');
+            
+            if (mobileNav.classList.contains('active') && 
+                !mobileNav.contains(e.target) && 
+                !hamburger.contains(e.target)) {
+                mobileNav.classList.remove('active');
+            }
+        });
+
         // Animation on scroll
         const observerOptions = {
             threshold: 0.1,
@@ -756,7 +640,6 @@
             });
         }, observerOptions);
 
-        // Observe all animated elements
         document.addEventListener('DOMContentLoaded', () => {
             const animatedElements = document.querySelectorAll('[class*="animate-"]');
             animatedElements.forEach(el => {

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tarifs - Pocket Board Finance</title>
+    <meta name="description" content="Découvrez nos tarifs transparents pour Pocket Board Finance. Commencez gratuitement ou choisissez un plan qui correspond à vos besoins.">
+    <meta name="theme-color" content="#3B82F6">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192x192.png">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease-out',
+                        'fade-in-down': 'fadeInDown 0.6s ease-out',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .hero-pattern {
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+        }
+        
+        .pricing-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .pricing-card.popular {
+            background: linear-gradient(145deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .mobile-nav {
+            display: none;
+        }
+        
+        .mobile-nav.active {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+        }
+        
+        .mobile-nav-content {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 280px;
+            background: white;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 51;
+            overflow-y: auto;
+        }
+        
+        .mobile-nav.active .mobile-nav-content {
+            transform: translateX(0);
+        }
+        
+        .hamburger {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .container-padding {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .pricing-card.popular {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-40 bg-white/95 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto container-padding">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-xl sm:text-2xl font-bold gradient-text flex items-center">
+                            <i class="fas fa-wallet mr-2 sm:mr-3 text-blue-600"></i>
+                            <span class="hidden sm:inline">Pocket Board Finance</span>
+                            <span class="sm:hidden">PBF</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="desktop-nav hidden md:flex items-center space-x-8">
+                    <a href="features.html" class="text-gray-700 hover:text-blue-600 transition-colors">Fonctionnalités</a>
+                    <a href="pricing.html" class="text-blue-600 font-medium">Tarifs</a>
+                    <a href="about.html" class="text-gray-700 hover:text-blue-600 transition-colors">À Propos</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-blue-600 transition-colors">Contact</a>
+                </div>
+                
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <a href="login.html" class="text-gray-700 hover:text-blue-600 transition-colors text-sm sm:text-base">Connexion</a>
+                    <a href="register.html" class="btn-primary text-white px-4 sm:px-6 py-2 rounded-full font-medium text-sm sm:text-base">
+                        Commencer
+                    </a>
+                    
+                    <!-- Mobile Menu Button -->
+                    <button class="hamburger md:hidden p-2" onclick="toggleMobileNav()">
+                        <i class="fas fa-bars text-gray-700 text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-content">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-wallet text-blue-600 text-2xl mr-3"></i>
+                            <span class="text-xl font-bold text-gray-800">Pocket Board Finance</span>
+                        </div>
+                        <button onclick="toggleMobileNav()" class="p-2">
+                            <i class="fas fa-times text-gray-600 text-xl"></i>
+                        </button>
+                    </div>
+                    
+                    <nav class="space-y-4">
+                        <a href="index.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            <i class="fas fa-home mr-3"></i>Accueil
+                        </a>
+                        <a href="features.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            <i class="fas fa-star mr-3"></i>Fonctionnalités
+                        </a>
+                        <a href="pricing.html" class="block py-3 px-4 text-blue-600 bg-blue-50 rounded-lg">
+                            <i class="fas fa-euro-sign mr-3"></i>Tarifs
+                        </a>
+                        <a href="about.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            <i class="fas fa-info-circle mr-3"></i>À Propos
+                        </a>
+                        <a href="contact.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            <i class="fas fa-envelope mr-3"></i>Contact
+                        </a>
+                        <a href="help.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            <i class="fas fa-question-circle mr-3"></i>Aide
+                        </a>
+                        
+                        <div class="border-t border-gray-200 my-4"></div>
+                        
+                        <a href="login.html" class="block py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
+                            <i class="fas fa-sign-in-alt mr-3"></i>Connexion
+                        </a>
+                        <a href="register.html" class="block py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-rocket mr-3"></i>Commencer Gratuitement
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-pattern pt-20 sm:pt-24 pb-12 sm:pb-16">
+        <div class="max-w-7xl mx-auto container-padding text-center">
+            <div class="animate-fade-in-up">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
+                    Des Tarifs
+                    <span class="gradient-text">Transparents</span>
+                </h1>
+                <p class="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto">
+                    Commencez gratuitement, évoluez quand vous le souhaitez. 
+                    Choisissez le plan qui correspond à vos besoins financiers.
+                </p>
+                <div class="flex flex-wrap justify-center items-center gap-4 sm:gap-6 text-sm text-gray-500">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                        Sans engagement
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                        Annulation à tout moment
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                        Support inclus
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Cards -->
+    <section class="py-12 sm:py-16 bg-white">
+        <div class="max-w-6xl mx-auto container-padding">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                <!-- Free Plan -->
+                <div class="pricing-card p-6 sm:p-8 rounded-3xl hover:shadow-xl transition-shadow animate-fade-in-up">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                            <i class="fas fa-gift text-2xl text-gray-600"></i>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Gratuit</h3>
+                        <div class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">€0</div>
+                        <div class="text-gray-600 mb-6 sm:mb-8">Pour toujours</div>
+                        <ul class="space-y-3 sm:space-y-4 text-left mb-6 sm:mb-8">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base text-gray-600">Jusqu'à 3 comptes</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base text-gray-600">Suivi des dépenses</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base text-gray-600">Graphiques basiques</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base text-gray-600">Export CSV</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base text-gray-600">Support email</span>
+                            </li>
+                        </ul>
+                        <a href="register.html" class="w-full bg-gray-900 text-white py-3 sm:py-4 rounded-full font-semibold hover:bg-gray-800 transition-colors block text-center text-sm sm:text-base">
+                            Commencer Gratuitement
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Pro Plan -->
+                <div class="pricing-card popular p-6 sm:p-8 rounded-3xl hover:shadow-xl transition-shadow animate-fade-in-up animation-delay-200 relative">
+                    <div class="absolute top-0 right-0 bg-yellow-400 text-black px-3 sm:px-4 py-1 sm:py-2 rounded-bl-2xl rounded-tr-3xl text-xs sm:text-sm font-semibold">
+                        Populaire
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                            <i class="fas fa-star text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-bold mb-4">Pro</h3>
+                        <div class="text-3xl sm:text-4xl font-bold mb-2">€9.99</div>
+                        <div class="opacity-90 mb-6 sm:mb-8">Par mois</div>
+                        <ul class="space-y-3 sm:space-y-4 text-left mb-6 sm:mb-8">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-300 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base">Comptes illimités</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-300 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base">Analyses avancées</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-300 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base">Objectifs d'épargne</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-300 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base">Alertes personnalisées</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-300 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base">Export Excel/PDF</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-300 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base">Support prioritaire</span>
+                            </li>
+                        </ul>
+                        <a href="register.html" class="w-full bg-white text-blue-600 py-3 sm:py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors block text-center text-sm sm:text-base">
+                            Essayer Pro
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Premium Plan -->
+                <div class="pricing-card p-6 sm:p-8 rounded-3xl hover:shadow-xl transition-shadow animate-fade-in-up animation-delay-400">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                            <i class="fas fa-crown text-2xl text-purple-600"></i>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Premium</h3>
+                        <div class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">€19.99</div>
+                        <div class="text-gray-600 mb-6 sm:mb-8">Par mois</div>
+                        <ul class="space-y-3 sm:space-y-4 text-left mb-6 sm:mb-8">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base text-gray-600">Tout Pro +</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base text-gray-600">Conseiller financier</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base text-gray-600">Intégrations bancaires</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base text-gray-600">Rapports fiscaux</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base text-gray-600">Support 24/7</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1 text-sm"></i>
+                                <span class="text-sm sm:text-base text-gray-600">API personnalisée</span>
+                            </li>
+                        </ul>
+                        <a href="register.html" class="w-full bg-gray-900 text-white py-3 sm:py-4 rounded-full font-semibold hover:bg-gray-800 transition-colors block text-center text-sm sm:text-base">
+                            Choisir Premium
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-12 sm:py-16 bg-gray-50">
+        <div class="max-w-4xl mx-auto container-padding">
+            <div class="text-center mb-12 animate-fade-in-down">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
+                    Questions Fréquentes
+                </h2>
+                <p class="text-base sm:text-lg md:text-xl text-gray-600">
+                    Tout ce que vous devez savoir sur nos tarifs
+                </p>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up">
+                    <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
+                        Puis-je changer de plan à tout moment ?
+                    </h3>
+                    <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
+                        Oui, vous pouvez passer d'un plan à l'autre à tout moment. Si vous passez à un plan plus cher, 
+                        la différence sera facturée au prorata. Si vous passez à un plan moins cher, 
+                        le crédit sera reporté sur votre prochaine facture.
+                    </p>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up animation-delay-200">
+                    <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
+                        Que se passe-t-il si j'annule mon abonnement ?
+                    </h3>
+                    <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
+                        Vous conservez l'accès à votre plan jusqu'à la fin de votre période de facturation. 
+                        Vos données restent sauvegardées et vous pouvez reprendre votre abonnement à tout moment. 
+                        Vous pouvez également exporter toutes vos données avant l'expiration.
+                    </p>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up animation-delay-400">
+                    <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
+                        Y a-t-il des frais cachés ?
+                    </h3>
+                    <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
+                        Non, nos tarifs sont transparents. Le prix affiché est le prix final. 
+                        Aucun frais d'installation, de configuration ou de résiliation n'est appliqué. 
+                        Nous nous engageons à ne jamais ajouter de frais cachés.
+                    </p>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up animation-delay-600">
+                    <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
+                        Proposez-vous des réductions pour les étudiants ou les familles ?
+                    </h3>
+                    <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
+                        Oui, nous offrons 50% de réduction pour les étudiants avec une carte d'étudiant valide. 
+                        Nous proposons également des tarifs familiaux avec jusqu'à 5 comptes pour le prix d'un. 
+                        Contactez-nous pour plus d'informations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="gradient-bg py-12 sm:py-16">
+        <div class="max-w-4xl mx-auto container-padding text-center">
+            <div class="animate-fade-in-up">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-6">
+                    Prêt à Commencer ?
+                </h2>
+                <p class="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto">
+                    Rejoignez plus de 10 000 utilisateurs qui ont déjà transformé leur gestion financière
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="register.html" class="bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-rocket mr-2"></i>
+                        Commencer Gratuitement
+                    </a>
+                    <a href="contact.html" class="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-white hover:text-blue-600 transition-colors">
+                        <i class="fas fa-envelope mr-2"></i>
+                        Nous Contacter
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 sm:py-16">
+        <div class="max-w-7xl mx-auto container-padding">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="col-span-1 sm:col-span-2">
+                    <div class="flex items-center mb-4 sm:mb-6">
+                        <i class="fas fa-wallet text-2xl sm:text-3xl text-blue-400 mr-3"></i>
+                        <span class="text-xl sm:text-2xl font-bold">Pocket Board Finance</span>
+                    </div>
+                    <p class="text-gray-400 mb-4 sm:mb-6 max-w-md text-sm sm:text-base">
+                        L'application de gestion financière personnelle la plus simple et sécurisée. 
+                        Prenez le contrôle de vos finances dès aujourd'hui.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-base sm:text-lg font-semibold mb-4">Produit</h3>
+                    <ul class="space-y-2">
+                        <li><a href="features.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Fonctionnalités</a></li>
+                        <li><a href="pricing.html" class="text-blue-400 hover:text-white transition-colors text-sm sm:text-base">Tarifs</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">À Propos</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-base sm:text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="help.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Centre d'Aide</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Contact</a></li>
+                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Confidentialité</a></li>
+                        <li><a href="terms.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 sm:mt-12 pt-6 sm:pt-8 text-center">
+                <p class="text-gray-400 text-sm sm:text-base">
+                    © 2024 Pocket Board Finance. Tous droits réservés.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/js/auth.js"></script>
+    <script>
+        // Mobile navigation toggle
+        function toggleMobileNav() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.classList.toggle('active');
+        }
+
+        // Close mobile nav when clicking outside
+        document.addEventListener('click', function(e) {
+            const mobileNav = document.getElementById('mobileNav');
+            const hamburger = document.querySelector('.hamburger');
+            
+            if (mobileNav.classList.contains('active') && 
+                !mobileNav.contains(e.target) && 
+                !hamburger.contains(e.target)) {
+                mobileNav.classList.remove('active');
+            }
+        });
+
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('[class*="animate-"]');
+            animatedElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
