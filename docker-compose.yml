@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:80"
+      - "8081:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=db;Database=personalfinance;User Id=sa;Password=YourStrong@Password123!;TrustServerCertificate=true;
+    depends_on:
+      - db
+    volumes:
+      - app_data:/app/data
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Password123!
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+  # Alternative avec PostgreSQL (recommandé pour la production)
+  # db-postgres:
+  #   image: postgres:15
+  #   environment:
+  #     - POSTGRES_DB=personalfinance
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=YourStrongPassword123!
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  sqlserver_data:
+  postgres_data:
+  app_data:
