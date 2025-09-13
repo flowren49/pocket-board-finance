@@ -340,21 +340,36 @@ class PersonalFinanceApp {
         const toastContainer = document.getElementById('toastContainer');
         const toast = document.createElement('div');
         
-        const colors = {
-            success: 'bg-green-500',
-            error: 'bg-red-500',
-            warning: 'bg-yellow-500',
-            info: 'bg-blue-500'
+        const icons = {
+            success: 'fa-check-circle',
+            error: 'fa-exclamation-circle',
+            warning: 'fa-exclamation-triangle',
+            info: 'fa-info-circle'
         };
 
-        toast.className = `${colors[type]} text-white px-6 py-3 rounded-lg shadow-lg mb-2 transform transition-all duration-300 translate-x-full`;
+        const colors = {
+            success: 'toast-success',
+            error: 'toast-error',
+            warning: 'toast-warning',
+            info: 'toast-info'
+        };
+
+        toast.className = `${colors[type]} fade-in transform transition-all duration-300 translate-x-full`;
         toast.innerHTML = `
-            <div class="flex items-center">
-                <i class="fas fa-check-circle mr-2"></i>
-                <span>${message}</span>
-                <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
-                    <i class="fas fa-times"></i>
-                </button>
+            <div class="p-4">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <i class="fas ${icons[type]} text-lg"></i>
+                    </div>
+                    <div class="ml-3 w-0 flex-1">
+                        <p class="text-sm font-medium text-gray-900">${message}</p>
+                    </div>
+                    <div class="ml-4 flex-shrink-0 flex">
+                        <button onclick="this.closest('.toast').remove()" class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         `;
 
