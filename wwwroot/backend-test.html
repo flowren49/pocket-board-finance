@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Backend - Personal Finance</title>
+    <meta name="theme-color" content="#3B82F6">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">
+            <i class="fas fa-server text-blue-600 mr-2"></i>Test de Connexion Backend
+        </h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Configuration Backend -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">
+                    <i class="fas fa-cog text-blue-600 mr-2"></i>Configuration Backend
+                </h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">URL Backend</label>
+                        <input type="text" id="backendUrl" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                               placeholder="http://localhost:5000/api" value="http://localhost:5000/api">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Timeout (ms)</label>
+                        <input type="number" id="timeout" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                               value="10000" min="1000" max="30000">
+                    </div>
+                    
+                    <button onclick="updateConfig()" class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                        <i class="fas fa-save mr-2"></i>Mettre à jour la configuration
+                    </button>
+                </div>
+            </div>
+
+            <!-- Test de Connexion -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">
+                    <i class="fas fa-wifi text-green-600 mr-2"></i>Test de Connexion
+                </h2>
+                
+                <div class="space-y-3">
+                    <button onclick="testConnection()" class="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700">
+                        <i class="fas fa-heartbeat mr-2"></i>Test de Santé (Health Check)
+                    </button>
+                    
+                    <button onclick="testAuth()" class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                        <i class="fas fa-shield-alt mr-2"></i>Test d'Authentification
+                    </button>
+                    
+                    <button onclick="testAllEndpoints()" class="w-full bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700">
+                        <i class="fas fa-list mr-2"></i>Test Tous les Endpoints
+                    </button>
+                </div>
+                
+                <div id="connectionResult" class="mt-4 p-3 bg-gray-100 rounded text-sm"></div>
+            </div>
+
+            <!-- Tests d'Authentification -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">
+                    <i class="fas fa-user-check text-purple-600 mr-2"></i>Tests d'Authentification
+                </h2>
+                
+                <div class="space-y-3">
+                    <button onclick="testLogin()" class="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Test Connexion
+                    </button>
+                    
+                    <button onclick="testRegister()" class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                        <i class="fas fa-user-plus mr-2"></i>Test Inscription
+                    </button>
+                    
+                    <button onclick="testLogout()" class="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Test Déconnexion
+                    </button>
+                </div>
+                
+                <div id="authResult" class="mt-4 p-3 bg-gray-100 rounded text-sm"></div>
+            </div>
+
+            <!-- Tests de Données -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">
+                    <i class="fas fa-database text-orange-600 mr-2"></i>Tests de Données
+                </h2>
+                
+                <div class="space-y-3">
+                    <button onclick="testAccounts()" class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                        <i class="fas fa-credit-card mr-2"></i>Test Comptes
+                    </button>
+                    
+                    <button onclick="testTransactions()" class="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700">
+                        <i class="fas fa-exchange-alt mr-2"></i>Test Transactions
+                    </button>
+                    
+                    <button onclick="testStatistics()" class="w-full bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700">
+                        <i class="fas fa-chart-line mr-2"></i>Test Statistiques
+                    </button>
+                    
+                    <button onclick="testExport()" class="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">
+                        <i class="fas fa-download mr-2"></i>Test Export
+                    </button>
+                </div>
+                
+                <div id="dataResult" class="mt-4 p-3 bg-gray-100 rounded text-sm"></div>
+            </div>
+        </div>
+
+        <!-- Résultats Détaillés -->
+        <div class="mt-8 bg-white p-6 rounded-lg shadow">
+            <h2 class="text-xl font-semibold mb-4">
+                <i class="fas fa-clipboard-list text-blue-600 mr-2"></i>Résultats Détaillés
+            </h2>
+            <div id="detailedResults" class="space-y-2"></div>
+        </div>
+
+        <!-- Log des Requêtes -->
+        <div class="mt-8 bg-white p-6 rounded-lg shadow">
+            <h2 class="text-xl font-semibold mb-4">
+                <i class="fas fa-terminal text-gray-600 mr-2"></i>Log des Requêtes
+            </h2>
+            <div id="requestLog" class="bg-gray-900 text-green-400 p-4 rounded font-mono text-sm max-h-64 overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed top-4 right-4 left-4 sm:left-auto z-50"></div>
+
+    <!-- Scripts -->
+    <script src="/js/api-config.js"></script>
+    <script src="/js/api-service.js"></script>
+    <script>
+        let requestCount = 0;
+
+        // Fonction pour logger les requêtes
+        function logRequest(method, endpoint, status, responseTime, error = null) {
+            requestCount++;
+            const timestamp = new Date().toLocaleTimeString();
+            const log = document.getElementById('requestLog');
+            const statusIcon = status === 'success' ? '✅' : '❌';
+            const logEntry = document.createElement('div');
+            logEntry.innerHTML = `[${timestamp}] ${statusIcon} ${method} ${endpoint} (${responseTime}ms)${error ? ` - ${error}` : ''}`;
+            log.appendChild(logEntry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // Fonction pour afficher les résultats
+        function displayResult(containerId, result, title) {
+            const container = document.getElementById(containerId);
+            const timestamp = new Date().toLocaleTimeString();
+            
+            if (result.success) {
+                container.innerHTML = `
+                    <div class="text-green-600">
+                        <strong>✅ ${title} - Réussi</strong><br>
+                        <small>Temps de réponse: ${result.responseTime || 'N/A'}ms</small><br>
+                        <small>${timestamp}</small>
+                    </div>
+                `;
+                container.className = 'mt-4 p-3 bg-green-100 rounded text-sm';
+            } else {
+                container.innerHTML = `
+                    <div class="text-red-600">
+                        <strong>❌ ${title} - Échec</strong><br>
+                        <small>Erreur: ${result.error}</small><br>
+                        <small>${timestamp}</small>
+                    </div>
+                `;
+                container.className = 'mt-4 p-3 bg-red-100 rounded text-sm';
+            }
+        }
+
+        // Mettre à jour la configuration
+        function updateConfig() {
+            const url = document.getElementById('backendUrl').value;
+            const timeout = parseInt(document.getElementById('timeout').value);
+            
+            if (window.apiService) {
+                window.apiService.baseURL = url;
+                window.apiService.timeout = timeout;
+            }
+            
+            if (window.apiConfig) {
+                window.apiConfig.baseURL = url;
+                window.apiConfig.timeout = timeout;
+            }
+            
+            showToast('Configuration mise à jour', 'success');
+        }
+
+        // Test de connexion
+        async function testConnection() {
+            try {
+                const startTime = Date.now();
+                const result = await window.apiService.testConnection();
+                const endTime = Date.now();
+                
+                displayResult('connectionResult', result, 'Test de Connexion');
+                logRequest('GET', '/health', result.success ? 'success' : 'error', endTime - startTime, result.error);
+            } catch (error) {
+                const result = { success: false, error: error.message };
+                displayResult('connectionResult', result, 'Test de Connexion');
+                logRequest('GET', '/health', 'error', 0, error.message);
+            }
+        }
+
+        // Test d'authentification
+        async function testAuth() {
+            try {
+                const startTime = Date.now();
+                const result = await window.apiService.testAuth();
+                const endTime = Date.now();
+                
+                displayResult('connectionResult', result, 'Test d\'Authentification');
+                logRequest('GET', '/auth/me', result.success ? 'success' : 'error', endTime - startTime, result.error);
+            } catch (error) {
+                const result = { success: false, error: error.message };
+                displayResult('connectionResult', result, 'Test d\'Authentification');
+                logRequest('GET', '/auth/me', 'error', 0, error.message);
+            }
+        }
+
+        // Test de tous les endpoints
+        async function testAllEndpoints() {
+            try {
+                const startTime = Date.now();
+                const results = await window.apiService.testEndpoints();
+                const endTime = Date.now();
+                
+                const container = document.getElementById('connectionResult');
+                const successCount = results.filter(r => r.success).length;
+                const totalCount = results.length;
+                
+                container.innerHTML = `
+                    <div class="text-blue-600">
+                        <strong>📊 Test de Tous les Endpoints</strong><br>
+                        <small>Résultats: ${successCount}/${totalCount} réussis</small><br>
+                        <small>Temps total: ${endTime - startTime}ms</small>
+                    </div>
+                `;
+                container.className = 'mt-4 p-3 bg-blue-100 rounded text-sm';
+                
+                // Afficher les résultats détaillés
+                displayDetailedResults(results);
+                
+            } catch (error) {
+                const result = { success: false, error: error.message };
+                displayResult('connectionResult', result, 'Test de Tous les Endpoints');
+            }
+        }
+
+        // Afficher les résultats détaillés
+        function displayDetailedResults(results) {
+            const container = document.getElementById('detailedResults');
+            container.innerHTML = results.map(result => `
+                <div class="flex items-center justify-between p-2 rounded ${result.success ? 'bg-green-100' : 'bg-red-100'}">
+                    <span class="font-medium">${result.endpoint}</span>
+                    <div class="flex items-center">
+                        <i class="fas ${result.success ? 'fa-check-circle text-green-600' : 'fa-times-circle text-red-600'} mr-2"></i>
+                        <span class="text-sm">${result.success ? `${result.responseTime}ms` : result.error}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Tests d'authentification
+        async function testLogin() {
+            try {
+                const startTime = Date.now();
+                const result = await window.apiService.login('admin@demo.com', 'Admin123!');
+                const endTime = Date.now();
+                
+                displayResult('authResult', { success: true, responseTime: endTime - startTime }, 'Test Connexion');
+                logRequest('POST', '/auth/login', 'success', endTime - startTime);
+            } catch (error) {
+                const result = { success: false, error: error.message };
+                displayResult('authResult', result, 'Test Connexion');
+                logRequest('POST', '/auth/login', 'error', 0, error.message);
+            }
+        }
+
+        async function testRegister() {
+            try {
+                const startTime = Date.now();
+                const userData = {
+                    firstName: 'Test',
+                    lastName: 'User',
+                    email: `test${Date.now()}@demo.com`,
+                    password: 'Test123!'
+                };
+                const result = await window.apiService.register(userData);
+                const endTime = Date.now();
+                
+                displayResult('authResult', { success: true, responseTime: endTime - startTime }, 'Test Inscription');
+                logRequest('POST', '/auth/register', 'success', endTime - startTime);
+            } catch (error) {
+                const result = { success: false, error: error.message };
+                displayResult('authResult', result, 'Test Inscription');
+                logRequest('POST', '/auth/register', 'error', 0, error.message);
+            }
+        }
+
+        async function testLogout() {
+            try {
+                const startTime = Date.now();
+                await window.apiService.logout();
+                const endTime = Date.now();
+                
+                displayResult('authResult', { success: true, responseTime: endTime - startTime }, 'Test Déconnexion');
+                logRequest('POST', '/auth/logout', 'success', endTime - startTime);
+            } catch (error) {
+                const result = { success: false, error: error.message };
+                displayResult('authResult', result, 'Test Déconnexion');
+                logRequest('POST', '/auth/logout', 'error', 0, error.message);
+            }
+        }
+
+        // Tests de données
+        async function testAccounts() {
+            try {
+                const startTime = Date.now();
+                const result = await window.apiService.getAccounts();
+                const endTime = Date.now();
+                
+                displayResult('dataResult', { success: true, responseTime: endTime - startTime }, 'Test Comptes');
+                logRequest('GET', '/accounts', 'success', endTime - startTime);
+            } catch (error) {
+                const result = { success: false, error: error.message };
+                displayResult('dataResult', result, 'Test Comptes');
+                logRequest('GET', '/accounts', 'error', 0, error.message);
+            }
+        }
+
+        async function testTransactions() {
+            try {
+                const startTime = Date.now();
+                const result = await window.apiService.getTransactions();
+                const endTime = Date.now();
+                
+                displayResult('dataResult', { success: true, responseTime: endTime - startTime }, 'Test Transactions');
+                logRequest('GET', '/transactions', 'success', endTime - startTime);
+            } catch (error) {
+                const result = { success: false, error: error.message };
+                displayResult('dataResult', result, 'Test Transactions');
+                logRequest('GET', '/transactions', 'error', 0, error.message);
+            }
+        }
+
+        async function testStatistics() {
+            try {
+                const startTime = Date.now();
+                const result = await window.apiService.getStatistics();
+                const endTime = Date.now();
+                
+                displayResult('dataResult', { success: true, responseTime: endTime - startTime }, 'Test Statistiques');
+                logRequest('GET', '/statistics', 'success', endTime - startTime);
+            } catch (error) {
+                const result = { success: false, error: error.message };
+                displayResult('dataResult', result, 'Test Statistiques');
+                logRequest('GET', '/statistics', 'error', 0, error.message);
+            }
+        }
+
+        async function testExport() {
+            try {
+                const startTime = Date.now();
+                const result = await window.apiService.exportData('excel');
+                const endTime = Date.now();
+                
+                displayResult('dataResult', { success: true, responseTime: endTime - startTime }, 'Test Export');
+                logRequest('GET', '/export/excel', 'success', endTime - startTime);
+            } catch (error) {
+                const result = { success: false, error: error.message };
+                displayResult('dataResult', result, 'Test Export');
+                logRequest('GET', '/export/excel', 'error', 0, error.message);
+            }
+        }
+
+        // Fonction pour afficher les toasts
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            const colors = {
+                success: 'bg-green-500',
+                error: 'bg-red-500',
+                warning: 'bg-yellow-500',
+                info: 'bg-blue-500'
+            };
+            
+            toast.className = `${colors[type]} text-white px-4 py-2 rounded shadow-lg mb-2 transform transition-all duration-300`;
+            toast.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas ${type === 'success' ? 'fa-check' : type === 'error' ? 'fa-times' : type === 'warning' ? 'fa-exclamation' : 'fa-info'} mr-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => container.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            showToast('Page de test backend chargée', 'info');
+        });
+    </script>
+</body>
+</html>

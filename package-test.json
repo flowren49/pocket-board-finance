@@ -1,0 +1,17 @@
+{
+  "name": "test-backend",
+  "version": "1.0.0",
+  "description": "Backend de test pour Personal Finance",
+  "main": "test-backend.js",
+  "scripts": {
+    "start": "node test-backend.js",
+    "dev": "nodemon test-backend.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

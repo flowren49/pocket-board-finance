@@ -58,16 +58,26 @@ function setupMobileNavigation() {
     const closeSidebar = document.getElementById('closeSidebar');
 
     if (mobileMenuBtn && sidebar && sidebarOverlay) {
+        let isOpen = false;
+
         // Open sidebar
         mobileMenuBtn.addEventListener('click', () => {
-            sidebar.classList.remove('-translate-x-full');
-            sidebarOverlay.classList.remove('hidden');
+            if (!isOpen) {
+                sidebar.classList.remove('-translate-x-full');
+                sidebarOverlay.classList.remove('hidden');
+                mobileMenuBtn.classList.add('hamburger-open');
+                isOpen = true;
+            } else {
+                closeSidebarFn();
+            }
         });
 
         // Close sidebar
         const closeSidebarFn = () => {
             sidebar.classList.add('-translate-x-full');
             sidebarOverlay.classList.add('hidden');
+            mobileMenuBtn.classList.remove('hamburger-open');
+            isOpen = false;
         };
 
         closeSidebar?.addEventListener('click', closeSidebarFn);
@@ -75,7 +85,7 @@ function setupMobileNavigation() {
 
         // Close on escape key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
+            if (e.key === 'Escape' && isOpen) {
                 closeSidebarFn();
             }
         });
