@@ -1,216 +1,139 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tarifs - Pocket Board Finance</title>
-    <meta name="description" content="Découvrez nos tarifs transparents pour Pocket Board Finance. Commencez gratuitement ou choisissez un plan qui correspond à vos besoins.">
-    <meta name="theme-color" content="#3B82F6">
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192x192.png">
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            200: '#bfdbfe',
-                            300: '#93c5fd',
-                            400: '#60a5fa',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            800: '#1e40af',
-                            900: '#1e3a8a',
-                        }
-                    },
-                    animation: {
-                        'fade-in-up': 'fadeInUp 0.6s ease-out',
-                        'fade-in-down': 'fadeInDown 0.6s ease-out',
+<!-- Head Component -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tarifs - Pocket Board Finance</title>
+<meta name="description" content="Une application 100% gratuite pour la gestion de vos finances personnelles.">
+<meta name="theme-color" content="#3B82F6">
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192x192.png">
+<link rel="apple-touch-icon" href="/images/icon-192x192.png">
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: {
+                        50: '#eff6ff',
+                        100: '#dbeafe',
+                        200: '#bfdbfe',
+                        300: '#93c5fd',
+                        400: '#60a5fa',
+                        500: '#3b82f6',
+                        600: '#2563eb',
+                        700: '#1d4ed8',
+                        800: '#1e40af',
+                        900: '#1e3a8a',
                     }
                 }
             }
         }
-    </script>
+    }
+</script>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Custom Styles -->
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+    }
     
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    .hero-pattern {
+        background-image: 
+            radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+    }
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Custom Styles -->
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .hero-pattern {
-            background-image: 
-                radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
-        }
-        
-        .pricing-card {
-            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        
-        .pricing-card.popular {
-            background: linear-gradient(145deg, #3b82f6 0%, #1d4ed8 100%);
-            color: white;
-            transform: scale(1.05);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary:hover {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-        }
-        
-        .mobile-nav {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 50;
-        }
-        
-        .mobile-nav.active {
-            display: block;
-        }
-        
-        .mobile-nav-content {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 280px;
-            background: white;
-            transform: translateX(100%);
-            transition: transform 0.2s ease;
-            z-index: 51;
-            overflow-y: auto;
-        }
-        
-        .mobile-nav.active .mobile-nav-content {
-            transform: translateX(0);
-        }
-        
-        .hamburger {
+    @media (max-width: 768px) {
+        .desktop-nav {
             display: none;
         }
         
-        @media (max-width: 768px) {
-            .desktop-nav {
-                display: none;
-            }
-            
-            .hamburger {
-                display: block;
-            }
-            
-            .container-padding {
-                padding-left: 1rem;
-                padding-right: 1rem;
-            }
-            
-            .pricing-card.popular {
-                transform: none;
-            }
+        .hero-title {
+            font-size: 2.5rem;
+            line-height: 1.2;
         }
-    </style>
+        
+        .hero-subtitle {
+            font-size: 1.1rem;
+        }
+        
+        .hero-cta {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .hero-cta a {
+            width: 100%;
+            text-align: center;
+            padding: 1rem 2rem;
+        }
+    }
     
-    <!-- Common CSS - Loaded last to override other styles -->
-    <link rel="stylesheet" href="/css/common.css">
+    @media (max-width: 640px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<!-- Common CSS - Loaded last to override other styles -->
+<link rel="stylesheet" href="/css/common.css">
 </head>
 <body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-30 bg-white/95 backdrop-blur-md border-b border-gray-200">
-        <div class="max-w-7xl mx-auto container-padding">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <a href="index.html" class="text-xl sm:text-2xl font-bold gradient-text flex items-center">
-                            <i class="fas fa-wallet mr-2 sm:mr-3 text-blue-600"></i>
-                            <span class="hidden sm:inline">Pocket Board Finance</span>
-                            <span class="sm:hidden">PBF</span>
-                        </a>
-                    </div>
+<!-- Header Component -->
+<nav class="fixed top-0 w-full z-30 bg-white/95 backdrop-blur-md border-b border-gray-200">
+    <div class="max-w-7xl mx-auto container-padding">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-xl sm:text-2xl font-bold gradient-text flex items-center">
+                        <i class="fas fa-wallet mr-2 sm:mr-3 text-blue-600"></i>
+                        <span class="hidden sm:inline">Pocket Board Finance</span>
+                        <span class="sm:hidden">PBF</span>
+                    </a>
                 </div>
-                
-                <!-- Desktop Navigation -->
-                <div class="desktop-nav hidden md:flex items-center space-x-8">
-                    <a href="features.html" class="text-gray-700 hover:text-blue-600 transition-colors">Fonctionnalités</a>
-                    <a href="pricing.html" class="text-blue-600 font-medium">Tarifs</a>
-                    <a href="about.html" class="text-gray-700 hover:text-blue-600 transition-colors">À Propos</a>
-                    <a href="contact.html" class="text-gray-700 hover:text-blue-600 transition-colors">Contact</a>
-                </div>
-                
-                <div class="flex items-center space-x-2 sm:space-x-4">
-                    <a href="login.html" class="text-gray-700 hover:text-blue-600 transition-colors text-sm sm:text-base">Connexion</a>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <div class="desktop-nav hidden md:flex items-center space-x-8">
+                <a href="features.html" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                    Fonctionnalités
+                </a>
+                <a href="pricing.html" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                    Tarifs
+                </a>
+                <a href="about.html" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                    À Propos
+                </a>
+                <a href="contact.html" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                    Contact
+                </a>
+                <a href="help.html" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                    Aide
+                </a>
+                <div class="flex items-center space-x-4">
+                    <a href="login.html" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                        Connexion
+                    </a>
                     <a href="register.html" class="btn-primary text-white px-4 sm:px-6 py-2 rounded-full font-medium text-sm sm:text-base">
                         Commencer
                     </a>
@@ -222,58 +145,56 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Mobile Navigation -->
-        <div class="mobile-nav" id="mobileNav">
-            <div class="mobile-nav-content">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-8">
-                        <div class="flex items-center">
-                            <i class="fas fa-wallet text-blue-600 text-2xl mr-3"></i>
-                            <span class="text-xl font-bold text-gray-800">Pocket Board Finance</span>
-                        </div>
-                        <button onclick="toggleMobileNav()" class="p-2">
-                            <i class="fas fa-times text-gray-600 text-xl"></i>
-                        </button>
+    </div>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-content">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center">
+                        <i class="fas fa-wallet text-blue-600 text-2xl mr-3"></i>
+                        <span class="text-xl font-bold text-gray-800">Pocket Board Finance</span>
                     </div>
-                    
-                    <nav class="space-y-4">
-                        <a href="index.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
-                            <i class="fas fa-home mr-3"></i>Accueil
-                        </a>
-                        <a href="features.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
-                            <i class="fas fa-star mr-3"></i>Fonctionnalités
-                        </a>
-                        <a href="pricing.html" class="block py-3 px-4 text-blue-600 bg-blue-50 rounded-lg">
-                            <i class="fas fa-euro-sign mr-3"></i>Tarifs
-                        </a>
-                        <a href="about.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
-                            <i class="fas fa-info-circle mr-3"></i>À Propos
-                        </a>
-                        <a href="contact.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
-                            <i class="fas fa-envelope mr-3"></i>Contact
-                        </a>
-                        <a href="help.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
-                            <i class="fas fa-question-circle mr-3"></i>Aide
-                        </a>
-                        
-                        <div class="border-t border-gray-200 my-4"></div>
-                        
-                        <a href="login.html" class="block py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
-                            <i class="fas fa-sign-in-alt mr-3"></i>Connexion
-                        </a>
-                        <a href="register.html" class="block py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-rocket mr-3"></i>Commencer Gratuitement
-                        </a>
-                    </nav>
+                    <button onclick="toggleMobileNav()" class="p-2">
+                        <i class="fas fa-times text-gray-600 text-xl"></i>
+                    </button>
+                </div>
+                
+                <nav class="space-y-4">
+                    <a href="features.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                        <i class="fas fa-star mr-3"></i>Fonctionnalités
+                    </a>
+                    <a href="pricing.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                        <i class="fas fa-euro-sign mr-3"></i>Tarifs
+                    </a>
+                    <a href="about.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                        <i class="fas fa-info-circle mr-3"></i>À Propos
+                    </a>
+                    <a href="contact.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                        <i class="fas fa-envelope mr-3"></i>Contact
+                    </a>
+                    <a href="help.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                        <i class="fas fa-question-circle mr-3"></i>Aide
+                    </a>
+                </nav>
+                
+                <div class="mt-8 pt-6 border-t border-gray-200">
+                    <a href="login.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors mb-3">
+                        <i class="fas fa-sign-in-alt mr-3"></i>Connexion
+                    </a>
+                    <a href="register.html" class="block w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-lg text-center font-medium hover:from-blue-700 hover:to-purple-700 transition-colors">
+                        <i class="fas fa-rocket mr-2"></i>Commencer
+                    </a>
                 </div>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <!-- Hero Section -->
     <section class="hero-pattern pt-20 sm:pt-24 pb-12 sm:pb-16">
-        <div class="max-w-7xl mx-auto container-padding text-center">
+        <div class="max-w-4xl mx-auto container-padding text-center">
             <div class="animate-fade-in-up">
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
                     Des Tarifs
@@ -345,12 +266,12 @@
     <!-- FAQ Section -->
     <section class="py-12 sm:py-16 bg-gray-50">
         <div class="max-w-4xl mx-auto container-padding">
-            <div class="text-center mb-12 animate-fade-in-down">
+            <div class="text-center mb-12 sm:mb-16 animate-fade-in-down">
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
                     Questions Fréquentes
                 </h2>
                 <p class="text-base sm:text-lg md:text-xl text-gray-600">
-                    Tout ce que vous devez savoir sur nos tarifs
+                    Tout ce que vous devez savoir sur Pocket Board Finance
                 </p>
             </div>
             
@@ -417,60 +338,75 @@
                         <i class="fas fa-rocket mr-2"></i>
                         Commencer Gratuitement
                     </a>
-                    <a href="contact.html" class="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-white hover:text-blue-600 transition-colors">
-                        <i class="fas fa-envelope mr-2"></i>
-                        Nous Contacter
+                    <a href="docs/" class="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-white hover:text-blue-600 transition-colors">
+                        <i class="fas fa-code mr-2"></i>
+                        Documentation API
                     </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12 sm:py-16">
-        <div class="max-w-7xl mx-auto container-padding">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="col-span-1 sm:col-span-2">
-                    <div class="flex items-center mb-4 sm:mb-6">
-                        <i class="fas fa-wallet text-2xl sm:text-3xl text-blue-400 mr-3"></i>
-                        <span class="text-xl sm:text-2xl font-bold">Pocket Board Finance</span>
-                    </div>
-                    <p class="text-gray-400 mb-4 sm:mb-6 max-w-md text-sm sm:text-base">
-                        L'application de gestion financière personnelle la plus simple et sécurisée. 
-                        Prenez le contrôle de vos finances dès aujourd'hui.
-                    </p>
+<!-- Footer Component -->
+<footer class="bg-gray-900 text-white py-12 sm:py-16">
+    <div class="max-w-7xl mx-auto container-padding">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-12">
+            <!-- Brand -->
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center mb-4 sm:mb-6">
+                    <i class="fas fa-wallet text-blue-400 text-2xl sm:text-3xl mr-3"></i>
+                    <span class="text-xl sm:text-2xl font-bold">Pocket Board Finance</span>
                 </div>
-                
-                <div>
-                    <h3 class="text-base sm:text-lg font-semibold mb-4">Produit</h3>
-                    <ul class="space-y-2">
-                        <li><a href="features.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Fonctionnalités</a></li>
-                        <li><a href="pricing.html" class="text-blue-400 hover:text-white transition-colors text-sm sm:text-base">Tarifs</a></li>
-                        <li><a href="about.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">À Propos</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="text-base sm:text-lg font-semibold mb-4">Support</h3>
-                    <ul class="space-y-2">
-                        <li><a href="help.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Centre d'Aide</a></li>
-                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Contact</a></li>
-                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Confidentialité</a></li>
-                        <li><a href="terms.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Conditions</a></li>
-                    </ul>
+                <p class="text-gray-400 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6 max-w-md">
+                    L'application de gestion financière personnelle la plus simple et sécurisée. 
+                    Développée par Florian Anthony en 2024.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="https://linkedin.com/in/florian-anthony" class="text-gray-400 hover:text-blue-400 transition-colors">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
                 </div>
             </div>
             
-            <div class="border-t border-gray-800 mt-8 sm:mt-12 pt-6 sm:pt-8 text-center">
-                <p class="text-gray-400 text-sm sm:text-base">
-                    © 2024 Pocket Board Finance. Tous droits réservés.
-                </p>
+            <!-- Product -->
+            <div>
+                <h3 class="text-lg font-semibold mb-4 sm:mb-6">Produit</h3>
+                <ul class="space-y-3">
+                    <li><a href="features.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Fonctionnalités</a></li>
+                    <li><a href="pricing.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Tarifs</a></li>
+                    <li><a href="login.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Connexion</a></li>
+                    <li><a href="register.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">S'inscrire</a></li>
+                </ul>
+            </div>
+            
+            <!-- Support -->
+            <div>
+                <h3 class="text-lg font-semibold mb-4 sm:mb-6">Support</h3>
+                <ul class="space-y-3">
+                    <li><a href="about.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">À Propos</a></li>
+                    <li><a href="contact.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Contact</a></li>
+                    <li><a href="help.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Aide</a></li>
+                    <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Confidentialité</a></li>
+                </ul>
             </div>
         </div>
-    </footer>
+        
+        <div class="border-t border-gray-800 mt-8 sm:mt-12 pt-6 sm:pt-8">
+            <div class="flex flex-col sm:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 sm:mb-0">
+                    © 2024 Pocket Board Finance. Tous droits réservés. Développé par Florian Anthony.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="privacy.html" class="text-gray-400 hover:text-white transition-colors text-sm">Confidentialité</a>
+                    <a href="contact.html" class="text-gray-400 hover:text-white transition-colors text-sm">Contact</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 
-    <!-- Scripts -->
-    <script src="/js/auth.js"></script>
-    <script src="/js/common.js"></script>
+<!-- Scripts Component -->
+<script src="/js/auth.js"></script>
+<script src="/js/common.js"></script>
 </body>
 </html>

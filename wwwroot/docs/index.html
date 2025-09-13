@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentation API - Pocket Board Finance</title>
+    <meta name="description" content="Documentation complète de l'API Pocket Board Finance développée par Florian Anthony">
+    
+    <!-- OpenAPI/Swagger UI -->
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui.css" />
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-standalone-preset.css" />
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Override Swagger UI styles */
+        .swagger-ui .topbar {
+            display: none;
+        }
+        
+        .swagger-ui .info {
+            margin: 20px 0;
+        }
+        
+        .swagger-ui .info .title {
+            color: #1f2937;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .swagger-ui .info .description {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="../index.html" class="text-xl font-bold gradient-text flex items-center">
+                        <i class="fas fa-wallet mr-3 text-blue-600"></i>
+                        Pocket Board Finance
+                    </a>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="../index.html" class="text-gray-600 hover:text-blue-600 transition-colors">
+                        <i class="fas fa-home mr-2"></i>Accueil
+                    </a>
+                    <a href="../about.html" class="text-gray-600 hover:text-blue-600 transition-colors">
+                        <i class="fas fa-info-circle mr-2"></i>À Propos
+                    </a>
+                    <a href="../contact.html" class="text-gray-600 hover:text-blue-600 transition-colors">
+                        <i class="fas fa-envelope mr-2"></i>Contact
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-bold mb-4">
+                    <i class="fas fa-code mr-4"></i>
+                    Documentation API
+                </h1>
+                <p class="text-xl text-blue-100 max-w-3xl mx-auto">
+                    Documentation complète de l'API REST de Pocket Board Finance. 
+                    Développée par Florian Anthony en 2024.
+                </p>
+                <div class="mt-8 flex flex-wrap justify-center items-center gap-6 text-sm">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        RESTful API
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        JWT Authentication
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        OpenAPI 3.0
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        JSON Responses
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Info Cards -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-shield-alt text-green-500 text-2xl mr-3"></i>
+                    <h3 class="text-lg font-semibold text-gray-900">Sécurité</h3>
+                </div>
+                <p class="text-gray-600 text-sm">
+                    Authentification JWT, validation des données, et protection contre les attaques courantes.
+                </p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-rocket text-blue-500 text-2xl mr-3"></i>
+                    <h3 class="text-lg font-semibold text-gray-900">Performance</h3>
+                </div>
+                <p class="text-gray-600 text-sm">
+                    API optimisée avec cache, pagination, et réponses rapides pour une expérience fluide.
+                </p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-code text-purple-500 text-2xl mr-3"></i>
+                    <h3 class="text-lg font-semibold text-gray-900">Documentation</h3>
+                </div>
+                <p class="text-gray-600 text-sm">
+                    Documentation interactive avec exemples de requêtes et réponses pour tous les endpoints.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Swagger UI Container -->
+    <div id="swagger-ui" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"></div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-4">
+                    <i class="fas fa-wallet text-blue-400 text-2xl mr-3"></i>
+                    <span class="text-xl font-bold">Pocket Board Finance</span>
+                </div>
+                <p class="text-gray-400 mb-4">
+                    API développée par Florian Anthony en 2024
+                </p>
+                <div class="flex justify-center space-x-6">
+                    <a href="../index.html" class="text-gray-400 hover:text-white transition-colors">Accueil</a>
+                    <a href="../about.html" class="text-gray-400 hover:text-white transition-colors">À Propos</a>
+                    <a href="../contact.html" class="text-gray-400 hover:text-white transition-colors">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Swagger UI JavaScript -->
+    <script src="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-bundle.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-standalone-preset.js"></script>
+    
+    <script>
+        window.onload = function() {
+            // Configuration Swagger UI
+            const ui = SwaggerUIBundle({
+                url: './openapi.json',
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout",
+                validatorUrl: null,
+                tryItOutEnabled: true,
+                requestInterceptor: (req) => {
+                    // Add common headers
+                    req.headers['Content-Type'] = 'application/json';
+                    return req;
+                },
+                responseInterceptor: (res) => {
+                    // Log responses for debugging
+                    console.log('API Response:', res);
+                    return res;
+                },
+                onComplete: () => {
+                    console.log('Swagger UI loaded successfully');
+                },
+                docExpansion: 'list',
+                defaultModelsExpandDepth: 2,
+                defaultModelExpandDepth: 2
+            });
+            
+            window.ui = ui;
+        };
+    </script>
+</body>
+</html>

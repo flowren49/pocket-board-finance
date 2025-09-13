@@ -1,0 +1,926 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Pocket Board Finance API",
+    "description": "API pour l'application de gestion financière personnelle Pocket Board Finance. Développée par Florian Anthony en 2024.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Florian Anthony",
+      "url": "https://linkedin.com/in/florian-anthony"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://your-api-domain.com/api",
+      "description": "Serveur de production"
+    },
+    {
+      "url": "http://localhost:5000/api",
+      "description": "Serveur de développement"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Vérifier l'état de l'API",
+        "description": "Retourne l'état de santé de l'API et de ses dépendances",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "API en bonne santé",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Connexion utilisateur",
+        "description": "Authentifie un utilisateur et retourne un token JWT",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Connexion réussie",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Identifiants invalides",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Inscription utilisateur",
+        "description": "Crée un nouveau compte utilisateur",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Compte créé avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données invalides",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts": {
+      "get": {
+        "tags": ["Accounts"],
+        "summary": "Lister les comptes",
+        "description": "Retourne la liste des comptes de l'utilisateur authentifié",
+        "responses": {
+          "200": {
+            "description": "Liste des comptes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Account"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Accounts"],
+        "summary": "Créer un compte",
+        "description": "Crée un nouveau compte pour l'utilisateur authentifié",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAccountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Compte créé avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/{id}": {
+      "get": {
+        "tags": ["Accounts"],
+        "summary": "Obtenir un compte",
+        "description": "Retourne les détails d'un compte spécifique",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Détails du compte",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Compte non trouvé"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Accounts"],
+        "summary": "Modifier un compte",
+        "description": "Met à jour les informations d'un compte",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Compte mis à jour avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Accounts"],
+        "summary": "Supprimer un compte",
+        "description": "Supprime un compte et toutes ses transactions associées",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Compte supprimé avec succès"
+          },
+          "404": {
+            "description": "Compte non trouvé"
+          }
+        }
+      }
+    },
+    "/transactions": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Lister les transactions",
+        "description": "Retourne la liste des transactions de l'utilisateur avec filtres optionnels",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Filtrer par ID de compte"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filtrer par catégorie"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "Date de début (format YYYY-MM-DD)"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "Date de fin (format YYYY-MM-DD)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transaction"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Créer une transaction",
+        "description": "Crée une nouvelle transaction",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Transaction créée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{id}": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Obtenir une transaction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Détails de la transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Transactions"],
+        "summary": "Modifier une transaction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction mise à jour avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Transactions"],
+        "summary": "Supprimer une transaction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Transaction supprimée avec succès"
+          }
+        }
+      }
+    },
+    "/statistics": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Obtenir les statistiques",
+        "description": "Retourne les statistiques financières de l'utilisateur",
+        "parameters": [
+          {
+            "name": "period",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["week", "month", "quarter", "year"]
+            },
+            "description": "Période pour les statistiques"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Statistiques financières",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Statistics"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/export": {
+      "get": {
+        "tags": ["Export"],
+        "summary": "Exporter les données",
+        "description": "Exporte les données utilisateur dans différents formats",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["csv", "excel", "pdf"]
+            },
+            "description": "Format d'export"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["accounts", "transactions", "statistics", "all"]
+            },
+            "description": "Type de données à exporter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fichier exporté",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "Healthy"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "version": {
+            "type": "string",
+            "example": "1.0.0"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "user@example.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "example": "password123"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "example": 3600
+          }
+        }
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "required": ["email", "password", "confirmPassword", "firstName", "lastName"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "user@example.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "example": "password123"
+          },
+          "confirmPassword": {
+            "type": "string",
+            "example": "password123"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "Jean"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Dupont"
+          }
+        }
+      },
+      "RegisterResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Compte créé avec succès"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "Jean"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Dupont"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Account": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Compte Courant"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["Checking", "Savings", "Credit", "Investment"],
+            "example": "Checking"
+          },
+          "balance": {
+            "type": "number",
+            "format": "decimal",
+            "example": 1500.50
+          },
+          "currency": {
+            "type": "string",
+            "example": "EUR"
+          },
+          "description": {
+            "type": "string",
+            "example": "Mon compte principal"
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateAccountRequest": {
+        "type": "object",
+        "required": ["name", "type"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Compte Courant"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["Checking", "Savings", "Credit", "Investment"],
+            "example": "Checking"
+          },
+          "balance": {
+            "type": "number",
+            "format": "decimal",
+            "example": 1500.50
+          },
+          "currency": {
+            "type": "string",
+            "example": "EUR"
+          },
+          "description": {
+            "type": "string",
+            "example": "Mon compte principal"
+          }
+        }
+      },
+      "UpdateAccountRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Compte Courant"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["Checking", "Savings", "Credit", "Investment"],
+            "example": "Checking"
+          },
+          "balance": {
+            "type": "number",
+            "format": "decimal",
+            "example": 1500.50
+          },
+          "currency": {
+            "type": "string",
+            "example": "EUR"
+          },
+          "description": {
+            "type": "string",
+            "example": "Mon compte principal"
+          }
+        }
+      },
+      "Transaction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "amount": {
+            "type": "number",
+            "format": "decimal",
+            "example": -25.99
+          },
+          "description": {
+            "type": "string",
+            "example": "Achat supermarché"
+          },
+          "category": {
+            "type": "string",
+            "example": "Food"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-01-15"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["Income", "Expense", "Transfer"],
+            "example": "Expense"
+          },
+          "accountId": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateTransactionRequest": {
+        "type": "object",
+        "required": ["amount", "description", "category", "date", "type", "accountId"],
+        "properties": {
+          "amount": {
+            "type": "number",
+            "format": "decimal",
+            "example": -25.99
+          },
+          "description": {
+            "type": "string",
+            "example": "Achat supermarché"
+          },
+          "category": {
+            "type": "string",
+            "example": "Food"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-01-15"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["Income", "Expense", "Transfer"],
+            "example": "Expense"
+          },
+          "accountId": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      },
+      "UpdateTransactionRequest": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "format": "decimal",
+            "example": -25.99
+          },
+          "description": {
+            "type": "string",
+            "example": "Achat supermarché"
+          },
+          "category": {
+            "type": "string",
+            "example": "Food"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-01-15"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["Income", "Expense", "Transfer"],
+            "example": "Expense"
+          },
+          "accountId": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      },
+      "Statistics": {
+        "type": "object",
+        "properties": {
+          "totalBalance": {
+            "type": "number",
+            "format": "decimal",
+            "example": 5420.75
+          },
+          "totalIncome": {
+            "type": "number",
+            "format": "decimal",
+            "example": 3200.00
+          },
+          "totalExpenses": {
+            "type": "number",
+            "format": "decimal",
+            "example": 1879.25
+          },
+          "savingsRate": {
+            "type": "number",
+            "format": "decimal",
+            "example": 41.2
+          },
+          "categoryBreakdown": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number",
+              "format": "decimal"
+            },
+            "example": {
+              "Food": 450.00,
+              "Transport": 120.00,
+              "Entertainment": 200.00
+            }
+          },
+          "monthlyTrends": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "example": "2024-01"
+                },
+                "income": {
+                  "type": "number",
+                  "format": "decimal",
+                  "example": 3200.00
+                },
+                "expenses": {
+                  "type": "number",
+                  "format": "decimal",
+                  "example": 1879.25
+                },
+                "savings": {
+                  "type": "number",
+                  "format": "decimal",
+                  "example": 1320.75
+                }
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Unauthorized"
+          },
+          "message": {
+            "type": "string",
+            "example": "Token invalide ou expiré"
+          },
+          "details": {
+            "type": "string",
+            "example": "Le token JWT fourni n'est pas valide"
+          }
+        }
+      }
+    }
+  }
+}
