@@ -92,6 +92,57 @@
                 radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
         }
+        
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+        
+        .mobile-nav.active {
+            display: block;
+        }
+        
+        .mobile-nav-content {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 280px;
+            background: white;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 10000;
+            overflow-y: auto;
+        }
+        
+        .mobile-nav.active .mobile-nav-content {
+            transform: translateX(0);
+        }
+        
+        .hamburger {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .container-padding {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -113,11 +164,63 @@
                     <a href="index.html#pricing" class="text-gray-700 hover:text-blue-600 transition-colors">Tarifs</a>
                     <a href="contact.html" class="text-gray-700 hover:text-blue-600 transition-colors">Contact</a>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <a href="login.html" class="text-gray-700 hover:text-blue-600 transition-colors">Connexion</a>
-                    <a href="register.html" class="bg-blue-600 text-white px-6 py-2 rounded-full font-medium hover:bg-blue-700 transition-colors">
-                        Commencer Gratuitement
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <a href="login.html" class="text-gray-700 hover:text-blue-600 transition-colors text-sm sm:text-base">Connexion</a>
+                    <a href="register.html" class="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-full font-medium text-sm sm:text-base hover:bg-blue-700 transition-colors">
+                        Commencer
                     </a>
+                    
+                    <!-- Mobile Menu Button -->
+                    <button class="hamburger md:hidden p-2" onclick="toggleMobileNav()">
+                        <i class="fas fa-bars text-gray-700 text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-content">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-wallet text-blue-600 text-2xl mr-3"></i>
+                            <span class="text-xl font-bold text-gray-800">Pocket Board Finance</span>
+                        </div>
+                        <button onclick="toggleMobileNav()" class="p-2">
+                            <i class="fas fa-times text-gray-600 text-xl"></i>
+                        </button>
+                    </div>
+                    
+                    <nav class="space-y-4">
+                        <a href="index.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            <i class="fas fa-home mr-3"></i>Accueil
+                        </a>
+                        <a href="features.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            <i class="fas fa-star mr-3"></i>Fonctionnalités
+                        </a>
+                        <a href="pricing.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            <i class="fas fa-euro-sign mr-3"></i>Tarifs
+                        </a>
+                        <a href="about.html" class="block py-3 px-4 text-blue-600 bg-blue-50 rounded-lg">
+                            <i class="fas fa-info-circle mr-3"></i>À Propos
+                        </a>
+                        <a href="contact.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            <i class="fas fa-envelope mr-3"></i>Contact
+                        </a>
+                        <a href="help.html" class="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            <i class="fas fa-question-circle mr-3"></i>Aide
+                        </a>
+                        
+                        <div class="border-t border-gray-200 my-4"></div>
+                        
+                        <a href="login.html" class="block py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
+                            <i class="fas fa-sign-in-alt mr-3"></i>Connexion
+                        </a>
+                        <a href="register.html" class="block py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-rocket mr-3"></i>Commencer Gratuitement
+                        </a>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -368,6 +471,24 @@
     <!-- Scripts -->
     <script src="/js/auth.js"></script>
     <script>
+        // Mobile navigation toggle
+        function toggleMobileNav() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.classList.toggle('active');
+        }
+
+        // Close mobile nav when clicking outside
+        document.addEventListener('click', function(e) {
+            const mobileNav = document.getElementById('mobileNav');
+            const hamburger = document.querySelector('.hamburger');
+            
+            if (mobileNav.classList.contains('active') && 
+                !mobileNav.contains(e.target) && 
+                !hamburger.contains(e.target)) {
+                mobileNav.classList.remove('active');
+            }
+        });
+
         // Animation on scroll
         const observerOptions = {
             threshold: 0.1,
