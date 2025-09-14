@@ -24,8 +24,8 @@ if (!validTypes.includes(pageType)) {
     process.exit(1);
 }
 
-const templatePath = path.join(__workspace, 'wwwroot', 'templates', 'base-template.html');
-const outputPath = path.join(__workspace, 'wwwroot', `${pageName}.html`);
+const templatePath = path.join(__dirname, 'wwwroot', 'templates', 'base-template.html');
+const outputPath = path.join(__dirname, 'wwwroot', `${pageName}.html`);
 
 // Lire le template
 if (!fs.existsSync(templatePath)) {
