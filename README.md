@@ -16,21 +16,66 @@ Application de gestion financière personnelle développée par Florian Anthony 
 ```
 workspace/
 ├── wwwroot/                    # Frontend statique
-│   ├── css/
+│   ├── css/                   # Styles CSS
 │   │   ├── common.css         # Styles communs
-│   │   └── components.css     # Styles des composants
-│   ├── js/
+│   │   ├── components.css     # Styles des composants
+│   │   ├── site.css           # Styles spécifiques au site
+│   │   └── tailwind.css       # Framework CSS Tailwind
+│   ├── js/                    # Scripts JavaScript
 │   │   ├── auth.js            # Authentification
 │   │   ├── common.js          # Fonctions communes
-│   │   └── components.js      # Système de composants
-│   ├── templates/
-│   │   └── base-template.html # Template de base
+│   │   ├── components.js      # Système de composants
+│   │   ├── api-service.js     # Service API
+│   │   └── *.js               # Scripts spécifiques aux pages
+│   ├── components/            # Composants HTML réutilisables
+│   │   ├── header.html        # En-tête de page
+│   │   ├── footer.html        # Pied de page
+│   │   ├── head.html          # Section head HTML
+│   │   └── scripts.html       # Scripts communs
 │   ├── docs/                  # Documentation API
-│   └── *.html                 # Pages de l'application
+│   │   ├── index.html         # Interface de documentation
+│   │   ├── api-spec.json      # Spécification API
+│   │   └── openapi.json       # OpenAPI 3.0
+│   ├── images/                # Images et icônes
+│   ├── *.html                 # Pages de l'application
+│   ├── manifest.json          # Manifest PWA
+│   └── sw.js                  # Service Worker
 ├── Controllers/               # API Controllers (.NET)
+│   ├── AuthController.cs      # Authentification
+│   ├── AccountsController.cs  # Gestion des comptes
+│   ├── ExportController.cs    # Export de données
+│   └── HealthController.cs    # Santé de l'API
 ├── Models/                    # Modèles de données
+│   ├── Account.cs             # Modèle compte
+│   ├── ApplicationUser.cs     # Modèle utilisateur
+│   ├── BalanceHistory.cs      # Historique des soldes
+│   └── DTOs/                  # Data Transfer Objects
 ├── Services/                  # Services métier
-└── create-page.js            # Script de création de pages
+│   ├── IAccountService.cs     # Interface service comptes
+│   ├── AccountService.cs      # Service comptes
+│   ├── IUserService.cs        # Interface service utilisateur
+│   ├── UserService.cs         # Service utilisateur
+│   └── *.cs                   # Autres services
+├── Data/                      # Accès aux données
+│   ├── ApplicationDbContext.cs # Contexte Entity Framework
+│   └── DbInitializer.cs       # Initialisation base de données
+├── Migrations/                # Migrations Entity Framework
+├── Pages/                     # Pages Razor
+├── Components/                # Composants Blazor
+├── Hubs/                      # SignalR Hubs
+├── HealthChecks/              # Vérifications de santé
+├── config/                    # Fichiers de configuration
+│   ├── vercel.json            # Configuration Vercel
+│   └── tailwind.config.js     # Configuration Tailwind
+├── scripts/                   # Scripts utilitaires
+│   └── create-page.js         # Script de création de pages
+├── docs/                      # Documentation du projet
+├── PersonalFinanceApp.csproj  # Fichier projet .NET
+├── Program.cs                 # Point d'entrée de l'application
+├── Dockerfile                 # Configuration Docker
+├── docker-compose.yml         # Composition Docker
+├── package.json               # Configuration Node.js
+└── README.md                  # Documentation principale
 ```
 
 ## 🛠️ Système de Composants
@@ -39,10 +84,10 @@ workspace/
 
 ```bash
 # Page vitrine (landing page)
-node create-page.js ma-page landing
+node scripts/create-page.js ma-page landing
 
 # Page protégée (nécessite authentification)
-node create-page.js ma-page protected
+node scripts/create-page.js ma-page protected
 ```
 
 ### Composants disponibles
@@ -133,13 +178,22 @@ Le fichier `vercel.json` configure :
 
 ```bash
 # Créer une nouvelle page
-node create-page.js nom-page [landing|protected]
+node scripts/create-page.js nom-page [landing|protected]
 
-# Servir localement
+# Servir localement (frontend)
 npx http-server wwwroot -p 8080 --cors
+
+# Démarrer le backend (.NET)
+dotnet run
+
+# Construire le projet
+dotnet build
 
 # Tester l'API
 curl http://localhost:5000/api/health
+
+# Construire les assets frontend
+npm run build
 ```
 
 ## 📱 PWA
