@@ -8,6 +8,14 @@
   ],
   "routes": [
     {
+      "src": "/docs",
+      "dest": "/wwwroot/docs.html"
+    },
+    {
+      "src": "/docs/(.*)",
+      "dest": "/wwwroot/docs/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/wwwroot/$1"
     }
