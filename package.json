@@ -4,13 +4,13 @@
   "description": "Personal Finance Management PWA",
   "scripts": {
     "build": "npm run build:css && npm run build:js",
-    "build:css": "tailwindcss -i ./wwwroot/css/input.css -o ./wwwroot/css/tailwind.css --minify",
+    "build:css": "npx tailwindcss -i ./wwwroot/css/input.css -o ./wwwroot/css/tailwind.css --minify",
     "build:js": "echo 'JavaScript build completed'",
     "dev": "npm run build:css && echo 'Development build completed'",
     "start": "echo 'Static files ready for deployment'",
     "serve": "npx http-server wwwroot -p 8080 --cors",
     "clean": "rm -rf wwwroot/css/tailwind.css",
-    "watch": "tailwindcss -i ./wwwroot/css/input.css -o ./wwwroot/css/tailwind.css --watch",
+    "watch": "npx tailwindcss -i ./wwwroot/css/input.css -o ./wwwroot/css/tailwind.css --watch",
     "create-page": "node scripts/create-page.js"
   },
   "devDependencies": {

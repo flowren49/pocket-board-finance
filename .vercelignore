@@ -1,29 +1,53 @@
-# Ignore .NET specific files
+# .NET Files
+*.cs
 *.csproj
 *.sln
 *.user
-*.cs
-*.dll
-*.pdb
-*.exe
-
-# Ignore development files
+*.suo
 bin/
 obj/
+out/
+Migrations/
+
+# Backend specific
+Controllers/
+Services/
+Models/
+Data/
+Hubs/
+HealthChecks/
+Pages/
+Components/
+Shared/
+Program.cs
+Startup.cs
+appsettings*.json
+
+# IDE
 .vs/
 .vscode/
 
-# Ignore database files
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env*
+
+# Database
 *.db
 *.db-shm
 *.db-wal
 
-# Ignore logs
-*.log
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
 
-# Keep only static files and configuration
-!wwwroot/
-!package.json
-!tailwind.config.js
-!vercel.json
-!.vercelignore
+# Documentation (keep only essential)
+README.md
+CHANGELOG.md
